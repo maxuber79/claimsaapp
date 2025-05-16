@@ -1,0 +1,61 @@
+/*
+* @Reset menu bootstrap
+**/
+.navbar-inner,
+.navbar-fixed-top .navbar-inner,
+.navbar-fixed-bottom .navbar-inner,
+.navbar-static-top .navbar-inner {
+	background: none;
+	border: none;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	filter: none;
+	padding: 0;
+}
+.navbar { margin-bottom: 0;border-radius: inherit;border: none; }
+.navbar .nav { margin: 0; }
+.navbar .brand,
+.navbar .nav > li > a {
+	margin: 0;
+	padding: 0;
+	text-shadow: none;
+}
+.navbar .btn-navbar,
+.navbar .btn-navbar:hover {
+	background: none;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	margin: 0;
+	padding: 0;
+	text-shadow: none;
+}
+.nav>li>a:focus, .nav>li>a:hover, .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:visited {
+    color: #fff;
+    background-color: transparent;
+    background: tranparent;
+}
+.nav-pills>li>a {
+    border-radius: inherit;
+}
+.navbar-default {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: none;
+}
+.navbar-default .navbar-collapse {
+    border-color: transparent;
+}
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    /*background-color: $orange;*/
+    color: #808080;
+    background-color: transparent;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    background-color: transparent;
+}

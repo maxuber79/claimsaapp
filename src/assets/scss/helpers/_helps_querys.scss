@@ -1,0 +1,110 @@
+/*** Ayudas Querys ***/
+// Definimos los breakpoints en un mapa para mayor organización
+$breakpoints: (xxs: (250px, 320px, indigo),
+  xs: (321px, 480px, magenta),
+  sm: (481px, 768px, cyan),
+  md: (769px, 1199px, tomato),
+  lg: (1200px, 1399px, teal),
+  xl: (1400px, null, deeppink));
+
+// Generamos los media queries dinámicamente
+@each $size,
+$values in $breakpoints {
+  $min: nth($values, 1);
+  $max: nth($values, 2);
+  $color: nth($values, 3);
+
+  @if $max !=null {
+    @media only screen and (min-width: $min) and (max-width: $max) {
+      .prueba {
+        background-color: $color;
+      }
+
+      .margin-#{$size} {
+        margin: 10px;
+        padding: 0;
+      }
+
+      .padding-#{$size} {
+        margin: 0;
+        padding: 10px;
+      }
+
+      .no-m-#{$size},
+      .no-p-#{$size} {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  @else {
+    @media only screen and (min-width: $min) {
+      .prueba {
+        background-color: $color;
+      }
+
+      .margin-#{$size} {
+        margin: 10px;
+        padding: 0;
+      }
+
+      .padding-#{$size} {
+        margin: 0;
+        padding: 10px;
+      }
+
+      .no-margin-#{$size},
+      .no-padding-#{$size} {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}
+
+/* //Custom, iPhone Retina  (xxs)
+@media only screen and (min-width: 250px) and (max-width: 320px) { 
+	.prueba {background-color: indigo;}
+    .margin-xxs {margin: 10px !important;padding: 0 !important;}
+    .padding-xxs {margin: 0 !important; padding: 10px !important;}
+    .no-margin-xxs, .no-padding-xxs {margin:0 !important;padding:0 !important;}
+}
+//Hasta smartphones de 480px (xs) 
+@media only screen and (min-width: 321px) and (max-width: 480px) { 
+	.prueba {background-color: magenta;}
+    .margin-xs {margin: 10px !important;padding: 0 !important;}
+    .padding-xs {margin: 0 !important; padding: 10px !important;}
+    .no-m-xs, .no-p-xs {margin:0 !important;padding:0 !important;}
+}
+
+//de Smartphones a Tablets (sm) 
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+	.prueba {background-color: cyan;}
+    .margin-sm {margin: 10px !important;padding: 0 !important;}
+    .padding-sm {margin: 0 !important; padding: 10px !important;}
+    .no-m-sm, .no-p-sm {margin:0 !important;padding:0 !important;}
+}
+
+//de Tablets a pantallas de desktops (md) 
+@media only screen and (min-width: 769px) and (max-width: 1199px) { 
+	.prueba {background-color: tomato;}
+    .margin-md {margin: 10px !important;padding: 0 !important;}
+    .padding-md {margin: 0 !important; padding: 10px !important;}
+    .no-m-xmd, .no-p-md {margin:0 !important;padding:0 !important;}
+}
+
+//Pantallas anchas (desktops) (lg) 
+@media only screen and (min-width: 1200px) and (max-width: 1399px) { 
+	.prueba {background-color: teal;}
+    .margin-lg {margin: 10px !important;padding: 0 !important;}
+    .padding-lg {margin: 0 !important; padding: 10px !important;}
+    .no-m-lg, .no-p-lg {margin:0 !important;padding:0 !important;}
+}
+//Pantallas anchas (desktops) (xl)
+@media only screen and ( min-width: 1400px) { 
+	.prueba {background-color: deeppink;}
+    .margin-xl {margin: 10px !important;padding: 0 !important;}
+    .padding-xl {margin: 0 !important; padding: 10px !important;}
+    .no-margin-xl, .no-padding-xl {margin:0 !important;padding:0 !important;}
+} */

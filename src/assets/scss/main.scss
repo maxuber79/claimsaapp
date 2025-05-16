@@ -1,0 +1,84 @@
+@import 'variables';
+@import 'mixins';
+@import 'helpers/helps';
+
+
+
+.font-roboto {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  margin: 0 0 .5rem 0;
+}
+
+.font-geist {
+  font-family: "Geist", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: 0 0 .5rem 0;
+}
+
+.font-nanuto {
+  font-family: "Nunito Sans", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: 0 0 .5rem 0;
+}
+
+// Definimos una lista de tamaños en rem
+// Cada valor representa el tamaño en rem que tendrá la fuente
+$sizes: (5, 7, 10, 12, 15, 20, 25, 30, 40, 50); // Representan 0.5, 0.7, 1.0, etc.
+
+// Usamos @each para recorrer la lista y generar clases dinámicamente
+@each $size in $sizes {
+
+  // Creamos una clase con el formato .f-size-{valor} 
+  // donde {valor} es el número de rem sin puntos decimales
+  .f-size-#{$size} {
+    font-size: #{$size / 10}rem;
+  }
+}
+
+
+
+p.wrapp-farrafo {
+  @include geist(0.875rem, 400, $fourth-color);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.3rem;
+}
+
+.title-geist {
+  @include geist($title-size, bold, $fourth-color);
+  letter-spacing: $l-spacing;
+  margin: 0 0 1.5rem 0;
+}
+
+.title-roboto {
+  @include roboto($title-size, bold, $fourth-color);
+  letter-spacing: $l-spacing;
+  margin: 0 0 1.5rem 0;
+}
+
+.subtitle-geist {
+  @include geist($subtitle-size, bold, $fourth-color);
+  letter-spacing: -0.125rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Geist", sans-serif;
+  color: $fourth-color;
+}
+
+code {
+  padding: 5px;
+  color: #FF4747;
+  font-family: 'Consola', sans-serif;
+  font-weight: 300;
+  font-size: 0.875rem;
+  border-radius: 4px;
+}

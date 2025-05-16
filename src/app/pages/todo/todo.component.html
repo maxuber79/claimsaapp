@@ -1,0 +1,34 @@
+<div class="container mt-5">
+	<h2 class="text-center mb-4">📝 Lista de Tareas</h2>
+
+	<!-- Input para nueva tarea -->
+	<div class="input-group mb-4">
+		<input type="text" class="form-control" placeholder="Escribe una nueva tarea" [ngModel]="newTask()" (ngModelChange)="newTask.set($event)" (keyup.enter)="addTask()"
+		/>
+
+		<button class="btn btn-primary" (click)="addTask()">Agregar</button>
+	</div>
+
+	<!-- Mostrar tareas -->
+	<ul class="list-group mb-3">
+		<li *ngFor="let todo of todos()" class="list-group-item d-flex justify-content-between align-items-center"
+			[class.list-group-item-success]="todo.completed">
+			<div>
+				<input type="checkbox" class="form-check-input me-2" [checked]="todo.completed"
+					(change)="toggleCompleted(todo.id)" />
+				<span [class.text-decoration-line-through]="todo.completed">
+					{{ todo.title }}
+				</span>
+			</div>
+			<button class="btn btn-sm btn-outline-danger" (click)="deleteTask(todo.id)">
+				Eliminar
+			</button>
+		</li>
+	</ul>
+
+	<!-- Contador -->
+	<div class="text-muted text-end">
+		Tareas pendientes: {{ remainingTasks() }}
+	</div>
+</div>
+

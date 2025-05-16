@@ -1,0 +1,99 @@
+@mixin border-box {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@mixin icon ($fsize:1rem, $fcolor:#333333, $lheight:normal) {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: $lheight;
+  font-size: $fsize;
+  margin: 0;
+  padding: 0;
+  color: $fcolor;
+}
+
+//border: [border-width || border-style || border-color | inherit] ;
+$color: #000;
+
+@mixin border_help($color) {
+  border-width: 1px;
+  border-style: dashed;
+  border-color: $color;
+}
+
+@mixin space_margin ($value:auto) {
+  margin: $value;
+}
+
+@mixin space_padding ($value:auto) {
+  padding: $value;
+}
+
+@mixin no_padding($value:0) {
+  padding: $value !important;
+}
+
+@mixin no_margin($value:0) {
+  margin: $value !important;
+}
+
+
+// CSS Anchos de tipos web
+@mixin type-web($m-width, $width, $b_px, $b_type, $b_color) {
+  max-width: $m-width;
+  width: $width;
+  height: auto;
+  margin: 0 auto;
+  padding: 0;
+  border: $b_px $b_type $b_color;
+}
+
+@mixin transicion($timing:.2s, $effect:ease-in-out) {
+  /*ej. transition: all .2s ease-in-out;*/
+  -webkit-transition: all $timing $effect;
+  -moz-transition: all $timing $effect;
+  -ms-transition: all $timing $effect;
+  -o-transition: all $timing $effect;
+  transition: all $timing $effect;
+}
+
+@mixin zoom-box ($value:1.06) {
+  /*ej. transform: scale(1.06); */
+  -webkit-transform: scale($value);
+  -ms-transform: scale($value);
+  -o-transform: scale($value);
+  transform: scale($value);
+}
+
+
+@mixin texto-sombra {
+  text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+}
+
+@mixin shadow-bottom {
+  -webkit-box-shadow: 0px 10px 6px -6px rgba(0, 0, 0, .3);
+  -moz-box-shadow: 0px 10px 6px -6px rgba(0, 0, 0, .3);
+  -ms-box-shadow: 0px 10px 6px -6px rgba(0, 0, 0, .3);
+  -o-box-shadow: 0px 10px 6px -6px rgba(0, 0, 0, .3);
+  box-shadow: 0px 10px 6px -6px rgba(0, 0, 0, .3);
+}
+
+@mixin extension($width) {
+  width: $width;
+
+  @media (max-width: 640px) {
+    width: 100%;
+  }
+}
+
+@mixin altura($height) {
+  height: $height;
+
+  @media (max-width: 640px) {
+    height: auto;
+  }
+}
