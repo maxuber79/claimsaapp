@@ -1,0 +1,92 @@
+<div class="col-12 border-2">
+	<!-- CONTRASEÑA -->
+	<div class="input-group form-floating mb-3">
+		<input type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="password"
+			[ngClass]="{'is-invalid': getControl['password'].errors && (getControl['password'].dirty || getControl['password'].touched),
+		'is-valid': getControl['password'].valid }" />
+		<label for="password">Contraseña</label>
+		<!-- Botón con ícono -->
+		<button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()" tabindex="-1">
+			<i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+		</button>
+		<div class="invalid-feedback animate__animated animate__fadeIn"
+			*ngIf="getControl['password'].errors && getControl['password'].invalid && getControl['password'].touched">
+			<div *ngIf="getControl['password'].errors['required']">La contraseña debe tener al menos 6 caracteres.</div>
+		</div>
+	</div>
+</div>
+<div class="col-12 border-2">
+	<!-- CONFIRMAR CONTRASEÑA -->
+	<div class="input-group form-floating mb-3">
+		<input [type]="passwordVisible ? 'text' : 'password'" class="form-control" id="confirmPassword"
+			placeholder="Repite tu contraseña" formControlName="confirmPassword"
+			[ngClass]="{ 'is-invalid': (getControl['confirmPassword'].touched && getControl['confirmPassword'].invalid) || registerForm.errors?.['passwordMismatch'],'is-valid': getControl['confirmPassword'].valid && !registerForm.errors?.['passwordMismatch']}" />
+		<label for="confirmPassword">Repite tu contraseña</label>
+		<!-- Botón con ícono -->
+		<button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()" tabindex="-1">
+			<i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+		</button>
+		<!-- Mensajes de validación -->
+		<div class="invalid-feedback"
+			*ngIf="getControl['confirmPassword'].touched && getControl['confirmPassword'].errors?.['required']">
+			Debes repetir la contraseña.
+		</div>
+		<div class="invalid-feedback"
+			*ngIf="registerForm.errors?.['passwordMismatch'] && getControl['confirmPassword'].touched">
+			Las contraseñas no coinciden.
+		</div>
+	</div>
+</div>
+									
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['password'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['password'].invalid}} | <strong>Touched ? </strong>{{ getControl['password'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['password'].untouched}} | <strong>Dirty ? </strong>{{ getControl['password'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['password'].pristine}}
+											</small>
+										</div>
+
+
+
+
+										
+										
+										<div class="input-group has-validation">
+											<button type="button" class="bi bi-eye" (click)="togglePasswordVisibility()" tabindex="-1">
+												{{ passwordVisible ? 'Ocultar' : 'Ver' }}
+											</button>
+											<div class="form-floating mb-3">
+												<input [type]="passwordVisible ? 'text' : 'password'" class="form-control" id="confirmPassword"
+													placeholder="Repite tu contraseña" formControlName="confirmPassword"
+													[ngClass]="{ 'is-invalid': (getControl['confirmPassword'].touched && getControl['confirmPassword'].invalid) || registerForm.errors?.['passwordMismatch'], 'is-valid': getControl['confirmPassword'].valid && !registerForm.errors?.['passwordMismatch'] }" />
+												<label for="confirmPassword">Repite tu contraseña</label>
+										
+												<!-- Mostrar si el campo está vacío -->
+												<div class="invalid-feedback"
+													*ngIf="getControl['confirmPassword'].touched && getControl['confirmPassword'].errors?.['required']">
+													Debes repetir la contraseña.
+												</div>
+												<!-- Mostrar si las contraseñas no coinciden -->
+												<div class="invalid-feedback"
+													*ngIf="registerForm.errors?.['passwordMismatch'] && getControl['confirmPassword'].touched">
+													Las contraseñas no coinciden.
+												</div>
+											</div>
+										
+										
+										</div>
+										
+										
+										
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['confirmPassword'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['confirmPassword'].invalid}} | <strong>Touched ? </strong>{{ getControl['confirmPassword'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['confirmPassword'].untouched}} | <strong>Dirty ? </strong>{{
+												getControl['confirmPassword'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['confirmPassword'].pristine}}
+											</small>
+										</div>

@@ -9,11 +9,10 @@ interface TodoItem {
 }
 
 @Component({
-  selector: 'app-todo',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './todo.component.html',
-  styleUrl: './todo.component.scss'
+    selector: 'app-todo',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './todo.component.html',
+    styleUrl: './todo.component.scss'
 })
 export class TodoComponent {
 

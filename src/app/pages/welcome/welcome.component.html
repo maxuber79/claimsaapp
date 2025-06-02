@@ -1,0 +1,20 @@
+<section class="welcome-container">
+	<!-- Título de bienvenida -->
+	<h1 class="welcome-title">¡Bienvenido, {{ userName }}! 👋</h1>
+
+	<!-- Subtítulo -->
+	<p class="welcome-subtitle">
+		Gracias por registrarte en nuestra aplicación To-Do. Desde aquí puedes acceder a tu panel de control.
+	</p>
+
+	<!-- Spinner Bootstrap cuando isLoading = true -->
+	<div class="text-center my-3" *ngIf="isLoading">
+		<div class="spinner-border text-primary" role="status">
+			<span class="visually-hidden">Cargando...</span>
+		</div>
+		<p class="mt-2">Procesando...</p>
+	</div>
+
+	<!-- Botón para continuar al Dashboard -->
+	<button class="btn btn-primary" (click)="goToDashboard()">Ir al Dashboard</button>
+</section>

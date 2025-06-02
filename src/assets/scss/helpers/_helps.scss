@@ -2,7 +2,11 @@
  * @Help para maquetar
  * Aplicación: aplicar al elemento HTML como un ID o Class
  **/
-
+@mixin border_help($color:#000000) {
+  border-width: 1px;
+  border-style: dashed;
+  border-color: $color;
+}
 
 // Mapa de colores asociados a las clases
 $border-colors: ("1": #000,

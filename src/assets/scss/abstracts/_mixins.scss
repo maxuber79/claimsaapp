@@ -7,11 +7,11 @@
   transition: all .2s ease-in-out;
 }
 
-@mixin border_help($color) {
+/* @mixin border_help($color) {
   border-width: 1px;
   border-style: dashed;
   border-color: $color;
-}
+} */
 
 
 @mixin roboto($fsize: 1rem, $fweight:400, $fcolor:#000) {

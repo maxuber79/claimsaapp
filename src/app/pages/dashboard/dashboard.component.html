@@ -1,0 +1,141 @@
+<!-- <div id="" class="bg-info-subtle vh-100 text-center border-1"> -->
+<div class="d-flex flex-column min-vh-100 bg-light-subtle text-center border-2">
+	<header class="px-3 text-bg-dark">
+		<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">
+					<img [src]="imagePath" class="" alt="" width="50">
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Link</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Dropdown
+							</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Action</a></li>
+								<li><a class="dropdown-item" href="#">Another action</a></li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+								<li><a class="dropdown-item" href="#">Something else here</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" aria-disabled="true">Disabled</a>
+						</li>
+					</ul>
+					 
+					<!-- Center elements -->
+					<ul class="navbar-nav flex-row d-none d-md-flex">
+						<li class="nav-item me-3 me-lg-1 active">
+							<a class="nav-link" href="#">
+								<span><i class="bi bi-gear-fill"></i></span> 
+							</a>
+						</li>
+						<li class="nav-item me-3 me-lg-1">
+							<a class="nav-link" href="#">
+								<span><i class="bi bi-bell-fill"></i></span>
+								<span class="badge rounded-pill badge-notification bg-danger">2</span>
+							</a>
+						</li>
+					</ul>					
+					<!-- Center elements -->
+					<div class="dropdown text-end">
+						<a href="#" class="text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+							<img src="https://maxuber79.github.io/gsaforce/assets/images/face28.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end text-small">
+							<li>
+								<a class="dropdown-item" href="#">New project...</a>
+							</li>
+							<li>
+								<a class="dropdown-item" [routerLink]="['/dashboard/todo']" >To-Do</a>
+							</li>
+							<li>
+								<a class="dropdown-item" [routerLink]="['/dashboard/profile', userData?.uid]">Profile</a>
+							</li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li>
+								<a class="dropdown-item" (click)="onLogout()">Sign out</a>
+							</li>
+						</ul> 
+					</div>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<!-- <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			<img [src]="imagePath" class="logo-login my-2" alt="">
+		</a>
+		<ul class="nav nav-pills">
+			<li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+			<li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+			<li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+			<li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+			<li class="nav-item"><a href="#" class="nav-link">About</a></li>
+		</ul> -->
+		<main class="flex-grow-1 container py-4 border-2">
+			<div class="container">
+				<div class="row">
+
+
+
+
+					<div id="border-1" class="col-12">
+						 
+							<div *ngIf="!isLoading && userData">
+								<div class="alert alert-primary" role="alert">
+									<h1>Weeena, perrito..</h1><h5>welcome to app</h5>
+								</div>																
+							</div>
+							<!-- Spinner mientras carga -->
+							<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center border-3" style="height: 200px;">
+								<div class="spinner-border" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</div>
+							</div>
+						 
+					</div>
+					<div id="border-1" class="col-12 bg-secondary-subtle">
+						<div *ngIf="userData" class="text-start">
+							<h2>Hola, {{ userData.name }} {{ userData.last_name }}</h2>
+							<p><strong>Correo:</strong> <span class="badge text-bg-secondary ms-2">{{ userData.email }}</span></p>
+							<p><strong>Nombre de usuario:</strong> <span class="badge text-bg-info ms-2">{{ userData.user_name }}</span></p>
+							<p><strong>uid:</strong><span class="badge text-bg-primary ms-2">{{userData.uid }}</span></p>
+							<p><strong>Fecha de registro:</strong> <span class="badge text-bg-info ms-2">{{ userData.createdDate | date:'medium' }}</span></p>
+							<div class="bg-light border rounded p-3">
+								<pre class="text-dark">{{ userData | json }}</pre>
+							</div>
+						</div>
+						
+					</div>
+					<div id="border-2" class="col-12 p-5">
+						<!-- Aquí se mostrará el contenido de las subrutas -->
+						<router-outlet></router-outlet> 
+					</div>
+				
+				
+				</div>
+			</div>
+		</main>
+	 
+	 
+	
+</div>
+
+
+

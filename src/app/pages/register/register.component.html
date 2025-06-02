@@ -1,0 +1,264 @@
+<!-- Section: Design Block -->
+<section class="border-1" style="background-color: limegreen;width: 100%;">
+	<!-- Jumbotron -->
+	<div class="w-100 px-4 py-5 px-md-5 text-center text-lg-start border-2" style="/* background-color: hsl(0, 0%, 96%) */">
+		<div class="container-fluid">
+			<div class="row gx-lg-5 align-items-center">
+
+				<div class="col-lg-5 mb-5 mb-lg-0 mh-100 border-3 bg-success-subtle">
+					<h1 class="my-5 display-3 fw-bold ls-tight">
+						{{myTitle}} <br />
+						<span class="text-primary fw-normal">{{mySubTitle}}</span>
+					</h1>
+					<p style="color: hsl(217, 10%, 50.8%)">
+						{{textContent}}
+					</p>
+				</div>
+
+				<div class="col-lg-7 mb-5 mb-lg-0 border-3 bg-warning-subtle">
+					<div class="card">
+						<div class="card-header bg-primary-subtle text-center border border-0">
+							<img [src]="imagePath" class="logo-login my-2" alt="">
+							<h2 class="h2 mb-2 fw-bold">Please sign in</h2>
+							<p class="mb-2">Your Admin Dashboard</p>
+						</div>
+
+						<div class="card-body py-5 px-md-5">
+							<!-- Formulario reactivo con submit atado a la función onSubmit() -->
+							 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+								<div class="row">
+									<div class="col-6 border-2">
+										<!-- NOMBRE -->
+										<div class="form-floating mb-3">
+											<!-- Campo de texto conectado a formControlName="name" -->
+											<input type="text" class="form-control" id="name" placeholder="Nombre" formControlName="name" [ngClass]="{ 
+																						'is-invalid': getControl['name'].errors && (getControl['name'].dirty || getControl['name'].touched),
+																						'is-valid': getControl['name'].valid 
+																						}" />
+											<!-- Label flotante de Bootstrap -->
+											<label for="name">Nombre</label>
+											<!-- Mensaje de error si el campo es inválido y fue tocado -->
+											<!-- <div class="invalid-feedback">El nombre es obligatorio.</div> -->
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="getControl['name'].errors && getControl['name'].invalid && getControl['name'].touched">
+												<div *ngIf="getControl['name'].errors['required']">El nombre completo es obligatorio!</div>
+											</div>
+										</div>
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['name'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['name'].invalid}} | <strong>Touched ? </strong>{{ getControl['name'].touched}} | <strong>Untouched ?
+												</strong>{{ getControl['name'].untouched}} | <strong>Dirty ? </strong>{{ getControl['name'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['name'].pristine}}
+											</small>
+										</div>
+									</div>
+									<div class="col-6 border-2">
+										<!-- APELLIDO -->
+										<div class="form-floating mb-3">
+											<input type="text" class="form-control" id="last_name" placeholder="Apellido" formControlName="last_name" [ngClass]="{ 
+																						'is-invalid': getControl['last_name'].errors && (getControl['last_name'].dirty || getControl['last_name'].touched),
+																						'is-valid': getControl['last_name'].valid 
+																						}" />
+											<label for="last_name">Apellido</label>
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="getControl['last_name'].errors && getControl['last_name'].invalid && getControl['last_name'].touched">
+												<div *ngIf="getControl['last_name'].errors['required']">El nombre completo es obligatorio!</div>
+											</div>
+										</div>
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['last_name'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['last_name'].invalid}} | <strong>Touched ? </strong>{{ getControl['last_name'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['last_name'].untouched}} | <strong>Dirty ? </strong>{{ getControl['last_name'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['last_name'].pristine}}
+											</small>
+										</div>
+
+									</div>
+									<div class="col-12 border-2">
+										<!-- USERNAME -->
+										<div class="form-floating mb-3">
+											<input type="text" class="form-control" id="user_name" placeholder="Nombre de usuario" formControlName="user_name"
+												[ngClass]="{ 
+													'is-invalid': getControl['user_name'].errors && (getControl['user_name'].dirty || getControl['user_name'].touched),
+													'is-valid': getControl['user_name'].valid 
+													}" />
+											<label for="user_name">Nombre de usuario</label>
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="getControl['user_name'].errors && getControl['user_name'].invalid && getControl['user_name'].touched">
+												<div *ngIf="getControl['user_name'].errors['required']">El nombre completo es obligatorio!</div>
+											</div>
+										</div>
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['user_name'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['user_name'].invalid}} | <strong>Touched ? </strong>{{ getControl['user_name'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['user_name'].untouched}} | <strong>Dirty ? </strong>{{ getControl['user_name'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['user_name'].pristine}}
+											</small>
+										</div>
+									</div>
+									<div class="col-12 border-2">
+										<!-- EMAIL -->
+										<div class="form-floating mb-3">
+											<input type="email" class="form-control" id="email" placeholder="Correo" formControlName="email" [ngClass]="{ 
+																						'is-invalid': getControl['email'].errors && (getControl['email'].dirty || getControl['email'].touched),
+																						'is-valid': getControl['email'].valid 
+																						}" />
+											<label for="email">Correo electrónico</label>
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="getControl['email'].errors && getControl['email'].invalid && getControl['email'].touched">
+												<div *ngIf="getControl['email'].errors['required']">Ingresa un correo válido.</div>
+											</div>
+										</div>
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['email'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['email'].invalid}} | <strong>Touched ? </strong>{{ getControl['email'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['email'].untouched}} | <strong>Dirty ? </strong>{{ getControl['email'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['email'].pristine}}
+											</small>
+										</div>
+									</div>
+									<div class="col-12 border-2">
+										<!-- CONTRASEÑA -->
+										<div class="input-group form-floating mb-3">
+											<input
+											[type]="passwordVisible ? 'text' : 'password'"
+											class="form-control"
+											id="password"
+											placeholder="Contraseña"
+											formControlName="password"
+											[ngClass]="{'is-invalid': getControl['password'].errors && (getControl['password'].dirty || getControl['password'].touched),'is-valid': getControl['password'].valid}" />
+											<label for="password">Contraseña</label>
+											<!-- Botón de mostrar/ocultar -->
+											<button class="btn btn-outline-secondary "
+												style="border-top-left-radius: 0; border-bottom-left-radius: 0;" type="button"
+												(click)="togglePasswordVisibility()" tabindex="-1">
+												<i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+											</button>
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="getControl['password'].errors && getControl['password'].touched">
+												<div *ngIf="getControl['password'].errors['required']">
+													La contraseña es obligatoria.
+												</div>
+												<div *ngIf="getControl['password'].errors['minlength']">
+													Debe tener al menos 6 caracteres.
+												</div>
+											</div>
+										</div>
+
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['password'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['password'].invalid}} | <strong>Touched ? </strong>{{ getControl['password'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['password'].untouched}} | <strong>Dirty ? </strong>{{ getControl['password'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['password'].pristine}}
+											</small>
+										</div>
+									</div>
+									<div class="col-12 border-2">
+										<!-- CONFIRMAR CONTRASEÑA -->
+										<div class="input-group form-floating mb-3">
+											<input [type]="confirmPasswordVisible ? 'text' : 'password'" class="form-control" id="confirmPassword"
+												placeholder="Repite tu contraseña" formControlName="confirmPassword" [ngClass]="{
+																						'is-invalid': (getControl['confirmPassword'].touched && getControl['confirmPassword'].invalid) || registerForm.errors?.['passwordMismatch'],
+																						'is-valid': getControl['confirmPassword'].valid && !registerForm.errors?.['passwordMismatch']
+																					}" />
+											<label for="confirmPassword">Repite tu contraseña</label>
+									
+											<!-- Botón de mostrar/ocultar -->
+											<button class="btn btn-outline-secondary"
+												style="border-top-left-radius: 0; border-bottom-left-radius: 0;" type="button"
+												(click)="toggleConfirmPasswordVisibility()" tabindex="-1">
+												<i class="bi" [ngClass]="confirmPasswordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+											</button>
+									
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="getControl['confirmPassword'].touched && getControl['confirmPassword'].errors?.['required']">
+												Debes repetir la contraseña.
+											</div>
+									
+											<div class="invalid-feedback animate__animated animate__fadeIn"
+												*ngIf="registerForm.errors?.['passwordMismatch'] && getControl['confirmPassword'].touched">
+												Las contraseñas no coinciden.
+											</div>
+										</div>
+
+										<div class="bd-callout bd-callout-code">
+											<small>
+												<strong>Valid ? </strong>{{ getControl['confirmPassword'].valid}} | <strong>Invalid ? </strong>{{
+												getControl['confirmPassword'].invalid}} | <strong>Touched ? </strong>{{ getControl['confirmPassword'].touched}} |
+												<strong>Untouched ?
+												</strong>{{ getControl['confirmPassword'].untouched}} | <strong>Dirty ? </strong>{{
+												getControl['confirmPassword'].dirty}} |
+												<strong>Pristine ? </strong>{{getControl['confirmPassword'].pristine}}
+											</small>
+										</div>
+
+									</div>
+									<div class="col-12 border-2">
+									
+										<!-- Spinner Bootstrap cuando isLoading = true -->
+										<div class="text-center my-3" *ngIf="isLoading">
+											<div class="spinner-border text-primary" role="status">
+												<span class="visually-hidden">Cargando...</span>
+											</div>
+											<p class="mt-2">Procesando...</p>
+										</div>
+									
+										<!-- BOTÓN DE REGISTRO -->
+										<div class="d-grid">
+											<!-- El botón se desactiva si el formulario no es válido -->
+											<button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">
+												Registrarse
+											</button>
+										</div>
+									</div>
+
+								 
+
+
+
+
+
+
+									<div class="col-12 border-2">
+										 
+											<div class="row">
+												<div class="col-12 p-3">
+													<div class="bd-callout bd-callout-code">
+														<strong>Estado del formulario:</strong>
+														<hr>
+														<span class="mx-1">VALID: <span
+																[class]="registerForm.status=='VALID' ? 'badge text-bg-success mx-1': 'badge text-bg-danger mx-1'">{{
+																registerForm.valid
+																}}</span></span>
+														<span class="mx-1">INVALID: <span
+																[class]="registerForm.status =='INVALID' ? 'badge text-bg-success mx-1': 'badge text-bg-danger mx-1'">{{
+																registerForm.invalid }}</span></span>
+														<span class="mx-1">STATUS: <span class="badge text-bg-primary mx-1">{{ registerForm.status }}</span></span>
+														<span class="mx-1">DISABLED: <span class="badge text-bg-warning mx-1">{{ registerForm.disabled }}</span></span>
+														<hr>
+														<pre>{{ registerForm.value | json }}</pre>
+													</div>
+												</div>
+											</div>				
+										 
+									</div>
+								</div><!--./row-->
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->

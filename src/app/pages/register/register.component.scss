@@ -121,3 +121,12 @@ body {
     background: #eee;
   }
 }
+
+.input-group {
+  &.form-floating {
+    .form-control {}
+		label {
+			z-index: 20;
+		}
+  }
+}

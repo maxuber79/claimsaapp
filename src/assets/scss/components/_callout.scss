@@ -1,0 +1,116 @@
+@use 'sass:list';
+
+.bd-callout {
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem;
+
+  h4 {
+
+    margin-top: 0;
+    margin-bottom: .25rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+
+  p:last-child {
+    margin-bottom: 0
+  }
+
+  code,
+  pre {
+    font-family: monospace, monospace;
+    border-radius: .25rem;
+    font-size: 0.625em;
+    color: #d63384;
+		line-height: 100%;
+    word-wrap: break-word;
+  }
+
+  small {
+    font-size: 75%;
+    color: #d63384;
+  }
+
+  &+.bd-callout {
+    margin-top: -.25rem;
+  }
+
+  &.bd-callout-info {
+    border-left-color: #9eeaf9;
+    background-color: #cff4fc;
+    color: #087990;
+
+    h4 {
+      color: #5bc0de;
+    }
+  }
+
+  &.bd-callout-code {
+    border-left-color: #ffe69c;
+    background-color: #fff3cd;
+    line-height: 1.4rem;
+
+    h4 {
+      font-family: monospace, monospace;
+      color: #997404;
+      font-size: 1.3rem;
+    }
+  }
+
+  &.bd-callout-warning {
+    border-left-color: #ffe69c;
+    background-color: #fff3cd;
+    color: #997404;
+
+    h4 {
+      color: #f0ad4e;
+    }
+  }
+
+  &.bd-callout-danger {
+    border-left-color: #f1aeb5;
+    background-color: #f8d7da;
+    color: #b02a37;
+
+    h4 {
+      color: #b02a37
+    }
+  }
+
+  &.bd-callout-primary {
+    border-left-color: #9ec5fe;
+    background-color: #cfe2ff;
+    color: #0a58ca;
+
+    h4 {
+      color: #0a58ca;
+    }
+
+  }
+
+  &.bd-callout-success {
+    border-left-color: #a3cfbb;
+    background-color: #d1e7dd;
+    color: #146c43;
+
+    h4 {
+      color: #146c43;
+    }
+  }
+
+  &.bd-callout-default {
+    border-left-color: #e9ecef;
+    background-color: #f8f9fa;
+    color: #6c757d;
+
+    h4 {
+      color: #6c757d;
+    }
+  }
+}
+
+// 🎨 Variables de colores por tipo

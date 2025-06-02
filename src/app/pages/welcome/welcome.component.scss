@@ -1,0 +1,20 @@
+.welcome-container {
+  text-align: center;
+  padding: 2rem;
+
+  .welcome-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #555;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+}

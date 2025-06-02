@@ -1,0 +1,40 @@
+<div class="container mt-4">
+	<h2 class="mb-4">Agregar nueva tarea</h2>
+
+	<form (ngSubmit)="onSubmit()" #todoForm="ngForm" class="row g-3">
+		<!-- Título -->
+		<div class="col-md-6">
+			<label for="title" class="form-label">Título</label>
+			<input type="text" id="title" class="form-control" required [(ngModel)]="newTodo.title" name="title" />
+		</div>
+
+		<!-- Descripción -->
+		<div class="col-md-6">
+			<label for="description" class="form-label">Descripción</label>
+			<input type="text" id="description" class="form-control" [(ngModel)]="newTodo.description" name="description" />
+		</div>
+
+		<!-- Fecha de vencimiento -->
+		<div class="col-md-6">
+			<label for="dueDate" class="form-label">Fecha límite</label>
+			<input type="date" id="dueDate" class="form-control" [(ngModel)]="newTodo.dueDate" name="dueDate" />
+		</div>
+
+		<!-- Prioridad -->
+		<div class="col-md-6">
+			<label for="priority" class="form-label">Prioridad</label>
+			<select [(ngModel)]="newTodo.priority" class="form-select" name="priority" required>
+				<option value="" disabled selected>Selecciona prioridad</option>
+				<option value="low">Baja</option>
+				<option value="medium">Media</option>
+				<option value="high">Alta</option>
+			</select>
+			
+		</div>
+
+		<!-- Botón -->
+		<div class="col-12 text-end">
+			<button class="btn btn-primary" [disabled]="!newTodo.title || !newTodo.priority">Guardar tarea</button>
+		</div>
+	</form>
+</div>

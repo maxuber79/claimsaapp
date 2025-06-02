@@ -1,8 +1,30 @@
-@import 'variables';
-@import 'mixins';
-@import 'helpers/helps';
+/* main.scss – Archivo principal que carga módulos con @use */
 
+// 1. Cargar el módulo de abstractos (variables, mixins, funciones) 
+@use 'abstracts'as *; // Importa todo de abstracts/_index.scss en el scope actual
 
+// 2. Cargar estilos base globales
+@use 'base'; // Carga CSS de base/_index.scss (reset, tipografía, etc.)
+
+// 3. Cargar utilidades (helpers) globales
+@use 'helpers'; // Carga CSS de helpers/_index.scss (clases utilitarias)
+
+// 4. Cargar componentes comunes
+@use 'components'; // Carga CSS de components/_index.scss (todos los componentes)
+
+/* @use 'sass:math';
+@use 'variables';
+@use 'mixins'as mixins;
+@use 'helpers/helps';
+@use 'normalize';
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
 
 .font-roboto {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
@@ -17,20 +39,6 @@
 .font-nanuto {
   font-family: "Nunito Sans", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   margin: 0 0 .5rem 0;
-}
-
-// Definimos una lista de tamaños en rem
-// Cada valor representa el tamaño en rem que tendrá la fuente
-$sizes: (5, 7, 10, 12, 15, 20, 25, 30, 40, 50); // Representan 0.5, 0.7, 1.0, etc.
-
-// Usamos @each para recorrer la lista y generar clases dinámicamente
-@each $size in $sizes {
-
-  // Creamos una clase con el formato .f-size-{valor} 
-  // donde {valor} es el número de rem sin puntos decimales
-  .f-size-#{$size} {
-    font-size: #{$size / 10}rem;
-  }
 }
 
 
@@ -81,4 +89,4 @@ code {
   font-weight: 300;
   font-size: 0.875rem;
   border-radius: 4px;
-}
+} */
