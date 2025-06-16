@@ -1,0 +1,174 @@
+/*
+* @Tables 
+**/
+@use '../abstracts'as *;
+@use 'sass:color';
+
+.table {
+  margin-bottom: 0;
+  background-color: transparent;
+
+  thead {
+    th {
+      border-top: 0;
+      border-bottom-width: 1px;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+  }
+
+  th,
+  td {
+    vertical-align: middle;
+    line-height: 1;
+    white-space: nowrap;
+    padding: 1.125rem 1.375rem;
+  }
+
+  tbody {
+    td {
+      color: #003b71;
+      font-size: 0.875rem;
+
+      .badge {
+        margin-bottom: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      img {
+        width: 36px;
+        height: 36px;
+        border-radius: 100%;
+      }
+    }
+
+  }
+
+  &.table-borderless {
+    border: none;
+
+    tr,
+    td,
+    th {
+      border: none;
+    }
+  }
+
+  // 🌗 Modo oscuro
+  body.dark-mode & {
+    background-color: inherit;
+
+    thead {
+      tr {
+        th {
+          background-color: inherit;
+          border-bottom: 2px solid #fff;
+          color: $white;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          color: $white;
+          background-color: inherit;
+        }
+      }
+    }
+  }
+}
+
+$table-colors: ("primary": $primary-color,
+  "secondary": $secondary-color,
+  "tertiary": $tertiary-color,
+  "success": $success-color,
+  "danger": $danger-color,
+  "info": $info-color,
+  "warning": $warning-color
+	);
+
+@each $type,
+$color in $table-colors {
+  $darker-color: color.adjust($color, $lightness: -15%);
+  $lighter-color: color.adjust($color, $lightness: 20%);
+
+  .table {
+    margin-bottom: 0;
+
+    &.table-#{$type} {
+      background-color: $white;
+
+      thead {
+        &.sticky-top {
+          z-index: 5;
+        }
+
+        th {
+          color: $white;
+          font-weight: bold;
+          font-size: 0.875rem;
+          background-color: $color;
+        }
+      }
+
+      th,
+      td {
+        vertical-align: middle;
+        line-height: 1;
+        white-space: nowrap;
+        padding: 1.125rem 1.375rem;
+      }
+
+      tbody {
+        td {
+          color: color.adjust($color, $lightness: -35%);
+          font-size: 0.875rem;
+          background-color: rgba($color, 0.1);
+          border-color: color.adjust($lighter-color, $lightness: 20%);
+
+          img {
+            width: 36px;
+            height: 36px;
+            border-radius: 100%;
+          }
+        }
+
+        tr:hover {
+          background-color: color.adjust($color, $lightness: 2%);
+        }
+      }
+
+      // 🌗 Modo oscuro
+      body.dark-mode & {
+        background-color: $white;
+
+        thead {
+          tr {
+            th {
+              background-color: $color;
+              border-bottom: 2px solid rgba($color, 0.3);
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            td {
+              background-color: rgba($color, 0.3);
+              color: color.adjust($color, $lightness: -20%);
+              border-bottom: 1px solid rgba($color, 0.3);
+            }
+          }
+        }
+      }
+    }
+
+    &.table-bordered {
+      border-color: color.adjust($lighter-color, $lightness: 20%);
+    }
+  }
+}

@@ -1,0 +1,292 @@
+@use '../abstracts'as *;
+@use 'sass:color';
+
+/*
+* @Cards        
+**/
+.card {
+  box-shadow: none;
+  transition: background 0.25s ease;
+  border: none;
+  box-shadow: 0px 0 15px 3px rgb(1 41 112 / 6%);
+  border-radius: $card-radius-xl;
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+
+  .card-menu {
+		position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 20; 
+
+    .dropdown {
+      .dropdown-toggle {
+        border: none;
+        padding: 0;
+        background-color: transparent;
+
+        &::after {
+          content: none;
+        }
+
+        i {
+          font-size: 1.6rem;
+          color: $color-text;
+        }
+
+        &.show {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+
+  &.tale-bg {
+    background-color: #282f3a;
+  }
+
+  &.transparent {
+    background: transparent;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+    background-color: transparent;
+    text-align: initial;
+
+    a {
+      text-decoration: none;
+    }
+
+    +.card-body {
+      padding-top: 1rem;
+    }
+
+    .dropdown {
+      &.dropdown-icon {
+
+        .dropdown-toggle {
+          &::after {
+            content: none;
+          }
+
+          i {
+            font-size: 1.5rem;
+            color: $primary-color;
+          }
+        }
+      }
+    }
+
+    .card-title {
+      color: #010101;
+      margin-bottom: 1.2rem;
+      text-transform: capitalize;
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .card-subtitle {
+      color: #010101;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1.063rem;
+    }
+
+    .card-description {
+      margin-bottom: 0.875rem;
+      font-weight: 400;
+      color: #010101;
+    }
+  }
+
+  &.card-weather {
+    .weather-daily {
+      .weather-day {
+        opacity: 0.5;
+        font-weight: 900;
+      }
+
+      i {
+        font-size: 20px;
+      }
+
+      .weather-temp {
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        opacity: 0.5;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+$card-colors: ("primary": $primary-color,
+  "secondary": $secondary-color,
+  "tertiary": $tertiary-color,
+  "success": $success-color,
+  "danger": $danger-color,
+  "info": $info-color,
+  "warning": $warning-color,
+  "white": $white,
+  "getstarted": $getstarted-color);
+
+@each $type,
+$color in $card-colors {
+  $darker-color: color.adjust($color, $lightness: -15%); //darken($color, 15%);
+  $lighter-color: color.adjust($color, $lightness: 15%); //lighten($color, 20%);
+
+  .card {
+    transition: background 0.25s ease;
+    border: none;
+    box-shadow: 0px 0 15px 3px rgb(1 41 112 / 6%);
+
+    &.card-#{$type} {
+      background-color: $color;
+      color: $white;
+
+      &:hover,
+      &:focus {
+        background: color.adjust($color, $lightness: 5%); //lighten($color, 5%);
+      }
+
+      .card-body {
+        .card-title {
+          font-size: 2rem;
+          color: $white;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          color: $white;
+        }
+
+        i {
+          font-size: 4rem;
+          color: $lighter-color;
+        }
+      }
+
+      .card-menu {
+        .dropdown {
+          .dropdown-toggle {
+            &::after {
+              content: none;
+            }
+
+            i {
+              font-size: 1.6rem;
+              color: $white;
+            }
+
+            &.show {
+              background-color: transparent;
+              border-color: transparent;
+            }
+          }
+        }
+      }
+
+      // 🌗 DARK MODE
+      body.dark-mode & {
+        background-color: color.adjust($color, $lightness: -10%); //darken($color, 10%);
+        color: $white;
+
+        .card-body {
+
+          .card-title,
+          p {
+            color: $white;
+          }
+
+          i {
+            color: color.adjust($color, $lightness: 15%); // lighten($color, 15%);
+          }
+        }
+
+        .card-menu .dropdown .dropdown-toggle i {
+          color: $white;
+        }
+      }
+    }
+
+    &.card-outline-#{$type} {
+      border: 1px solid $color;
+
+      .card-menu {
+        .dropdown {
+          .dropdown-toggle {
+            &::after {
+              content: none;
+            }
+
+            i {
+              font-size: 1.6rem;
+              color: $color;
+            }
+
+            &.show {
+              background-color: transparent;
+              border-color: transparent;
+            }
+          }
+        }
+      }
+
+      // 🌗 DARK MODE outline
+      body.dark-mode & {
+        background-color: transparent;
+        border-color: color.adjust($color, $lightness: 15%);
+
+        .card-menu .dropdown .dropdown-toggle i {
+          color: color.adjust($color, $lightness: 15%); //lighten($color, 15%);
+        }
+      }
+    }
+  }
+}
+
+/*
+* @Pattern reutilizable
+* Ej:
+* <div class="row stretch-group">
+**/
+.stretch-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.stretch-card>.card {
+  width: 100%;
+  min-width: 100%;
+}
+
+// Variables para controlar la alineación
+$stretch-alignment: stretch !default;
+$stretch-justify: flex-start !default;
+
+// Mixin reutilizable
+@mixin stretch-container($align: $stretch-alignment, $justify: $stretch-justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: wrap;
+}
+
+@mixin stretch-item {
+  width: 100%;
+  min-width: 100%;
+  flex: 1 1 auto; // Para que crezca y ocupe espacio
+}
+
+// Aplicación genérica
+.stretch-group {
+  @include stretch-container();
+
+  >* {
+    @include stretch-item;
+  }
+}

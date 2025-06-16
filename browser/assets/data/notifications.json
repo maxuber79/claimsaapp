@@ -1,0 +1,38 @@
+[
+  {
+    "user": "Sofía Morales",
+    "avatar": "https://randomuser.me/api/portraits/women/65.jpg",
+    "message": "Nuevo reclamo ingresado por el cliente #3425.",
+    "time": "08:15 a.m."
+  },
+  {
+    "user": "Lucas Rivas",
+    "avatar": "https://randomuser.me/api/portraits/men/12.jpg",
+    "message": "Solicitud de seguimiento actualizada.",
+    "time": "09:42 a.m."
+  },
+  {
+    "user": "Camila Orellana",
+    "avatar": "https://randomuser.me/api/portraits/women/43.jpg",
+    "message": "Reclamo #2010 ha sido marcado como resuelto.",
+    "time": "10:05 a.m."
+  },
+  {
+    "user": "Diego Fuentes",
+    "avatar": "https://randomuser.me/api/portraits/men/35.jpg",
+    "message": "Asignación de caso urgente: cliente VIP.",
+    "time": "11:20 a.m."
+  },
+  {
+    "user": "Valentina Reyes",
+    "avatar": "https://randomuser.me/api/portraits/women/21.jpg",
+    "message": "El cliente dejó una calificación positiva.",
+    "time": "12:30 p.m."
+  },
+  {
+    "user": "Matías Alarcón",
+    "avatar": "https://randomuser.me/api/portraits/men/5.jpg",
+    "message": "El reclamo #4987 fue reabierto por el cliente.",
+    "time": "13:00 p.m."
+  }
+]

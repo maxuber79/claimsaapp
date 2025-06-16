@@ -1,0 +1,129 @@
+
+
+@mixin transicion($timing:.2s, $effect:ease-in-out) {  
+	/*ej. transition: all .2s ease-in-out;*/
+    -webkit-transition: all $timing $effect;
+    -moz-transition: all $timing $effect;
+    -ms-transition: all $timing $effect;
+    -o-transition: all $timing $effect;
+    transition: all $timing $effect;
+}
+@mixin zoom-box ($value){
+	/*ej. transform: scale(1.06); */
+    -webkit-transform: scale($value);
+	-ms-transform: scale($value);
+	-o-transform: scale($value);
+	transform: scale($value);
+}
+@mixin border-box {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.btn-seg {
+    border-radius: 20px;
+    box-sizing: border-box;
+    border-width: 2px;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-color: #fff;
+    color: #fff;
+    -webkit-transition: all 150ms linear;
+    -moz-transition: all 150ms linear;
+    -o-transition: all 150ms linear;
+    -ms-transition: all 150ms linear;
+    transition: all 150ms linear;
+    &.btn-white {
+    border-color: #fff;
+    color: #fff;    
+        &:hover, &:focus {
+            background-color: $apm-1-hex;
+            color: #fff;
+            border-color: #fff;
+            }
+        }
+    &.btn-blue {
+        border-color: $apm-1-hex;
+        color: $apm-1-hex; 
+        &:hover, &:focus {
+            text-decoration: none;
+            background-color: $apm-1-hex;
+            color: #fff;
+            border-color: #fff;
+            }
+        }
+    }
+
+.wrapper-button {
+    display: inline-block;
+    width: 100%;
+    &.btn-left {
+        text-align: left;
+        @media(max-width: 640px) {
+            text-align: center;
+        }
+    }
+    &.btn-right {
+        text-align: right;
+        @media(max-width: 640px) {
+            text-align: center;
+        }
+    }
+    &.btn-center {
+        text-align: center;
+        @media(max-width: 640px) {
+            text-align: center;
+        }
+    }
+}
+
+
+.hidden-btn {
+    display: none;
+}
+.show-btn {
+    display: inline-block;
+}
+
+/* banner promoción */
+.promocion {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    .desde {
+        height: auto;
+        width: 380px;
+        margin: 15px 0;
+        display: inline-block;
+        @media (min-width: 320px) and (max-width: 640px) {
+            width: 100%;
+            height: auto;
+        }
+    }
+    .valor-mensual {
+        height: auto;
+        width: 380px;
+        margin: 0 auto 0 auto;
+        display: inline-block;
+        @media (max-width: 640px) {
+            width: 100%;
+            height: auto;
+        }
+    }
+    .wrp-btn-promo {
+        text-align: center;
+        padding: 0;
+        margin: -20px 0 0 0;
+        .btn-promo {
+            margin: 0 auto 15px auto;
+            display: inline-block;
+            width: 50px;
+            padding: 0;
+            margin: 0;
+        }
+    }
+}

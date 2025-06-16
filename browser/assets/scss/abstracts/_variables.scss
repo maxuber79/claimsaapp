@@ -1,0 +1,83 @@
+/*===========================================
+=            Variables de Colores            =
+===========================================*/
+/*==================================================
+=          Imports de Iconos y Tipografías         =
+==================================================*/
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+@import url("https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css");
+@import url("https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css");
+@import url('https://cdn.jsdelivr.net/npm/@icon/themify-icons@1.0.1-alpha.3/themify-icons.min.css');
+@import url('https://cdn.lineicons.com/4.0/lineicons.css');
+@import url('https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@200;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+
+// Colores Principales
+$primary-color: #ec008c; // Azul principal corporativo
+$secondary-color: #ff5c00; // Azul secundario
+$tertiary-color: #8e2de2; // Negro suave, color base
+$fourth-color: #2b2b2b;
+$fifth-color: #1fdef8;
+$success-color: #55b559; // Verde éxito
+$danger-color: #f55145; // Rojo error
+$info-color: #00cae3; // Celeste informativo
+$warning-color: #ff9e0f; // Naranja advertencia
+$white: #ffffff; // Blanco
+$getstarted-color: #2933f2; // Azul "Get Started" 
+
+// Otros Colores Complementarios
+$honeydew: #e6f4e9; // Verde claro fondo
+$screamin-green: #7af17a; // Verde neón
+
+/*========================================
+=            Variables Tipografía         =
+========================================*/
+$name-btn: "webmain"; // Nombre de clase de botón
+$font-buttons: "Geist",
+Arial,
+Helvetica,
+sans-serif; // Fuente botones
+$font-size: 1rem; // Tamaño base
+$font-dark: #2B2B2B; // Color fuente oscuro
+$font-white: #ffffff; // Color fuente claro
+$font-weight: 400; // Peso fuente normal
+$line-height: 1rem; // Altura línea base
+$title-size: 4rem; // Tamaño títulos principales
+$subtitle-size: 2rem; // Tamaño subtítulos
+$l-spacing: -0.25rem; // Espaciado entre letras
+$color-title: #2B2B2B; // Color títulos
+$color-subtitle: #2B2B2B; // Color subtítulos
+$color-paragraph: #2B2B2B;
+$color-text: #2B2B2B;
+/*===========================================
+=        Variables Layout y Medidas        =
+===========================================*/
+
+$padding: 0.4rem 1.5rem; // Padding botones
+$b-radius: 50px; // Bordes redondeados botones
+$card-radius: 1rem; // Bordes redondeados cards
+$card-padding: 1.5rem; // Espaciado interno cards
+$btn-width: auto; // Ancho automático botones
+$icon-margin: 3.6rem; // Margen iconos
+$icon-margin-sm: 2rem; // Margen iconos pequeños
+$input-placeholder-color: #c9c8c8; // Color placeholder inputs
+$border-color: #CED4DA; // Color borde inputs
+$input-padding-y: 1.125rem; // Padding vertical inputs
+$input-padding-x: 1.375rem; // Padding horizontal inputs
+$input-line-height: 1; // Line-height inputs
+$input-padding-y-xs: 0.5rem; // Padding vertical XS
+$input-padding-x-xs: 0.75rem; // Padding horizontal XS
+
+
+$bg-lightgray: #f0f2f8; // Fondo gris claro
+$bg-darkgray: #2B2B2B; // Fondo gris oscuro
+$card-radius-sm: 0.5rem; // Bordes redondeados cards pequeños
+$card-radius-md: 0.75rem;
+$card-radius-xl: 1.125rem; // Bordes redondeados cards medianos

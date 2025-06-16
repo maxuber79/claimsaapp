@@ -1,0 +1,122 @@
+/*
+ * @Help para maquetar
+ * Aplicación: aplicar al elemento HTML como un ID o Class
+ **/
+@mixin border_help($color:#000000) {
+  border-width: 1px;
+  border-style: dashed;
+  border-color: $color;
+}
+
+// Mapa de colores asociados a las clases
+$border-colors: ("1": #000,
+  "2": red,
+  "3": deeppink,
+  "4": lime);
+
+// Generación automática de clases
+@each $key,
+$color in $border-colors {
+
+  .border-#{$key},
+  #border-#{$key} {
+    @include border_help($color);
+  }
+}
+
+/* 
+ * @Help de maquetación y mixin
+ **/
+
+/* .air-margin {
+  @include space_margin();
+}
+
+.air-padding {
+  @include space_padding();
+}
+
+.n0 {
+  @include no_margin;
+}
+
+.p0 {
+  @include no_padding;
+} */
+
+/* 
+ * @Help quitar espacios en modo in-block
+ * Aplicar en el div padre de los elementos a aplicar
+ **/
+.no-space {
+  font-size: 0;
+  letter-spacing: 0;
+  word-spacing: 0;
+}
+
+/* 
+ * @Help centrar elementos de forma vertical
+ * Aplicar en el div padre la class father y al higo la class center-child
+ **/
+.father {
+  position: relative;
+}
+
+.center-child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: inline-block;
+}
+
+.vertical-centering {
+  display: table;
+  width: 100%;
+  min-height: 100%;
+
+  @media(max-width: 640px) {
+    display: block;
+    height: auto;
+    text-align: center;
+  }
+
+  .vertical-object {
+    display: table-cell;
+    vertical-align: middle;
+
+    @media(max-width: 640px) {
+      display: inline-block;
+      height: auto;
+    }
+
+    &.object-left {
+      text-align: left;
+      width: 100%;
+
+      @media(max-width: 640px) {
+        text-align: center;
+      }
+    }
+
+    &.object-right {
+      text-align: right;
+      width: 100%;
+
+      @media(max-width: 640px) {
+        text-align: center;
+      }
+    }
+
+    &.object-center {
+      text-align: center;
+      width: 100%;
+
+      @media(max-width: 640px) {
+        text-align: center;
+      }
+    }
+  }
+}

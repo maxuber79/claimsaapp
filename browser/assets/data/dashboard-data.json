@@ -1,0 +1,69 @@
+{
+  "metrics": [
+    {
+      "icon": "bi-grid",
+      "count": 21000,
+      "label": "Created",
+      "color": "primary",
+      "footerText": "Sin cambios recientes",
+      "trendIcon": "bi-dash"
+    },
+    {
+      "icon": "bi-check-circle",
+      "count": 18000,
+      "label": "Solved",
+      "color": "success",
+      "footerText": "8% más que la semana pasada",
+      "trendIcon": "bi-graph-up"
+    },
+    {
+      "icon": "bi-exclamation-circle",
+      "count": 474,
+      "label": "Open",
+      "color": "warning",
+      "footerText": "12% desde ayer",
+      "trendIcon": "bi-graph-up-arrow"
+    },
+    {
+      "icon": "bi-arrow-repeat",
+      "count": 803,
+      "label": "Reopened",
+      "color": "info",
+      "footerText": "-5% esta semana",
+      "trendIcon": "bi-graph-down"
+    },
+    {
+      "icon": "bi-trash",
+      "count": 210,
+      "label": "Deleted",
+      "color": "danger",
+      "footerText": "2% más que la semana pasada",
+      "trendIcon": "bi-bar-chart"
+    },
+    {
+      "icon": "bi-emoji-smile",
+      "count": "85%",
+      "label": "Satisfaction",
+      "color": "getstarted",
+      "footerText": "3% mejor que el mes pasado",
+      "trendIcon": "bi-emoji-smile"
+    }
+  ],
+  "chartData": {
+    "tickets": {
+      "labels": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+      "created": [300, 450, 400, 500, 600, 320, 150],
+      "solved": [200, 400, 380, 450, 580, 300, 120]
+    },
+    "satisfaction": {
+      "positive": 85,
+      "negative": 15
+    },
+    "channel": [
+      { "name": "Email", "value": 46 },
+      { "name": "API", "value": 40 },
+      { "name": "Web", "value": 12 },
+      { "name": "Chat", "value": 2 }
+    ]
+  }
+}

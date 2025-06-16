@@ -1,0 +1,4 @@
+{
+  "labels": ["Muy satisfecho", "Satisfecho", "Neutral", "Insatisfecho", "Muy insatisfecho"],
+  "data": [45, 30, 10, 10, 5]
+}

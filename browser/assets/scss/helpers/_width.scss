@@ -1,0 +1,208 @@
+// Mixin único para ancho y alto
+@mixin dimension($property, $value) {
+  #{$property}: $value;
+
+  @media (max-width: 640px) {
+    @if $property==width {
+      width: 100%;
+    }
+
+    @else {
+      height: auto;
+    }
+  }
+}
+
+// Lista de valores en porcentaje con unidad incluida
+$size-values: 10%,
+15%,
+20%,
+25%,
+30%,
+35%,
+40%,
+45%,
+50%,
+55%,
+60%,
+65%,
+70%,
+75%,
+80%,
+85%,
+90%,
+95%,
+100%;
+
+// Generar clases de ancho (.wx-*)
+@each $size in $size-values {
+  .wx-#{str-slice(#{$size},
+  1,
+  -2)
+}
+
+  {
+  // Elimina el "%" del nombre de la clase
+  @include dimension(width, $size);
+}
+}
+
+// Generar clases de alto (.hv-*)
+@each $size in $size-values {
+  .hv-#{str-slice(#{$size},
+  1,
+  -2)
+}
+
+  {
+  // Elimina el "%" del nombre de la clase
+  @include dimension(height, $size);
+}
+}
+
+
+/*
+.wx-10 {
+  @include extension(10%);
+}
+
+.wx-15 {
+  @include extension(15%);
+}
+
+.wx-20 {
+  @include extension(20%);
+}
+
+.wx-25 {
+  @include extension(25%);
+}
+
+.wx-30 {
+  @include extension(30%);
+}
+
+.wx-35 {
+  @include extension(35%);
+}
+
+.wx-40 {
+  @include extension(40%);
+}
+
+.wx-45 {
+  @include extension(45%);
+}
+
+.wx-50 {
+  @include extension(50%);
+}
+
+.wx-55 {
+  @include extension(55%);
+}
+
+.wx-60 {
+  @include extension(60%);
+}
+
+.wx-65 {
+  @include extension(65%);
+}
+
+.wx-70 {
+  @include extension(70%);
+}
+
+.wx-75 {
+  @include extension(75%);
+}
+
+.wx-80 {
+  @include extension(80%);
+}
+
+.wx-85 {
+  @include extension(85%);
+}
+
+.wx-90 {
+  @include extension(90%);
+}
+
+.wx-95 {
+  @include extension(95%);
+}
+
+.wx-100 {
+  @include extension(100%);
+}
+
+
+.hv-10 {
+  @include altura(10%);
+}
+
+.hv-15 {
+  @include altura(15%);
+}
+
+.hv-20 {
+  @include altura(20%);
+}
+
+.hv-30 {
+  @include altura(30%);
+}
+
+.hv-35 {
+  @include altura(35%);
+}
+
+.hv-40 {
+  @include altura(40%);
+}
+
+.hv-45 {
+  @include altura(45%);
+}
+
+.hv-50 {
+  @include altura(50%);
+}
+
+.hv-55 {
+  @include altura(55%);
+}
+
+.hv-60 {
+  @include altura(60%);
+}
+
+.hv-65 {
+  @include altura(65%);
+}
+
+.hv-70 {
+  @include altura(70%);
+}
+
+.hv-75 {
+  @include altura(75%);
+}
+
+.hv-80 {
+  @include altura(80%);
+}
+
+.hv-85 {
+  @include altura(85%);
+}
+
+.hv-90 {
+  @include altura(90%);
+}
+
+.hv-95 {
+  @include altura(95%);
+} */

@@ -1,0 +1,62 @@
+/*
+* @Badges             
+**/
+@use '../abstracts'as *;
+@use 'sass:color';
+
+$badge-colors: ("primary": $primary-color,
+  "secondary": $secondary-color,
+  "tertiary": $tertiary-color,
+  "success": $success-color,
+  "danger": $danger-color,
+  "info": $info-color,
+  "warning": $warning-color);
+
+.badge-type {
+  font-family: "Karla", sans-serif;
+  border-radius: 20px;
+  font-size: 0.813rem;
+  line-height: 1;
+  padding: 0.375rem 0.5625rem;
+  display: inline-block;
+
+  &.badge-pill {
+    border-radius: 10rem;
+  }
+
+  /* Clases dinámicas modo claro */
+  @each $type,
+  $color in $badge-colors {
+    &.badge-outline-#{$type} {
+      //color: $color;
+      color: darken($color, 15%);
+      border: 1px solid $color;
+    }
+
+    &.badge-gsa-#{$type} {
+      color: $white;
+      background-color: $color;
+    }
+  }
+}
+
+/*
+* Dark Mode Badges             
+**/
+.dark-mode {
+  .badge-type {
+
+    @each $type,
+    $color in $badge-colors {
+      &.badge-outline-#{$type} {
+        color: lighten($color, 15%);
+        border: 1px solid lighten($color, 15%);
+      }
+
+      &.badge-gsa-#{$type} {
+        color: lighten($color, 45%);
+        background-color: lighten($color, 20%);
+      }
+    }
+  }
+}
