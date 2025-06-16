@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, VERSION } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validator, Validators } from '@angular/forms'; 
 import { Router, RouterModule } from '@angular/router'; 
@@ -14,9 +14,11 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
 
 	imagePath: string = 'assets/images/webmain.svg';
-	myTitle: string = 'My first To-Do';
-	mySubTitle: string = 'in Angular 19.2.12';
+	angularVersion: string | undefined = VERSION.full; // Accede a la versión
+	myTitle: string = 'My first Claims';
+	mySubTitle: string = `in Angular ${ this.angularVersion }`;
 	textContent: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit Eveniet, itaque accusantium odio, soluta, corrupti aliquam quibusdam tempora at cupiditate quis eum maiores liber veritatis? Dicta facilis sint aliquid ipsum atque?';
+	
 
 	// FormGroup for the login form
 	loginForm!: FormGroup;

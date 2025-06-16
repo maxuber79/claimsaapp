@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
 
-  constructor() { }
+  constructor(private toastr: ToastrService) {}
 
-	success(message: string, title: string = 'Éxito') {
+  // ✅ SWEETALERT POR DEFECTO - Sin romper métodos existentes
+
+  success(message: string, title: string = 'Éxito') {
     Swal.fire({
       icon: 'success',
       title,
@@ -19,7 +21,7 @@ export class AlertService {
     });
   }
 
-	error(message: string, title: string = 'Error') {
+  error(message: string, title: string = 'Error') {
     Swal.fire({
       icon: 'error',
       title,
@@ -27,7 +29,7 @@ export class AlertService {
     });
   }
 
-	warning(message: string, title: string = 'Atención') {
+  warning(message: string, title: string = 'Atención') {
     Swal.fire({
       icon: 'warning',
       title,
@@ -35,7 +37,7 @@ export class AlertService {
     });
   }
 
-	info(message: string, title: string = 'Información') {
+  info(message: string, title: string = 'Información') {
     Swal.fire({
       icon: 'info',
       title,
@@ -43,7 +45,7 @@ export class AlertService {
     });
   }
 
-	confirm(message: string, title: string = '¿Estás seguro?') {
+  confirm(message: string, title: string = '¿Estás seguro?') {
     return Swal.fire({
       icon: 'question',
       title,
@@ -52,5 +54,23 @@ export class AlertService {
       confirmButtonText: 'Sí',
       cancelButtonText: 'No'
     });
+  }
+
+  // 🆕 TOASTR OPCIONAL - Nuevos métodos, sin interferir con los anteriores
+
+  showToastSuccess(message: string, title: string = 'Éxito') {
+    this.toastr.success(message, title);
+  }
+
+  showToastError(message: string, title: string = 'Error') {
+    this.toastr.error(message, title);
+  }
+
+  showToastInfo(message: string, title: string = 'Info') {
+    this.toastr.info(message, title);
+  }
+
+  showToastWarning(message: string, title: string = 'Atención') {
+    this.toastr.warning(message, title);
   }
 }

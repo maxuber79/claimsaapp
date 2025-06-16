@@ -1,0 +1,31 @@
+@use '../abstracts'as *;
+
+@include generate-utility-classes($theme-colors);
+
+.grid-margin {
+  margin-bottom: 2.5rem;
+}
+
+.grid-margin-sm-0 {
+  @media (min-width: 576px) {
+    margin-bottom: 0;
+  }
+}
+
+.grid-margin-md-0 {
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.grid-margin-lg-0 {
+  @media (min-width: 992px) {
+    margin-bottom: 0;
+  }
+}
+
+.grid-margin-xl-0 {
+  @media (min-width: 1200px) {
+    margin-bottom: 0;
+  }
+}

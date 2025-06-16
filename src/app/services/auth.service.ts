@@ -96,4 +96,25 @@ export class AuthService {
     console.log('📧 Enviando enlace de recuperación a:', email);
     return sendPasswordResetEmail(this.auth, email);
   }
+
+
+
+	//Agregar esto mas rato
+/* 	try {
+		await signInWithEmailAndPassword(this.auth, email, password);
+		// Redirección normal
+	} catch (error: any) {
+		if (error.code === 'auth/visibility-check-was-unavailable') {
+			this.alertService.showToastError(
+				'Hubo un problema con el servicio de autenticación. Por favor, recarga la página o inténtalo más tarde.',
+				'Error de conexión'
+			);
+		} else {
+			this.alertService.showToastError(
+				this.firebaseService.getFriendlyMessage(error.code),
+				'Error de login'
+			);
+		}
+	} */
+	
 }

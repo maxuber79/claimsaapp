@@ -12,6 +12,12 @@
 // 4. Cargar componentes comunes
 @use 'components'; // Carga CSS de components/_index.scss (todos los componentes)
 
+// 5. Cargar componentes pages
+@use 'views'; // Carga CSS de views/_index.scss (páginas específicas)
+
+// 6. Cargar utilidades específicas
+@use 'base/utilities';
+
 /* @use 'sass:math';
 @use 'variables';
 @use 'mixins'as mixins;
@@ -90,3 +96,7 @@ code {
   font-size: 0.875rem;
   border-radius: 4px;
 } */
+
+body {
+  background: $color-secondary;
+}

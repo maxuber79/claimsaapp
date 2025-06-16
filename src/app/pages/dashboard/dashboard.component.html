@@ -1,5 +1,5 @@
 <!-- <div id="" class="bg-info-subtle vh-100 text-center border-1"> -->
-<div class="d-flex flex-column min-vh-100 bg-light-subtle text-center border-2">
+<div class="d-flex flex-column min-vh-100 text-center dashboard">
 	<header class="px-3 text-bg-dark">
 		<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
 			<div class="container-fluid">
@@ -46,14 +46,19 @@
 						<li class="nav-item me-3 me-lg-1">
 							<a class="nav-link" href="#">
 								<span><i class="bi bi-bell-fill"></i></span>
-								<span class="badge rounded-pill badge-notification bg-danger">2</span>
+								 <span *ngIf="pendingCount > 0" class="badge rounded-pill badge-notification bg-danger">{{ pendingCount }}</span> 
+								<!-- @if (pendingCount > 0) {
+								<span class="badge bg-danger rounded-pill">
+									{{ pendingCount }}
+								</span>
+							} -->
 							</a>
 						</li>
 					</ul>					
 					<!-- Center elements -->
 					<div class="dropdown text-end">
 						<a href="#" class="text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="https://maxuber79.github.io/gsaforce/assets/images/face28.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+							<img [src]=" userData?.photoURL || imageDefault "  alt="mdo" width="32" height="32" class="rounded-circle">
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end text-small">
 							<li>
@@ -88,53 +93,175 @@
 			<li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
 			<li class="nav-item"><a href="#" class="nav-link">About</a></li>
 		</ul> -->
-		<main class="flex-grow-1 container py-4 border-2">
+		<main class="flex-grow-1 container py-4 ">
 			<div class="container">
-				<div class="row">
+				<div class="row"> 
+					<div class="col-12 ">
 
-
-
-
-					<div id="border-1" class="col-12">
-						 
-							<div *ngIf="!isLoading && userData">
-								<div class="alert alert-primary" role="alert">
-									<h1>Weeena, perrito..</h1><h5>welcome to app</h5>
-								</div>																
-							</div>
-							<!-- Spinner mientras carga -->
-							<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center border-3" style="height: 200px;">
-								<div class="spinner-border" role="status">
-									<span class="visually-hidden">Loading...</span>
-								</div>
-							</div>
-						 
-					</div>
-					<div id="border-1" class="col-12 bg-secondary-subtle">
-						<div *ngIf="userData" class="text-start">
-							<h2>Hola, {{ userData.name }} {{ userData.last_name }}</h2>
-							<p><strong>Correo:</strong> <span class="badge text-bg-secondary ms-2">{{ userData.email }}</span></p>
-							<p><strong>Nombre de usuario:</strong> <span class="badge text-bg-info ms-2">{{ userData.user_name }}</span></p>
-							<p><strong>uid:</strong><span class="badge text-bg-primary ms-2">{{userData.uid }}</span></p>
-							<p><strong>Fecha de registro:</strong> <span class="badge text-bg-info ms-2">{{ userData.createdDate | date:'medium' }}</span></p>
-							<div class="bg-light border rounded p-3">
-								<pre class="text-dark">{{ userData | json }}</pre>
+						<!-- Spinner mientras carga -->
+						<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center border-3" style="height: 200px;">
+							<div class="spinner-border" role="status">
+								<span class="visually-hidden">Loading...</span>
 							</div>
 						</div>
-						
+						 
+							<div *ngIf="!isLoading && userData">
+								<div class="card">
+									<div class="card-body">
+										<div class="d-flex align-items-center mb-4 mb-lg-0 py-4">
+											<div class="position-relative d-inline-block  ">
+												<img [src]="userData.photoURL || imageDefault "
+													class="border border-5 border-primary rounded-circle profile-pic border-opacity-25 object-fit-cover p-1"
+													alt="Profile Picture" width="100" height="100" />
+											</div>
+											<div class="ms-3 text-start ">
+												<h2 class="m-0 p-0">Hola, {{ userData.name }}</h2>
+												<h6 class="m-0 p-0">Bienvenido a tu aplicación</h6>
+												<p class="m-0 p-0 text-muted">Este es tu panel de control, aquí puedes administrar tus tareas, ver estadísticas y
+													más.</p>
+											</div>
+										</div>	
+									</div>
+								</div>
+																						
+							</div>
+							
+						 
 					</div>
-					<div id="border-2" class="col-12 p-5">
-						<!-- Aquí se mostrará el contenido de las subrutas -->
-						<router-outlet></router-outlet> 
+					<!-- <div class="col-12 ">
+						<app-todo-stats [todos]="todos"></app-todo-stats>
+					</div> -->
+					<!-- <div class="col-5 "> 
+						<app-todo-chart [todos]="todos"></app-todo-chart>
+					</div> -->
+					 
+					<!-- section cards metrics -->
+
+					<div class="row g-3">
+						<div class="col-md-6 col-xl-3 my-3" *ngFor="let card of metrics">
+							<app-card-metric [icon]="card.icon" [count]="card.count" [label]="card.label" [color]="card.color"
+								[footerText]="card.footerText" [trendIcon]="card.trendIcon">
+							</app-card-metric>
+						</div>
 					</div>
-				
-				
+					
+					<!-- Section graficos -->
+					<div class="row g-3">
+						<!-- Gráfico Lineal -->
+						<div class="col-12 grid-margin">
+							<app-line-chart [ticketsData]="tickets"></app-line-chart>
+						</div>
+					
+						<!-- Gráfico de satisfacción -->
+						<div class="col-sm-12 col-md-6 col-xl-6 grid-margin stretch-card">
+							<app-satisfaction-chart [positive]="satisfaction?.positive || 0" [negative]="satisfaction?.negative || 0">
+							</app-satisfaction-chart>
+						</div>
+					
+						<!-- Gráfico de canales -->
+						<div class="col-sm-12 col-md-6 col-xl-6 grid-margin stretch-card">
+							<app-channels-chart [channels]="channels"></app-channels-chart>
+						</div>
+					</div>
+
+					<!-- Otros elementos de la página -->
+					<div class="row">
+						<div class="col-md-8 grid-margin stretch-card">
+							<app-reclamos-table></app-reclamos-table>
+						</div>
+						<div class="col-md-4 stretch-card grid-margin">
+							<app-notification-list [notifications]="notifications"></app-notification-list>
+							<!-- <div class="card">
+								<div class="card-body position-relative">
+									<span class="mdi mdi-crown-circle fs-4 text-warning" style="position: absolute; top: 1rem; right:1rem;"></span>
+									<p class="card-title">Notifications</p>
+									<ul class="icon-data-list">
+										<li>
+											<div class="d-flex">
+												<img src="../assets/images/faces/face1.jpg" alt="user">
+												<div>
+													<p class="text-info mb-1">Isabella Becker</p>
+													<p class="mb-0">Sales dashboard have been created</p>
+													<small>9:30 am</small>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="d-flex">
+												<img src="../assets/images/faces/face2.jpg" alt="user">
+												<div>
+													<p class="text-info mb-1">Adam Warren</p>
+													<p class="mb-0">You have done a great job #TW111</p>
+													<small>10:30 am</small>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="d-flex">
+												<img src="../assets/images/faces/face3.jpg" alt="user">
+												<div>
+													<p class="text-info mb-1">Leonard Thornton</p>
+													<p class="mb-0">Sales dashboard have been created</p>
+													<small>11:30 am</small>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="d-flex">
+												<img src="../assets/images/faces/face4.jpg" alt="user">
+												<div>
+													<p class="text-info mb-1">George Morrison</p>
+													<p class="mb-0">Sales dashboard have been created</p>
+													<small>8:50 am</small>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="d-flex">
+												<img src="../assets/images/faces/face5.jpg" alt="user">
+												<div>
+													<p class="text-info mb-1">Ryan Cortez</p>
+													<p class="mb-0">Herbs are fun and easy to grow.</p>
+													<small>9:00 am</small>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div> -->
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-12 grid-margin stretch-card">
+							
+
+							<!-- products-table.component.html -->
+							 
+
+						</div>
+					</div>
+
+
+
+
+
+
+					<div class="col-12 border-2"> 
+						<!-- <router-outlet></router-outlet> -->
+					</div>
+
+			
+					 			
+
+
+
+
+
 				</div>
 			</div>
 		</main>
-	 
-	 
-	
 </div>
 
 

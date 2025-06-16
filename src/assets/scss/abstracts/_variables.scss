@@ -45,14 +45,17 @@ Arial,
 Helvetica,
 sans-serif; // Fuente botones
 $font-size: 1rem; // Tamaño base
-$font-dark: $fourth-color; // Color fuente oscuro
-$font-white: $white; // Color fuente claro
+$font-dark: #2B2B2B; // Color fuente oscuro
+$font-white: #ffffff; // Color fuente claro
 $font-weight: 400; // Peso fuente normal
 $line-height: 1rem; // Altura línea base
 $title-size: 4rem; // Tamaño títulos principales
 $subtitle-size: 2rem; // Tamaño subtítulos
 $l-spacing: -0.25rem; // Espaciado entre letras
-
+$color-title: #2B2B2B; // Color títulos
+$color-subtitle: #2B2B2B; // Color subtítulos
+$color-paragraph: #2B2B2B;
+$color-text: #2B2B2B;
 /*===========================================
 =        Variables Layout y Medidas        =
 ===========================================*/
@@ -71,3 +74,10 @@ $input-padding-x: 1.375rem; // Padding horizontal inputs
 $input-line-height: 1; // Line-height inputs
 $input-padding-y-xs: 0.5rem; // Padding vertical XS
 $input-padding-x-xs: 0.75rem; // Padding horizontal XS
+
+
+$bg-lightgray: #f0f2f8; // Fondo gris claro
+$bg-darkgray: #2B2B2B; // Fondo gris oscuro
+$card-radius-sm: 0.5rem; // Bordes redondeados cards pequeños
+$card-radius-md: 0.75rem;
+$card-radius-xl: 1.125rem; // Bordes redondeados cards medianos

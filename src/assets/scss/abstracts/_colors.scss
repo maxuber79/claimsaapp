@@ -1,0 +1,53 @@
+// 🎨 Dashboard Color Palette
+
+$color-primary: #3f51b5; // Azul intermedio usado en los indicadores
+$color-primary-dark: #2c3e90;
+$color-primary-light: #7986cb;
+
+$color-secondary: #f1f1f1; // Fondo gris claro del dashboard
+$color-secondary-dark: #d5d5d5;
+$color-secondary-light: #fafafa;
+
+$color-success: #10b981; // Verde de métricas positivas
+$color-success-dark: #0f766e;
+$color-success-light: #6ee7b7;
+
+$color-warning: #fbbf24; // Amarillo tipo "earnings"
+$color-warning-dark: #d97706;
+$color-warning-light: #fde68a;
+
+$color-danger: #ef4444; // Rojo rendimiento bajo
+$color-danger-dark: #b91c1c;
+$color-danger-light: #fca5a5;
+
+$color-info: #6366f1; // Azul gráfico lateral
+$color-info-dark: #4338ca;
+$color-info-light: #a5b4fc;
+
+$color-getstarted: #2563eb; // Azul para CTA tipo botón App Store
+$color-getstarted-dark: #1d4ed8;
+$color-getstarted-light: #93c5fd;
+
+$color-light: #ffffff;
+$color-dark: #1f2937;
+
+// Texto por estado
+$text-color-primary: $color-dark;
+$text-color-secondary: #6b7280; // Gris medio para textos de descripción
+$text-color-light: #ffffff;
+
+// Background generales
+$bg-color-primary: $color-primary;
+$bg-color-secondary: $color-secondary;
+$bg-color-light: $color-light;
+$bg-color-dark: $color-dark;
+
+$theme-colors: ("primary": $color-primary,
+  "secondary": $color-secondary,
+  "success": $color-success,
+  "warning": $color-warning,
+  "danger": $color-danger,
+  "info": $color-info,
+  "getstarted": $color-getstarted,
+  "light": $color-light,
+  "dark": $color-dark);

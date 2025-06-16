@@ -1,0 +1,55 @@
+@use '../abstracts'as *;
+
+
+.font-roboto {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+.font-karla {
+  font-family: "Karla", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: 0;
+}
+
+.font-geist {
+  font-family: "Geist", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: 0;
+}
+
+
+
+.title-karla {
+  @include karla($title-size, bold, $color-text);
+  letter-spacing: $l-spacing;
+  margin: 0 0 1.5rem 0;
+}
+
+.title-geist {
+  @include roboto($title-size, bold, $color-text);
+  letter-spacing: $l-spacing;
+  margin: 0 0 1.5rem 0;
+}
+
+.title-roboto {
+  @include roboto($title-size, bold, $color-text);
+  letter-spacing: $l-spacing;
+  margin: 0 0 1.5rem 0;
+}
+
+.subtitle-karla {
+  @include karla($subtitle-size, bold, $color-text);
+  letter-spacing: -0.125rem;
+}
+
+.subtitle-geist {
+  @include karla($subtitle-size, bold, $primary-color);
+  letter-spacing: -0.125rem;
+}
+
+p.wrapp-paragraph {
+  margin: 0 0 1.5rem 0;
+  line-height: 1.3rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: $color-text;
+}

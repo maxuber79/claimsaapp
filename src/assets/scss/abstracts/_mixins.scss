@@ -1,3 +1,6 @@
+@use 'sass:math';
+@use 'variables'; // Usa el "hub" y podés usar todo directamente
+
 @mixin size-btn($py:.5rem, $px:1.6rem) {
   padding: $py $px;
   line-height: normal;
@@ -33,4 +36,40 @@
   font-size: $fsize;
   font-weight: $fweight;
   color: $fcolor;
+}
+
+@mixin karla($fsize: 1rem, $fweight:400, $fcolor:#000) {
+  font-family: "Karla", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: $fsize;
+  font-weight: $fweight;
+  color: $fcolor;
+}
+
+// Definimos una lista de tamaños en rem
+// Cada valor representa el tamaño en rem que tendrá la fuente
+$sizes: (5, 7, 10, 12, 15, 20, 25, 30, 40, 50); // Representan 0.5, 0.7, 1.0, etc.
+
+// Usamos @each para recorrer la lista y generar clases dinámicamente
+@each $size in $sizes {
+
+  // Creamos una clase con el formato .f-size-{valor} 
+  // donde {valor} es el número de rem sin puntos decimales
+  .f-size-#{$size} {
+    font-size: #{math.div($size, 10)}rem;
+  }
+}
+
+/// Mixin para generar clases utilitarias a partir del mapa de colores
+@mixin generate-utility-classes($colors) {
+
+  @each $name,
+  $color in $colors {
+    .bg-#{$name} {
+      background-color: #{$color} !important;
+    }
+
+    .text-#{$name} {
+      color: #{$color} !important;
+    }
+  }
 }

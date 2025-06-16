@@ -1,0 +1,182 @@
+[
+  {
+    "nombre": "Brandon Washington",
+    "tipo": "Atención lenta",
+    "foto": "https://randomuser.me/api/portraits/men/10.jpg",
+    "total": 85,
+    "fecha": "2025-06-13",
+    "estado": "Pendiente",
+    "id": "RCLM-980006"
+  },
+  {
+    "nombre": "Laura Brooks",
+    "tipo": "Error en datos",
+    "foto": "https://randomuser.me/api/portraits/women/11.jpg",
+    "total": 62,
+    "fecha": "2025-06-10",
+    "estado": "Cerrado",
+    "id": "RCLM-60967D"
+  },
+  {
+    "nombre": "Wayne Murphy",
+    "tipo": "Problemas técnicos",
+    "foto": "https://randomuser.me/api/portraits/men/12.jpg",
+    "total": 51,
+    "fecha": "2025-06-11",
+    "estado": "Cancelado",
+    "id": "RCLM-37B8E1"
+  },
+  {
+    "nombre": "Emily Stone",
+    "tipo": "Cobros erróneos",
+    "foto": "https://randomuser.me/api/portraits/women/14.jpg",
+    "total": 74,
+    "fecha": "2025-06-09",
+    "estado": "Pendiente",
+    "id": "RCLM-94256C"
+  },
+  {
+    "nombre": "Michael Carter",
+    "tipo": "Demora en atención",
+    "foto": "https://randomuser.me/api/portraits/men/15.jpg",
+    "total": 33,
+    "fecha": "2025-06-12",
+    "estado": "Cerrado",
+    "id": "RCLM-547A21"
+  },
+  {
+    "nombre": "Sophia Turner",
+    "tipo": "Fallas en sistema",
+    "foto": "https://randomuser.me/api/portraits/women/16.jpg",
+    "total": 90,
+    "fecha": "2025-06-08",
+    "estado": "Pendiente",
+    "id": "RCLM-9A7A50"
+  },
+  {
+    "nombre": "Daniel Parker",
+    "tipo": "Error en boleta",
+    "foto": "https://randomuser.me/api/portraits/men/17.jpg",
+    "total": 49,
+    "fecha": "2025-06-07",
+    "estado": "Cerrado",
+    "id": "RCLM-17DF2D"
+  },
+  {
+    "nombre": "Olivia Scott",
+    "tipo": "Problemas de conexión",
+    "foto": "https://randomuser.me/api/portraits/women/18.jpg",
+    "total": 58,
+    "fecha": "2025-06-06",
+    "estado": "Cancelado",
+    "id": "RCLM-F94F24"
+  },
+  {
+    "nombre": "Liam Robinson",
+    "tipo": "Solicitud no respondida",
+    "foto": "https://randomuser.me/api/portraits/men/19.jpg",
+    "total": 71,
+    "fecha": "2025-06-05",
+    "estado": "Pendiente",
+    "id": "RCLM-4F3DA6"
+  },
+  {
+    "nombre": "Ava Martinez",
+    "tipo": "Aplicación no funciona",
+    "foto": "https://randomuser.me/api/portraits/women/20.jpg",
+    "total": 64,
+    "fecha": "2025-06-04",
+    "estado": "Cerrado",
+    "id": "RCLM-D9F80F"
+  },
+  {
+    "nombre": "Noah Wright",
+    "tipo": "Trato descortés",
+    "foto": "https://randomuser.me/api/portraits/men/21.jpg",
+    "total": 77,
+    "fecha": "2025-06-03",
+    "estado": "Cancelado",
+    "id": "RCLM-0A3A2A"
+  },
+  {
+    "nombre": "Mia Hill",
+    "tipo": "Problemas con entrega",
+    "foto": "https://randomuser.me/api/portraits/women/22.jpg",
+    "total": 69,
+    "fecha": "2025-06-02",
+    "estado": "Pendiente",
+    "id": "RCLM-9FEB24"
+  },
+  {
+    "nombre": "Elijah Green",
+    "tipo": "Retraso en servicio",
+    "foto": "https://randomuser.me/api/portraits/men/23.jpg",
+    "total": 55,
+    "fecha": "2025-06-01",
+    "estado": "Cerrado",
+    "id": "RCLM-4F7EEE"
+  },
+  {
+    "nombre": "Amelia Adams",
+    "tipo": "Información confusa",
+    "foto": "https://randomuser.me/api/portraits/women/24.jpg",
+    "total": 38,
+    "fecha": "2025-05-31",
+    "estado": "Cancelado",
+    "id": "RCLM-FCA4DB"
+  },
+  {
+    "nombre": "James Nelson",
+    "tipo": "Demora en reembolso",
+    "foto": "https://randomuser.me/api/portraits/men/25.jpg",
+    "total": 66,
+    "fecha": "2025-05-30",
+    "estado": "Pendiente",
+    "id": "RCLM-D7641D"
+  },
+  {
+    "nombre": "Charlotte Allen",
+    "tipo": "Acceso denegado",
+    "foto": "https://randomuser.me/api/portraits/women/26.jpg",
+    "total": 81,
+    "fecha": "2025-05-29",
+    "estado": "Cerrado",
+    "id": "RCLM-60053C"
+  },
+  {
+    "nombre": "Benjamin Young",
+    "tipo": "Duplicidad en cuenta",
+    "foto": "https://randomuser.me/api/portraits/men/27.jpg",
+    "total": 59,
+    "fecha": "2025-05-28",
+    "estado": "Cancelado",
+    "id": "RCLM-55AB16"
+  },
+  {
+    "nombre": "Harper King",
+    "tipo": "Mal servicio postventa",
+    "foto": "https://randomuser.me/api/portraits/women/28.jpg",
+    "total": 41,
+    "fecha": "2025-05-27",
+    "estado": "Pendiente",
+    "id": "RCLM-AB1351"
+  },
+  {
+    "nombre": "Lucas Baker",
+    "tipo": "Problemas de facturación",
+    "foto": "https://randomuser.me/api/portraits/men/29.jpg",
+    "total": 72,
+    "fecha": "2025-05-26",
+    "estado": "Cerrado",
+    "id": "RCLM-93A645"
+  },
+  {
+    "nombre": "Evelyn Gonzalez",
+    "tipo": "Formulario no válido",
+    "foto": "https://randomuser.me/api/portraits/women/30.jpg",
+    "total": 47,
+    "fecha": "2025-05-25",
+    "estado": "Cancelado",
+    "id": "RCLM-C9274B"
+  }
+]

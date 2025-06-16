@@ -1,0 +1,61 @@
+<div class="container mt-4">
+	<h2>Editar Tarea</h2>
+	<form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="row g-3 text-start">
+		<div class="col-sm-12 col-md-12 mb-3">
+			<label class="form-label">Título</label>
+			<input name="title" type="text" formControlName="title" class="form-control">
+		</div>
+		<div class="col-sm-12 col-md-6 mb-3">
+			<label class="form-label">Fecha límite</label>
+			<input type="date" formControlName="dueDate" class="form-control">
+		</div>
+		<div class="col-sm-12 col-md-6 mb-3">
+			<label class="form-label">Prioridad</label>
+			<select formControlName="priority" class="form-select">
+				<option value="low">Baja</option>
+				<option value="medium">Media</option>
+				<option value="high">Alta</option>
+			</select>
+		</div>
+		<div class="col-sm-12 col-md-12 mb-3">
+			<label class="form-label">Descripción</label>
+			<textarea formControlName="description" class="form-control"></textarea>
+		</div>
+		<div class="col-12">
+			<!-- Spinner mientras carga -->
+			<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" >
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-12 text-end mb-3">
+			<button type="submit" class="btn btn-primary" [disabled]="todoForm.invalid">Guardar cambios</button>
+		</div>
+
+		<div class="col-12 border-2">
+		
+			<div class="row">
+				<div class="col-12 p-3">
+					<div class="bd-callout bd-callout-code">
+						<strong>Estado del formulario:</strong>
+						<hr>
+						<span class="mx-1">VALID: <span
+								[class]="todoForm.status=='VALID' ? 'badge text-bg-success mx-1': 'badge text-bg-danger mx-1'">{{
+									todoForm.valid
+								}}</span></span>
+						<span class="mx-1">INVALID: <span
+								[class]="todoForm.status =='INVALID' ? 'badge text-bg-success mx-1': 'badge text-bg-danger mx-1'">{{
+								todoForm.invalid }}</span></span>
+						<span class="mx-1">STATUS: <span class="badge text-bg-primary mx-1">{{ todoForm.status }}</span></span>
+						<span class="mx-1">DISABLED: <span class="badge text-bg-warning mx-1">{{ todoForm.disabled }}</span></span>
+						<hr>
+						<pre class="text-start">{{ todoForm.value | json }}</pre>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+	</form>
+</div>

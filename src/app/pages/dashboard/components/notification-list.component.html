@@ -1,0 +1,18 @@
+<div class="card">
+	<div class="card-body position-relative">
+		<span class="mdi mdi-crown-circle fs-4 text-warning" style="position: absolute; top: 1rem; right:1rem;"></span>
+		<p class="card-title">Notificaciones</p>
+		<ul class="icon-data-list">
+			<li *ngFor="let noti of notifications">
+				<div class="d-flex">
+					<img [src]="noti.avatar" [alt]="noti.user">
+					<div>
+						<p class="text-info mb-1">{{ noti.user }}</p>
+						<p class="mb-0">{{ noti.message }}</p>
+						<small>{{ noti.time }}</small>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

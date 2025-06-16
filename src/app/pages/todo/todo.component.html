@@ -10,8 +10,8 @@
 	</div>
 
 	<!-- Mostrar tareas -->
-	<ul class="list-group mb-3">
-		<li *ngFor="let todo of todos()" class="list-group-item d-flex justify-content-between align-items-center"
+	<ul class="list-group mb-3 border-1" >
+		<li *ngFor="let todo of todos()" class="list-group-item d-flex justify-content-between align-items-center text-start"
 			[class.list-group-item-success]="todo.completed">
 			<div>
 				<input type="checkbox" class="form-check-input me-2" [checked]="todo.completed"

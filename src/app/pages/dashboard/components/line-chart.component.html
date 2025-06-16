@@ -1,0 +1,12 @@
+<div class="card">
+	<div class="card-body">
+		<h4 class="card-title">Tickets por día</h4>
+		<p class="card-description text-muted">
+			Este gráfico muestra los tickets creados y resueltos por día de la semana. Útil para identificar patrones de carga.
+			</p>
+		<div *ngIf="lineChartData">
+			<canvas baseChart [data]="lineChartData" [options]="lineChartOptions" chartType="line">
+			</canvas>
+			</div>
+	</div>
+</div>

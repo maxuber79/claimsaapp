@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+canvas {
+  max-width: 300px;
+  max-height: 300px;
+  margin: 0 auto;
+  display: block;
+}

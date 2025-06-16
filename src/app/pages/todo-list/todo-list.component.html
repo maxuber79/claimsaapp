@@ -1,26 +1,154 @@
-<div class="container mt-4">
-	<h2 class="mb-4">Agregar nueva tarea</h2>
+ 
+	
+	<div class="row">
+		<div class="col-12 ">
+			<h2 class="my-4">Agregar nueva tarea</h2>
+		</div>
+		<div class="col-12 border p-3 mb-5 bg-light rounded-1">
+			<form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="row g-3">
+				<div class="col-md-6">
+					<label for="title" class="form-label">Título</label>
+					<input type="text" class="form-control" formControlName="title" id="title"
+						[class.is-invalid]="todoForm.get('title')?.invalid && todoForm.get('title')?.touched">
+					<div class="invalid-feedback" *ngIf="todoForm.get('title')?.invalid && todoForm.get('title')?.touched">
+						El título es obligatorio.
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="description" class="form-label">Descripción</label>
+					<input type="text" class="form-control" formControlName="description" id="description">
+				</div>
+				<div class="col-md-6">
+					<label for="dueDate" class="form-label">Fecha límite</label>
+					<input type="date" class="form-control" formControlName="dueDate" id="dueDate">
+				</div>
+				<div class="col-md-6">
+					<label for="priority" class="form-label">Prioridad</label>
+					<select class="form-select" formControlName="priority" id="priority">
+						<option value="" disabled>Selecciona prioridad</option>
+						<option value="low">Baja</option>
+						<option value="medium">Media</option>
+						<option value="high">Alta</option>
+					</select>
+				</div>
+				<div class="col-12 text-end">
+					<button type="submit" class="btn btn-primary" [disabled]="todoForm.invalid">Guardar tarea</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<hr class="my-4">
+	<div class="row">
+		<div class="col-12 ">
+			<h2 class="mb-3">Tareas registradas</h2>
+		</div>
+		<div class="col-12 p-3 text-end">
+			<button class="btn btn-danger" (click)="clearAll()">
+				<i class="bi bi-trash3-fill"></i> Eliminar todas las tareas
+			</button>
 
-	<form (ngSubmit)="onSubmit()" #todoForm="ngForm" class="row g-3">
-		<!-- Título -->
+			<button class="btn btn-success mx-2" (click)="testAlert()">
+				<i class="bi bi-bell-fill"></i> prueba de alert toast
+			</button>
+		</div>
+		<div class="col-12 ">
+			<ul class="list-group">
+				<li 
+				class="list-group-item d-flex flex-wrap flex-md-nowrap justify-content-between align-items-center align-items-md-center gap-3"
+				*ngFor="let todo of todos"
+				[ngClass]="{
+					'bg-success-subtle': todo.completed,
+					'': !todo.completed
+				}">
+			
+			
+					<div class="text-start flex-grow-1 me-3 todo-content">
+						<div class="fw-bold" [ngClass]="{ 'fw-bold': true, 'completed-text': todo.completed }"><i class="bi bi-check-circle-fill text-success me-1" *ngIf="todo.completed"></i>{{ todo.title }}</div>
+						<small class="text-muted" [ngClass]="{ 'completed-text': todo.completed }">{{ todo.description }}</small><br>
+						<span class="badge me-2"
+						[ngClass]="{
+							'text-bg-danger': todo.priority === 'high',
+							'text-bg-warning': todo.priority === 'medium',
+							'text-bg-secondary': todo.priority === 'low'
+						}">{{
+						todo.priority === 'high' ? 'Alta' :
+						todo.priority === 'medium' ? 'Media' :
+						todo.priority === 'low' ? 'Baja' : 'Desconocida'
+						}}</span>
+						<span class="badge text-bg-light text-dark">{{ todo.dueDate | date:'shortDate' }}</span>
+						<span class="badge text-bg-primary ms-2">{{ todo.id }}</span>
+					</div>
+			
+			
+					<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 todo-actions">
+						<span class="badge" [ngClass]="{
+											'bg-success': todo.completed,
+											'bg-danger': !todo.completed
+										}">
+							{{ todo.completed ? 'Completada' : 'Pendiente' }}
+						</span>
+						<button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteTodo(todo.id!)">
+							<i class="bi bi-trash3-fill"></i> Eliminar
+						</button>
+						<button
+						class="btn btn-sm ms-2"
+						(click)="toggleComplete(todo)"
+						[ngClass]="{
+							'btn-warning': todo.completed,
+							'btn-outline-success': !todo.completed
+						}"
+						>
+							<!-- <span class="border-2">
+									
+								<i class="bi bi-x"></i> Desmarcar
+									
+								<i class="bi bi-check"></i> Completar 
+							</span> -->
+							
+								<i class="bi bi-check"></i> {{ todo.completed ? 'Desmarcar' : 'Completar' }} 
+						</button>
+						<!-- ✅ Botón de editar -->
+						<button class="btn btn-sm btn-outline-primary ms-2" (click)="editTodo(todo.id!)">
+							<i class="bi bi-pencil-square"></i> Editar
+						</button>
+					</div>
+			
+				</li>
+				</ul>
+		</div>
+	</div>
+	 
+	
+	<!-- @if (condicion) {
+	<p>Esto se muestra si la condición es verdadera.</p>
+	} @else if (otraCondicion) {
+	<p>Esto se muestra si otraCondicion es verdadera.</p>
+	} @else {
+	<p>Esto se muestra si ninguna de las anteriores es verdadera.</p>} -->
+	
+	
+	
+
+	<!-- <form (ngSubmit)="onSubmit()" #todoForm="ngForm" class="row g-3">
+		 Título  
 		<div class="col-md-6">
 			<label for="title" class="form-label">Título</label>
 			<input type="text" id="title" class="form-control" required [(ngModel)]="newTodo.title" name="title" />
 		</div>
 
-		<!-- Descripción -->
+		  Descripción  
 		<div class="col-md-6">
 			<label for="description" class="form-label">Descripción</label>
 			<input type="text" id="description" class="form-control" [(ngModel)]="newTodo.description" name="description" />
 		</div>
 
-		<!-- Fecha de vencimiento -->
+		 Fecha de vencimiento  
 		<div class="col-md-6">
 			<label for="dueDate" class="form-label">Fecha límite</label>
 			<input type="date" id="dueDate" class="form-control" [(ngModel)]="newTodo.dueDate" name="dueDate" />
 		</div>
 
-		<!-- Prioridad -->
+		 Prioridad  
 		<div class="col-md-6">
 			<label for="priority" class="form-label">Prioridad</label>
 			<select [(ngModel)]="newTodo.priority" class="form-select" name="priority" required>
@@ -32,9 +160,9 @@
 			
 		</div>
 
-		<!-- Botón -->
+		 Botón  
 		<div class="col-12 text-end">
 			<button class="btn btn-primary" [disabled]="!newTodo.title || !newTodo.priority">Guardar tarea</button>
 		</div>
-	</form>
-</div>
+	</form> -->
+ 
