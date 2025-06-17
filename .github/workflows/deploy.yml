@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies (con flag legacy-peer-deps)
+      - name: Install dependencies (usando --legacy-peer-deps)
         run: npm install --legacy-peer-deps
 
       - name: Build Angular App
