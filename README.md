@@ -1,6 +1,29 @@
 # TodoApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+[![Deploy Status](https://github.com/maxuber79/claimsaapp/actions/workflows/deploy.yml/badge.svg)](https://github.com/maxuber79/claimsaapp/actions)
+
+Aplicación Angular generada con [Angular CLI](https://github.com/angular/angular-cli) versión 19.2.14
+
+🌐 **Ver sitio en producción**:  
+🔗 https://maxuber79.github.io/claimsaapp/
+
+---
+
+## 🚀 Deploy automático
+
+Este proyecto está configurado para hacer deploy automático a GitHub Pages cada vez que haces `push` a la rama `master`.
+
+- Usa GitHub Actions + `JamesIves/github-pages-deploy-action`
+- Build de producción con `ng build --configuration=production`
+- Publicación directa desde `dist/claimsaapp` al branch `gh-pages`
+
+### ¿Quieres forzar un redeploy manual?
+
+```bash
+git commit --allow-empty -m "🚀 Forzar nuevo deploy"
+git push origin master
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 19.2.14
 
 ## Development server
 
