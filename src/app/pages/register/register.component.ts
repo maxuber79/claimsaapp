@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, VERSION } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors  } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,8 +18,9 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 export class RegisterComponent {
 
 	imagePath: string = 'assets/images/webmain.svg';
-	myTitle: string = 'My first To-Do';
-	mySubTitle: string = 'in Angular 19.2.12';
+	angularVersion: string | undefined = VERSION.full;
+	myTitle: string = 'My first Claims';
+	mySubTitle: string = `in Angular ${ this.angularVersion }`;
 	textContent: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit Eveniet, itaque accusantium odio, soluta, corrupti aliquam quibusdam tempora at cupiditate quis eum maiores liber veritatis? Dicta facilis sint aliquid ipsum atque?';
 	// Controla si se está cargando algo (por ejemplo, un formulario en espera)
 	isLoading: boolean = false;
