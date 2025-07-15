@@ -1,0 +1,190 @@
+/*
+* @Tables 
+**/
+@use '../abstracts'as *;
+@use 'sass:color';
+
+.table {
+  margin-bottom: 0;
+  background-color: transparent;
+
+  thead {
+    th {
+      border-top: 0;
+      border-bottom-width: 1px;
+      font-weight: 700;
+      font-size: 0.875rem;
+			border-color: $dark;
+    }
+  }
+
+  th,
+  td {
+    vertical-align: middle;
+    line-height: 1;
+    white-space: nowrap;
+    padding: 1.125rem 1.375rem;
+  }
+
+  tbody {
+    td {
+      color: $dark;
+      font-size: 0.875rem;
+
+      .badge {
+        margin-bottom: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      img {
+        width: 36px;
+        height: 36px;
+        border-radius: 100%;
+      }
+    }
+
+  }
+
+  &.table-borderless {
+    border: none;
+
+    tr,
+    td,
+    th {
+      border: none;
+    }
+  }
+
+  // 🌗 Modo oscuro
+  body.dark-mode & {
+    background-color: inherit;
+
+    thead {
+      tr {
+        th {
+          background-color: inherit;
+          border-bottom: 2px solid #fff;
+          color: $white;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          color: $white;
+          background-color: inherit;
+        }
+      }
+    }
+  }
+}
+
+@each $type,
+$pair in $table-color-map {
+  $bg-color: nth($pair, 1);
+  $text-color: nth($pair, 2);
+  $header-color: color.adjust($bg-color, $lightness: -10%);
+  $hover-color: mix($bg-color, #fff, 85%); // hover claro
+  $hover-dark: mix($bg-color, #000, 65%); // hover oscuro
+	
+	// Tabla con fondo por tipo
+	.table-#{$type} {
+    thead {
+      th {
+        background-color: $bg-color;
+        color: $text-color;
+        font-weight: 700;
+        font-size: 0.875rem;
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          background-color: rgba($bg-color, 0.05);
+          color: $bg-color;
+          transition: background-color 0.2s ease;
+        }
+
+        &:hover td {
+          background-color: $hover-color;
+          color: $text-color;
+        }
+      }
+    }
+    // 🌗 Dark Mode
+    body.dark-mode & {
+      thead {
+        th {
+          background-color: $bg-color;
+          color: $text-color;
+        }
+      }
+
+      tbody {
+        tr {
+          td {
+            background-color: rgba($bg-color, 0.15);
+            color: lighten($bg-color, 20%);
+            transition: background-color 0.2s ease;
+          }
+
+          &:hover td {
+            background-color: $hover-dark;
+            color: $text-color;
+          }
+        }
+      }
+    }
+  }
+
+  // Tabla estilo "light"
+  .table-light-#{$type} {
+    thead {
+      th {
+        background-color: lighten($bg-color, 40%);
+        color: darken($bg-color, 35%);
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          background-color: rgba($bg-color, 0.03);
+          color: darken($bg-color, 25%);
+          transition: background-color 0.2s ease;
+        }
+
+        &:hover td {
+          background-color: mix($bg-color, #fff, 90%);
+          color: $text-color;
+        }
+      }
+    }
+
+    // 🌗 Dark mode
+    body.dark-mode & {
+      thead th {
+        background-color: rgba($bg-color, 0.3);
+        color: $text-color;
+      }
+
+      tbody tr {
+        td {
+          background-color: rgba($bg-color, 0.1);
+          color: lighten($bg-color, 10%);
+          transition: background-color 0.2s ease;
+        }
+
+        &:hover td {
+          background-color: mix($bg-color, #000, 65%);
+          color: $text-color;
+        }
+      }
+    }
+  }
+}

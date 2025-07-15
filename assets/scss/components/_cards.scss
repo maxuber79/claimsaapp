@@ -15,10 +15,10 @@
   z-index: 5;
 
   .card-menu {
-		position: absolute;
+    position: absolute;
     right: 1rem;
     top: 1rem;
-    z-index: 20; 
+    z-index: 20;
 
     .dropdown {
       .dropdown-toggle {
@@ -74,7 +74,7 @@
 
           i {
             font-size: 1.5rem;
-            color: $primary-color;
+            color: $primary;
           }
         }
       }
@@ -123,15 +123,17 @@
   }
 }
 
-$card-colors: ("primary": $primary-color,
-  "secondary": $secondary-color,
-  "tertiary": $tertiary-color,
-  "success": $success-color,
-  "danger": $danger-color,
-  "info": $info-color,
-  "warning": $warning-color,
+$card-colors: ("primary":$primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $light,
+  "dark": $dark,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "info": $info,
   "white": $white,
-  "getstarted": $getstarted-color);
+  "getstarted": $getstarted);
 
 @each $type,
 $color in $card-colors {

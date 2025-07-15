@@ -14,6 +14,7 @@
       border-bottom-width: 1px;
       font-weight: 700;
       font-size: 0.875rem;
+      border-color: #e6ecf1;
     }
   }
 
@@ -82,14 +83,13 @@
   }
 }
 
-$table-colors: ("primary": $primary-color,
-  "secondary": $secondary-color,
-  "tertiary": $tertiary-color,
-  "success": $success-color,
-  "danger": $danger-color,
-  "info": $info-color,
-  "warning": $warning-color
-	);
+$table-colors: ("primary": $primary,
+  "secondary": $secondary,
+  "tertiary": $tertiary,
+  "success": $success,
+  "danger": $danger,
+  "info": $info,
+  "warning": $warning);
 
 @each $type,
 $color in $table-colors {
@@ -169,6 +169,104 @@ $color in $table-colors {
 
     &.table-bordered {
       border-color: color.adjust($lighter-color, $lightness: 20%);
+    }
+  }
+}
+
+.table {
+  &.table-light {
+    background-color: $white;
+
+    thead {
+      th {
+        background-color: $light;
+        color: $dark;
+        font-weight: 600;
+        font-size: 1rem;
+        border-bottom: 1px solid #ebf1f6;
+      }
+    }
+
+    th,
+    td {
+      vertical-align: middle;
+      white-space: nowrap;
+      line-height: 1;
+      padding: 1.125rem 1.375rem;
+      font-size: 0.875rem;
+    }
+
+    tbody {
+      td {
+        background-color: $white;
+        color: $dark;
+        border-top: 1px solid #ebf1f6;
+
+        img {
+          width: 36px;
+          height: 36px;
+          border-radius: 100%;
+        }
+      }
+
+      /* tr:hover {
+				background-color: red !important;
+			} */
+    }
+
+    &.table-bordered {
+      border: 1px solid #ebf1f6;
+
+      th,
+      td {
+        border: 1px solid #ebf1f6;
+      }
+    }
+
+    &.table-hover {
+      tbody {
+        tr {
+
+
+          td {
+            color: $dark;
+            border-bottom: 1px solid #ebf1f6;
+
+            &:hover {
+              background-color: lime !important;
+            }
+          }
+        }
+      }
+    }
+
+    // 🌗 Modo oscuro
+    body.dark-mode & {
+      background-color: $gray-900;
+
+      thead th {
+        background-color: rgba($gray-800, 0.8);
+        color: $white;
+      }
+
+      tbody td {
+        background-color: rgba($gray-800, 0.4);
+        color: $white;
+        border-top: 1px solid rgba($white, 0.1);
+      }
+
+      tr:hover {
+        background-color: rgba($primary, 0.2);
+      }
+
+      &.table-bordered {
+        border-color: rgba($white, 0.2);
+
+        th,
+        td {
+          border: 1px solid rgba($white, 0.1);
+        }
+      }
     }
   }
 }

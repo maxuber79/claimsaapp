@@ -1,48 +1,67 @@
 // 🎨 Dashboard Color Palette
 
-$color-primary: #3f51b5; // Azul intermedio usado en los indicadores
-$color-primary-dark: #2c3e90;
-$color-primary-light: #7986cb;
+$primary: #1e4db7; // Azul intermedio usado en los indicadores
+$primary-dark: #153a85;
+$primary-light: #5c7dd1;
+/* color.adjust($primary, $lightness: -20%) color.adjust($primary, $lightness: 20%); */
 
-$color-secondary: #f1f1f1; // Fondo gris claro del dashboard
-$color-secondary-dark: #d5d5d5;
-$color-secondary-light: #fafafa;
+$secondary: #1a97f5;
+$secondary-dark: #136db2;
+$secondary-light: #69c0f8;
 
-$color-success: #10b981; // Verde de métricas positivas
-$color-success-dark: #0f766e;
-$color-success-light: #6ee7b7;
+$accent: #2933f2;
+$accent-light: #1d27b8;
+$accent-dark: #676ff9;
 
-$color-warning: #fbbf24; // Amarillo tipo "earnings"
-$color-warning-dark: #d97706;
-$color-warning-light: #fde68a;
+$tertiary: #384551;
+$tertiary-dark: #2a333d;
+$tertiary-light: #5c6771;
 
-$color-danger: #ef4444; // Rojo rendimiento bajo
-$color-danger-dark: #b91c1c;
-$color-danger-light: #fca5a5;
 
-$color-info: #6366f1; // Azul gráfico lateral
-$color-info-dark: #4338ca;
-$color-info-light: #a5b4fc;
+//$tertiary: #f1f1f1;
+//$tertiary-dark: #d5d5d5;
+//$tertiary-light: #fafafa;
 
-$color-getstarted: #2563eb; // Azul para CTA tipo botón App Store
-$color-getstarted-dark: #1d4ed8;
-$color-getstarted-light: #93c5fd;
+$success: #10b981; // Verde de métricas positivas
+$success-dark: #0f766e;
+$success-light: #6ee7b7;
 
-$color-light: #ffffff;
-$color-dark: #1f2937;
+$warning: #fbbf24; // Amarillo tipo "earnings"
+$warning-dark: #d97706;
+$warning-light: #fde68a;
+
+$danger: #ef4444; // Rojo rendimiento bajo
+$danger-dark: #b91c1c;
+$danger-light: #fca5a5;
+
+$info: #6366f1; // Azul gráfico lateral
+$info-dark: #4338ca;
+$info-light: #a5b4fc;
+
+$getstarted: #2563eb; // Azul para CTA tipo botón App Store
+$getstarted-dark: #1d4ed8;
+$getstarted-light: #93c5fd;
+
+$light: #ebf1f6;
+$dark: #1f2937;
+
+$white: #ffffff; // Blanco
+$black: #2b2b2b; //#384551
+//$light: #ebf1f6;
+//$getstarted-color: #2933f2; // Azul "Get Started" 
 
 // Texto por estado
-$text-color-primary: $color-dark;
+$text-color-primary: $dark;
 $text-color-secondary: #6b7280; // Gris medio para textos de descripción
 $text-color-light: #ffffff;
 
 // Background generales
-$bg-color-primary: $color-primary;
-$bg-color-secondary: $color-secondary;
-$bg-color-light: $color-light;
-$bg-color-dark: $color-dark;
+$bg-color-primary: $primary;
+$bg-color-secondary: $secondary;
+$bg-color-light: $light;
+$bg-color-dark: $dark;
 
-$theme-colors: ("primary": $color-primary,
+/* $theme-colors: ("primary": $color-primary,
   "secondary": $color-secondary,
   "success": $color-success,
   "warning": $color-warning,
@@ -50,4 +69,56 @@ $theme-colors: ("primary": $color-primary,
   "info": $color-info,
   "getstarted": $color-getstarted,
   "light": $color-light,
-  "dark": $color-dark);
+  "dark": $color-dark); */
+
+$light: $light !default;
+$gray-800: #1f2937 !default; // o usa tu $color-dark si prefieres
+$gray-900: #111827 !default; // opcional, para más contraste
+
+// 🎨 Mapa para temas dinámicos (badges, botones, etc.)
+$theme-colors-map: ("primary":$primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $light,
+  "dark": $dark,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "info": $info,
+  "white": $white,
+  "getstarted": $getstarted);
+
+// Mapa para botones personalizados
+$btn-color-map: ("primary": ($primary, $white),
+  "secondary": ($secondary, $white),
+  "accent": ($accent, $white),
+  "light": ($light, $dark),
+  "dark": ($dark, $white),
+  "success": ($success, $white),
+  "warning": ($warning, $dark),
+  "danger": ($danger, $white),
+  "info": ($info, $white),
+  "white": ($white, $dark),
+  "getstarted": ($getstarted, $white));
+
+$table-color-map: ("primary": ($primary, $white),
+  "secondary": ($secondary, $white),
+  "accent": ($accent, $white),
+  "light": ($light, $dark),
+  "dark": ($dark, $white),
+  "success": ($success, $white),
+  "warning": ($warning, $dark),
+  "danger": ($danger, $white),
+  "info": ($info, $white),
+  "getstarted": ($getstarted, $white));
+
+$badge-color-map: ("primary": ($primary, $white),
+  "secondary": ($secondary, $white),
+  "accent": ($accent, $white),
+  "light": ($light, $dark),
+  "dark": ($dark, $white),
+  "success": ($success, $white),
+  "warning": ($warning, $dark),
+  "danger": ($danger, $white),
+  "info": ($info, $white),
+  "getstarted": ($getstarted, $white));

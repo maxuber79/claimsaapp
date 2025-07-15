@@ -20,17 +20,19 @@
 
 
 // Colores Principales
-$primary-color: #ec008c; // Azul principal corporativo
-$secondary-color: #ff5c00; // Azul secundario
-$tertiary-color: #8e2de2; // Negro suave, color base
-$fourth-color: #2b2b2b;
-$fifth-color: #1fdef8;
-$success-color: #55b559; // Verde éxito
-$danger-color: #f55145; // Rojo error
-$info-color: #00cae3; // Celeste informativo
-$warning-color: #ff9e0f; // Naranja advertencia
-$white: #ffffff; // Blanco
-$getstarted-color: #2933f2; // Azul "Get Started" 
+//$primary: #ec008c; // Azul principal corporativo
+//$secondary: #ff5c00; // Azul secundario
+//$tertiary: #8e2de2; // Negro suave, color base
+//$fourth: #2b2b2b;
+//$fifth: #1fdef8;
+//$success: #55b559; // Verde éxito
+//$danger: #f55145; // Rojo error
+//$info: #00cae3; // Celeste informativo
+//$warning: #ff9e0f; // Naranja advertencia
+//$white: #ffffff; // Blanco
+//$dark: #2b2b2b; //#384551
+//$light: #ebf1f6;
+//$getstarted-color: #2933f2; // Azul "Get Started" 
 
 // Otros Colores Complementarios
 $honeydew: #e6f4e9; // Verde claro fondo
@@ -44,7 +46,7 @@ $font-buttons: "Geist",
 Arial,
 Helvetica,
 sans-serif; // Fuente botones
-$font-size: 1rem; // Tamaño base
+$font-size: 0.875rem; // Tamaño base
 $font-dark: #2B2B2B; // Color fuente oscuro
 $font-white: #ffffff; // Color fuente claro
 $font-weight: 400; // Peso fuente normal
@@ -56,12 +58,13 @@ $color-title: #2B2B2B; // Color títulos
 $color-subtitle: #2B2B2B; // Color subtítulos
 $color-paragraph: #2B2B2B;
 $color-text: #2B2B2B;
+$font-base: "Geist";
 /*===========================================
 =        Variables Layout y Medidas        =
 ===========================================*/
 
-$padding: 0.4rem 1.5rem; // Padding botones
-$b-radius: 50px; // Bordes redondeados botones
+$padding: 0.375rem 1.7rem; // Padding botones 16px 7px
+$b-radius: 3.125rem; // Bordes redondeados botones
 $card-radius: 1rem; // Bordes redondeados cards
 $card-padding: 1.5rem; // Espaciado interno cards
 $btn-width: auto; // Ancho automático botones

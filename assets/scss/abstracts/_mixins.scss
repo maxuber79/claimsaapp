@@ -1,5 +1,6 @@
 @use 'sass:math';
 @use 'variables'; // Usa el "hub" y podés usar todo directamente
+@use 'sass:color';
 
 @mixin size-btn($py:.5rem, $px:1.6rem) {
   padding: $py $px;
@@ -17,28 +18,28 @@
 } */
 
 
-@mixin roboto($fsize: 1rem, $fweight:400, $fcolor:#000) {
+@mixin roboto($fsize: 1rem, $fweight:400, $fcolor:$dark) {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   color: $fcolor;
   font-size: $fsize;
   font-weight: $fweight;
 }
 
-@mixin geist($fsize: 1rem, $fweight:400, $fcolor:#000) {
+@mixin geist($fsize: 1rem, $fweight:400, $fcolor:$dark) {
   font-family: "Geist", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: $fsize;
   font-weight: $fweight;
   color: $fcolor;
 }
 
-@mixin nunito($fsize: 1rem, $fweight:400, $fcolor:#000) {
+@mixin nunito($fsize: 1rem, $fweight:400, $fcolor:$dark) {
   font-family: "Nunito Sans", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: $fsize;
   font-weight: $fweight;
   color: $fcolor;
 }
 
-@mixin karla($fsize: 1rem, $fweight:400, $fcolor:#000) {
+@mixin karla($fsize: 1rem, $fweight:400, $fcolor:$dark) {
   font-family: "Karla", "Segoe UI", Poppins, system-ui, -apple-system, Roboto, Helvetica Neue, Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: $fsize;
   font-weight: $fweight;

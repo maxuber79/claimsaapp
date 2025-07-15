@@ -1,6 +1,6 @@
 @use '../abstracts'as *;
 
-@include generate-utility-classes($theme-colors);
+@include generate-utility-classes($theme-colors-map);
 
 .grid-margin {
   margin-bottom: 2.5rem;

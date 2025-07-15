@@ -1,0 +1,684 @@
+{
+  "users": {
+    "0FnJKfeUI2T73kBGO5GCdlpUs6W2": {
+      "claims": [
+        {
+          "id": "0FnJ-001",
+          "nombre": "Juan Pérez",
+          "tipo": "Servicio",
+          "total": 17202.69,
+          "fecha": "2025-07-09",
+          "estado": "Iniciado",
+          "subject": "Incidente no resuelto",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-002",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Entrega",
+          "total": 40382.1,
+          "fecha": "2025-07-04",
+          "estado": "Iniciado",
+          "subject": "Problemas de facturación",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-003",
+          "nombre": "Ana Gómez",
+          "tipo": "Servicio",
+          "total": 43870.9,
+          "fecha": "2025-06-07",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-004",
+          "nombre": "Ana Gómez",
+          "tipo": "Producto",
+          "total": 43999.79,
+          "fecha": "2025-07-03",
+          "estado": "Pendiente",
+          "subject": "Producto defectuoso",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-005",
+          "nombre": "Juan Pérez",
+          "tipo": "Facturación",
+          "total": 32860.79,
+          "fecha": "2025-06-05",
+          "estado": "Pendiente",
+          "subject": "Reclamo por demora",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-006",
+          "nombre": "Luis Fuentes",
+          "tipo": "Entrega",
+          "total": 23514.49,
+          "fecha": "2025-05-23",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-007",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Facturación",
+          "total": 46882.52,
+          "fecha": "2025-06-30",
+          "estado": "Iniciado",
+          "subject": "Incidente no resuelto",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-008",
+          "nombre": "Luis Fuentes",
+          "tipo": "Facturación",
+          "total": 25224.78,
+          "fecha": "2025-06-28",
+          "estado": "Pendiente",
+          "subject": "Incidente no resuelto",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-009",
+          "nombre": "Juan Pérez",
+          "tipo": "Servicio",
+          "total": 49099.88,
+          "fecha": "2025-06-29",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-010",
+          "nombre": "Luis Fuentes",
+          "tipo": "Entrega",
+          "total": 18143.52,
+          "fecha": "2025-06-25",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-011",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Entrega",
+          "total": 35405.2,
+          "fecha": "2025-06-08",
+          "estado": "Cancelado",
+          "subject": "Incidente no resuelto",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "0FnJ-012",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Facturación",
+          "total": 26185.57,
+          "fecha": "2025-06-03",
+          "estado": "Cancelado",
+          "subject": "Problemas de facturación",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        }
+      ]
+    },
+    "KVDf8PfHEWMdic0SQPcxFMizoBf2": {
+      "claims": [
+        {
+          "id": "KVDf-001",
+          "nombre": "Valentina Soto",
+          "tipo": "Facturación",
+          "total": 35340.32,
+          "fecha": "2025-05-20",
+          "estado": "Cancelado",
+          "subject": "Producto defectuoso",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-002",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 18968.71,
+          "fecha": "2025-06-30",
+          "estado": "Cerrado",
+          "subject": "Incidente no resuelto",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-003",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Producto",
+          "total": 34823.04,
+          "fecha": "2025-06-07",
+          "estado": "Cerrado",
+          "subject": "Reclamo por demora",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-004",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Facturación",
+          "total": 36101.92,
+          "fecha": "2025-06-15",
+          "estado": "Cerrado",
+          "subject": "Incidente no resuelto",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-005",
+          "nombre": "Luis Fuentes",
+          "tipo": "Producto",
+          "total": 15407.31,
+          "fecha": "2025-06-28",
+          "estado": "Cancelado",
+          "subject": "Producto defectuoso",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-006",
+          "nombre": "Juan Pérez",
+          "tipo": "Entrega",
+          "total": 33035.71,
+          "fecha": "2025-05-16",
+          "estado": "Cancelado",
+          "subject": "Problemas de facturación",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-007",
+          "nombre": "Valentina Soto",
+          "tipo": "Servicio",
+          "total": 39987.31,
+          "fecha": "2025-06-04",
+          "estado": "Cancelado",
+          "subject": "Incidente no resuelto",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-008",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Entrega",
+          "total": 41621.81,
+          "fecha": "2025-06-04",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-009",
+          "nombre": "Ana Gómez",
+          "tipo": "Servicio",
+          "total": 40344.18,
+          "fecha": "2025-06-11",
+          "estado": "Pendiente",
+          "subject": "Producto defectuoso",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-010",
+          "nombre": "Juan Pérez",
+          "tipo": "Entrega",
+          "total": 29724.19,
+          "fecha": "2025-05-19",
+          "estado": "Pendiente",
+          "subject": "Problemas de facturación",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-011",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Producto",
+          "total": 49193.87,
+          "fecha": "2025-05-30",
+          "estado": "Cerrado",
+          "subject": "Reclamo por demora",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "KVDf-012",
+          "nombre": "Ana Gómez",
+          "tipo": "Facturación",
+          "total": 30316.98,
+          "fecha": "2025-06-29",
+          "estado": "Pendiente",
+          "subject": "Reclamo por demora",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        }
+      ]
+    },
+    "OmDGtNFXEngXyjZpxcQUHaKpBcA2": {
+      "claims": [
+        {
+          "id": "OmDG-001",
+          "nombre": "Luis Fuentes",
+          "tipo": "Servicio",
+          "total": 36091.02,
+          "fecha": "2025-06-13",
+          "estado": "Cerrado",
+          "subject": "Producto defectuoso",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-002",
+          "nombre": "Valentina Soto",
+          "tipo": "Facturación",
+          "total": 21833.66,
+          "fecha": "2025-06-22",
+          "estado": "Cancelado",
+          "subject": "Reclamo por demora",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-003",
+          "nombre": "Luis Fuentes",
+          "tipo": "Entrega",
+          "total": 30008.38,
+          "fecha": "2025-06-30",
+          "estado": "Cancelado",
+          "subject": "Problemas de facturación",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-004",
+          "nombre": "Luis Fuentes",
+          "tipo": "Servicio",
+          "total": 41953.16,
+          "fecha": "2025-06-15",
+          "estado": "Cerrado",
+          "subject": "Producto defectuoso",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-005",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Servicio",
+          "total": 35804.76,
+          "fecha": "2025-06-16",
+          "estado": "Cerrado",
+          "subject": "Incidente no resuelto",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-006",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 18867.11,
+          "fecha": "2025-06-12",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-007",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Facturación",
+          "total": 36910.31,
+          "fecha": "2025-06-27",
+          "estado": "Cancelado",
+          "subject": "Reclamo por demora",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-008",
+          "nombre": "Valentina Soto",
+          "tipo": "Servicio",
+          "total": 29982.03,
+          "fecha": "2025-07-09",
+          "estado": "Pendiente",
+          "subject": "Reclamo por demora",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-009",
+          "nombre": "Ana Gómez",
+          "tipo": "Producto",
+          "total": 33383.54,
+          "fecha": "2025-06-07",
+          "estado": "Pendiente",
+          "subject": "Reclamo por demora",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-010",
+          "nombre": "Valentina Soto",
+          "tipo": "Facturación",
+          "total": 34819.1,
+          "fecha": "2025-07-05",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-011",
+          "nombre": "Valentina Soto",
+          "tipo": "Entrega",
+          "total": 32583.03,
+          "fecha": "2025-05-26",
+          "estado": "Cerrado",
+          "subject": "Incidente no resuelto",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "OmDG-012",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Facturación",
+          "total": 33622.31,
+          "fecha": "2025-06-12",
+          "estado": "Pendiente",
+          "subject": "Producto defectuoso",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        }
+      ]
+    },
+    "bkk4M0pg8cXiVsZU8cW8VJYDvZ12": {
+      "claims": [
+        {
+          "id": "bkk4-001",
+          "nombre": "Valentina Soto",
+          "tipo": "Facturación",
+          "total": 45620.97,
+          "fecha": "2025-05-20",
+          "estado": "Pendiente",
+          "subject": "Producto defectuoso",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-002",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 45885.51,
+          "fecha": "2025-06-15",
+          "estado": "Pendiente",
+          "subject": "Incidente no resuelto",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-003",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Producto",
+          "total": 31433.54,
+          "fecha": "2025-06-13",
+          "estado": "Cerrado",
+          "subject": "Producto defectuoso",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-004",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 30714.5,
+          "fecha": "2025-06-19",
+          "estado": "Cancelado",
+          "subject": "Reclamo por demora",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-005",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Producto",
+          "total": 45259.6,
+          "fecha": "2025-05-20",
+          "estado": "Pendiente",
+          "subject": "Reclamo por demora",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-006",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 17528.18,
+          "fecha": "2025-06-28",
+          "estado": "Cancelado",
+          "subject": "Reclamo por demora",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-007",
+          "nombre": "Juan Pérez",
+          "tipo": "Entrega",
+          "total": 26724.83,
+          "fecha": "2025-06-12",
+          "estado": "Cerrado",
+          "subject": "Reclamo por demora",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-008",
+          "nombre": "Ana Gómez",
+          "tipo": "Facturación",
+          "total": 45214.06,
+          "fecha": "2025-05-31",
+          "estado": "Pendiente",
+          "subject": "Producto defectuoso",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-009",
+          "nombre": "Luis Fuentes",
+          "tipo": "Facturación",
+          "total": 22156.61,
+          "fecha": "2025-07-04",
+          "estado": "Cancelado",
+          "subject": "Problemas de facturación",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-010",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Servicio",
+          "total": 22946.09,
+          "fecha": "2025-05-11",
+          "estado": "Cerrado",
+          "subject": "Problemas de facturación",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-011",
+          "nombre": "Ana Gómez",
+          "tipo": "Servicio",
+          "total": 44508.27,
+          "fecha": "2025-06-11",
+          "estado": "Pendiente",
+          "subject": "Incidente no resuelto",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "bkk4-012",
+          "nombre": "Valentina Soto",
+          "tipo": "Entrega",
+          "total": 46836.13,
+          "fecha": "2025-06-24",
+          "estado": "Cancelado",
+          "subject": "Producto defectuoso",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        }
+      ]
+    },
+    "zxrTVUTJZjXVvTvUEnB03FHWMYf2": {
+      "claims": [
+        {
+          "id": "zxrT-001",
+          "nombre": "Ana Gómez",
+          "tipo": "Producto",
+          "total": 23400.99,
+          "fecha": "2025-06-25",
+          "estado": "Iniciado",
+          "subject": "Reclamo por demora",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-002",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 31420.02,
+          "fecha": "2025-07-06",
+          "estado": "Cerrado",
+          "subject": "Reclamo por demora",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-003",
+          "nombre": "Juan Pérez",
+          "tipo": "Entrega",
+          "total": 40856.15,
+          "fecha": "2025-07-05",
+          "estado": "Pendiente",
+          "subject": "Reclamo por demora",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-004",
+          "nombre": "Juan Pérez",
+          "tipo": "Producto",
+          "total": 48195.31,
+          "fecha": "2025-05-13",
+          "estado": "Iniciado",
+          "subject": "Incidente no resuelto",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-005",
+          "nombre": "Ana Gómez",
+          "tipo": "Entrega",
+          "total": 36786.78,
+          "fecha": "2025-07-04",
+          "estado": "Cancelado",
+          "subject": "Incidente no resuelto",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-006",
+          "nombre": "Luis Fuentes",
+          "tipo": "Facturación",
+          "total": 39998.42,
+          "fecha": "2025-06-25",
+          "estado": "Pendiente",
+          "subject": "Producto defectuoso",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-007",
+          "nombre": "Ana Gómez",
+          "tipo": "Producto",
+          "total": 46821.0,
+          "fecha": "2025-07-03",
+          "estado": "Cancelado",
+          "subject": "Producto defectuoso",
+          "detail": "El producto llegó en mal estado y no funciona.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-008",
+          "nombre": "Carlos Ruiz",
+          "tipo": "Servicio",
+          "total": 38460.97,
+          "fecha": "2025-06-20",
+          "estado": "Pendiente",
+          "subject": "Problemas de facturación",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-009",
+          "nombre": "Luis Fuentes",
+          "tipo": "Facturación",
+          "total": 20294.97,
+          "fecha": "2025-07-03",
+          "estado": "Cerrado",
+          "subject": "Reclamo por demora",
+          "detail": "No hubo una respuesta clara frente al incidente reportado.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-010",
+          "nombre": "Luis Fuentes",
+          "tipo": "Facturación",
+          "total": 23031.14,
+          "fecha": "2025-06-30",
+          "estado": "Cancelado",
+          "subject": "Reclamo por demora",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-011",
+          "nombre": "Ana Gómez",
+          "tipo": "Producto",
+          "total": 38785.24,
+          "fecha": "2025-07-04",
+          "estado": "Cerrado",
+          "subject": "Reclamo por demora",
+          "detail": "La factura presenta montos incorrectos que no corresponden al servicio.",
+          "selected": false
+        },
+        {
+          "id": "zxrT-012",
+          "nombre": "Valentina Soto",
+          "tipo": "Facturación",
+          "total": 20587.65,
+          "fecha": "2025-06-24",
+          "estado": "Pendiente",
+          "subject": "Problemas de facturación",
+          "detail": "El reclamo fue generado debido a una demora inesperada.",
+          "selected": false
+        }
+      ]
+    }
+  }
+}

@@ -42,7 +42,7 @@
 }
 
 .subtitle-geist {
-  @include karla($subtitle-size, bold, $primary-color);
+  @include karla($subtitle-size, bold, $color-text);
   letter-spacing: -0.125rem;
 }
 
