@@ -17,15 +17,12 @@ export class ReclamosTableComponent {
   masterChecked = false;
   loading = true;
 
-  // 🔢 Variables de paginación
   currentPage = 1;
   itemsPerPage = 6;
 
-  // ✏️ Modal de edición
   selectedClaim: Claim | null = null;
   showModal = false;
 
-  // ➕ Modal para nuevo reclamo
   newClaim: Claim = this.getEmptyClaim();
   showNewModal = false;
 
@@ -35,7 +32,7 @@ export class ReclamosTableComponent {
     const saved = localStorage.getItem('claims');
     if (saved) {
       this.reclamos = JSON.parse(saved);
-			console.table(this.reclamos)
+      console.table(this.reclamos);
       this.loading = false;
     } else {
       this.mockData.getReclamos().subscribe((data) => {
@@ -95,60 +92,57 @@ export class ReclamosTableComponent {
   }
 
   saveChanges() {
-		if (!this.selectedClaim?.nombre || !this.selectedClaim?.tipo || !this.selectedClaim?.estado) {
-			this.alert.warning('Completa los campos obligatorios para editar el reclamo.');
-			return;
-		}
-	
-		const index = this.reclamos.findIndex(r => r.id === this.selectedClaim!.id);
-		if (index !== -1) {
-			this.reclamos[index] = { ...this.selectedClaim, selected: false };
-			this.saveToLocal();
-			this.alert.success('El reclamo fue editado correctamente.');
-		}
-		this.cancelEdit();
-	}
-	
+    if (!this.selectedClaim?.nombre || !this.selectedClaim?.tipo || !this.selectedClaim?.estado) {
+      this.alert.warning('Completa los campos obligatorios para editar el reclamo.');
+      return;
+    }
+
+    const index = this.reclamos.findIndex(r => r.id === this.selectedClaim!.id);
+    if (index !== -1) {
+      this.reclamos[index] = { ...this.selectedClaim, selected: false };
+      this.saveToLocal();
+      this.alert.success('El reclamo fue editado correctamente.');
+    }
+    this.cancelEdit();
+  }
 
   cancelEdit() {
     this.selectedClaim = null;
     this.showModal = false;
   }
 
-  // ➕ Crear nuevo reclamo
   openNewModal() {
     this.newClaim = this.getEmptyClaim();
     this.showNewModal = true;
   }
 
   saveNewClaim() {
-		if (!this.newClaim.nombre || !this.newClaim.tipo || !this.newClaim.estado) {
-			this.alert.warning('Completa los campos obligatorios para crear un nuevo reclamo.');
-			return;
-		}
-	
-		const nuevo = {
-			...this.newClaim,
-			id: this.mockData.generateUUID(),
-			selected: false
-		};
-		this.reclamos.unshift(nuevo);
-		this.saveToLocal();
-		this.alert.success('Nuevo reclamo agregado con éxito.');
-		this.showNewModal = false;
-	}
-	
+    if (!this.newClaim.nombre || !this.newClaim.tipo || !this.newClaim.estado) {
+      this.alert.warning('Completa los campos obligatorios para crear un nuevo reclamo.');
+      return;
+    }
+
+    const nuevo = {
+      ...this.newClaim,
+      id: this.mockData.generateUUID(),
+      selected: false
+    };
+    this.reclamos.unshift(nuevo);
+    this.saveToLocal();
+    this.alert.success('Nuevo reclamo agregado con éxito.');
+    this.showNewModal = false;
+  }
 
   cancelNewClaim() {
     this.newClaim = this.getEmptyClaim();
     this.showNewModal = false;
   }
 
-	resetData() {
-		localStorage.removeItem('claims');
-  this.ngOnInit();
-  this.alert.info('Datos restaurados a valores por defecto');
-	}
+  resetData() {
+    localStorage.removeItem('claims');
+    this.ngOnInit();
+    this.alert.info('Datos restaurados a valores por defecto');
+  }
 
   private saveToLocal() {
     localStorage.setItem('claims', JSON.stringify(this.reclamos));
@@ -167,4 +161,3 @@ export class ReclamosTableComponent {
     };
   }
 }
-

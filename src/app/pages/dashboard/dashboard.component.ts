@@ -18,12 +18,7 @@ import { TodoChartComponent } from '../dashboard/components/todo-chart.component
 import { AlertService } from '../../services/alert.service';
 import { MockDataService } from '../../services/mock-data.service';
  
-import { CardMetricComponent } from '../dashboard/components/card-metric.component';
-import { LineChartComponent } from './components/line-chart.component';
-import {  SatisfactionChartComponent } from './components/satisfaction-chart.component';
-import { ChannelsChartComponent } from './components/channels-chart.component';
-import { NotificationListComponent } from './components/notification-list.component';
-import { ReclamosTableComponent } from './components/reclamos-table.component';
+import { ComponentsComponent } from '../../shared/components/components.component'; 
 
 interface Metrics {
 	color: string;
@@ -37,7 +32,7 @@ interface Metrics {
 @Component({
   selector: 'app-dashboard',
 	standalone: true,
-  imports: [CommonModule, RouterModule, CardMetricComponent, LineChartComponent, SatisfactionChartComponent, ChannelsChartComponent, NotificationListComponent, ReclamosTableComponent],
+  imports: [CommonModule, RouterModule,ComponentsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

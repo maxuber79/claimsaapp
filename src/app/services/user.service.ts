@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, getDoc, setDoc, collection, collectionData, docData, updateDoc, deleteDoc } from '@angular/fire/firestore'; 
+import { Firestore, doc, getDoc, setDoc, collection, collectionData, docData, updateDoc, deleteDoc,query, where } from '@angular/fire/firestore'; 
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -178,6 +178,70 @@ export class UserService {
       })
     );
   }
+
+/**
+ * Obtiene todos los usuarios desde Firestore.
+ * Utiliza el SDK modular y retorna los datos con el campo 'uid' incluido.
+ *
+ * @returns Observable<UserModel[]> - Lista reactiva de usuarios
+ */
+getAllUsers(): Observable<UserModel[]> {
+  const usersRef = collection(this.firestore, 'users');
+  return collectionData(usersRef, { idField: 'uid' }) as Observable<UserModel[]>;
+}
+
+
+	/**
+ * Cambia el estado de un usuario en Firestore.
+ * Actualiza el campo 'activo' del usuario con el UID especificado.
+ *
+ * @param uid - ID del usuario a modificar
+ * @param activo - true (habilitado) o false (deshabilitado)
+ * @returns Promise<void>
+ */
+toggleUserStatus(uid: string, activo: boolean): Promise<void> {
+  const userDocRef = doc(this.firestore, `users/${uid}`);
+  return updateDoc(userDocRef, { activo });
+}
+
+ 
+
+updateUserRole(uid: string, rol: 'Administrador' | 'Ejecutivo'): Promise<void> {
+  const userDoc = doc(this.firestore, `users/${uid}`);
+  return updateDoc(userDoc, { rol });
+}
+
+getCurrentUserUid(): Observable<string | null> {
+  return this.authService.getAuthState().pipe(
+    map(user => user?.uid || null)
+  );
+}
+
+/**
+ * 🔐 Obtiene solo el rol del usuario autenticado desde Firestore.
+ * @returns Observable<string | null>
+ */
+	getCurrentUserRole(): Observable<string | null> {
+		return this.authService.getAuthState().pipe(
+			switchMap((user) => {
+				if (user && user.uid) {
+					const userRef = doc(this.firestore, `${this.usersCollectionName}/${user.uid}`);
+					return docData(userRef).pipe(
+						map((data: any) => data.rol || null)
+					);
+				} else {
+					console.warn('⚠️ No hay usuario autenticado');
+					return of(null);
+				}
+			}),
+			catchError(error => {
+				console.error('❌ Error al obtener el rol:', error);
+				return of(null);
+			})
+		);
+	}
+
+
 
 	/* getUserFromFirestore(uid: string): Observable<UserModel> {
     const userRef = doc(this.firestore, `users/${uid}`);
@@ -378,6 +442,16 @@ export class UserService {
 		return setDoc(userDoc, dataToSave, { merge: true });
 	} */
 
+	  /**
+   * 🧑‍💼 Obtiene la lista de usuarios con rol "Ejecutivo" desde Firestore.
+   * @returns Observable con un arreglo de usuarios que tienen el rol "Ejecutivo".
+   */
+		getExecutives(): Observable<UserModel[]> {
+			const q = query(collection(this.firestore, this.usersCollectionName), where('rol', '==', 'Ejecutivo'));
+			return collectionData(q, { idField: 'uid' }) as Observable<UserModel[]>;
+		}
+	
+		
 		 
 		 
 		

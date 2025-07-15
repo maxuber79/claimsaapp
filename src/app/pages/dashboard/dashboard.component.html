@@ -1,5 +1,4 @@
-<!-- <div id="" class="bg-info-subtle vh-100 text-center border-1"> -->
-<div class="d-flex flex-column min-vh-100 text-center dashboard">
+<div class="d-flex flex-column min-vh-100 dashboard">
 	<header class="px-3 text-bg-dark">
 		<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
 			<div class="container-fluid">
@@ -71,6 +70,14 @@
 								<a class="dropdown-item" [routerLink]="['/dashboard/profile', userData?.uid]">Profile</a>
 							</li>
 							<li>
+								<a class="dropdown-item" [routerLink]="['/dashboard/claims']">Mis Reclamos</a>
+							</li>
+							<li>
+								<a class="dropdown-item" [routerLink]="['/dashboard/admin-users']">
+									Admin Usuarios
+								</a>
+							</li>
+							<li>
 								<hr class="dropdown-divider">
 							</li>
 							<li>
@@ -82,186 +89,79 @@
 			</div>
 		</nav>
 	</header>
-	<!-- <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-			<img [src]="imagePath" class="logo-login my-2" alt="">
-		</a>
-		<ul class="nav nav-pills">
-			<li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-			<li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-			<li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-			<li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-			<li class="nav-item"><a href="#" class="nav-link">About</a></li>
-		</ul> -->
-		<main class="flex-grow-1 container py-4 ">
-			<div class="container">
-				<div class="row"> 
-					<div class="col-12 ">
-
-						<!-- Spinner mientras carga -->
-						<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
-							<div class="spinner-border" role="status">
-								<span class="visually-hidden">Loading...</span>
-							</div>
-						</div>
-						 
-							<div *ngIf="!isLoading && userData">
-								<div class="card">
-									<div class="card-body">
-										<div class="d-flex align-items-center mb-4 mb-lg-0 py-4">
-											<div class="position-relative d-inline-block  ">
-												<img [src]="userData.photoURL || imageDefault "
-													class="border border-5 border-primary rounded-circle profile-pic border-opacity-25 object-fit-cover p-1"
-													alt="Profile Picture" width="100" height="100" />
-											</div>
-											<div class="ms-3 text-start ">
-												<h2 class="m-0 p-0">Hola, {{ userData.name || 'Invitado' }}</h2>
-												<h6 class="m-0 p-0">Bienvenido a tu aplicación</h6>
-												<p class="m-0 p-0 text-muted">Este es tu panel de control, aquí puedes administrar tus tareas, ver estadísticas y
-													más.</p>
-											</div>
-										</div>	
-									</div>
-								</div>
-																						
-							</div>
-							
-						 
-					</div>
-					<!-- <div class="col-12 ">
-						<app-todo-stats [todos]="todos"></app-todo-stats>
-					</div> -->
-					<!-- <div class="col-5 "> 
-						<app-todo-chart [todos]="todos"></app-todo-chart>
-					</div> -->
-					 
-					<!-- section cards metrics -->
-
-					<div class="row g-3">
-						<div class="col-md-6 col-xl-3 my-3" *ngFor="let card of metrics">
-							<app-card-metric [icon]="card.icon" [count]="card.count" [label]="card.label" [color]="card.color"
-								[footerText]="card.footerText" [trendIcon]="card.trendIcon">
-							</app-card-metric>
-						</div>
-					</div>
-					
-					<!-- Section graficos -->
-					<div class="row g-3">
-						<!-- Gráfico Lineal -->
-						<div class="col-12 grid-margin">
-							<app-line-chart [ticketsData]="tickets"></app-line-chart>
-						</div>
-					
-						<!-- Gráfico de satisfacción -->
-						<div class="col-sm-12 col-md-6 col-xl-6 grid-margin stretch-card">
-							<app-satisfaction-chart [positive]="satisfaction?.positive || 0" [negative]="satisfaction?.negative || 0">
-							</app-satisfaction-chart>
-						</div>
-					
-						<!-- Gráfico de canales -->
-						<div class="col-sm-12 col-md-6 col-xl-6 grid-margin stretch-card">
-							<app-channels-chart [channels]="channels"></app-channels-chart>
-						</div>
-					</div>
-
-					<!-- Otros elementos de la página -->
-					<div class="row">
-						<div class="col-md-8 grid-margin stretch-card">
-							<app-reclamos-table></app-reclamos-table>
-						</div>
-						<div class="col-md-4 stretch-card grid-margin">
-							<app-notification-list [notifications]="notifications"></app-notification-list>
-							<!-- <div class="card">
-								<div class="card-body position-relative">
-									<span class="mdi mdi-crown-circle fs-4 text-warning" style="position: absolute; top: 1rem; right:1rem;"></span>
-									<p class="card-title">Notifications</p>
-									<ul class="icon-data-list">
-										<li>
-											<div class="d-flex">
-												<img src="../assets/images/faces/face1.jpg" alt="user">
-												<div>
-													<p class="text-info mb-1">Isabella Becker</p>
-													<p class="mb-0">Sales dashboard have been created</p>
-													<small>9:30 am</small>
-												</div>
-											</div>
-										</li>
-										<li>
-											<div class="d-flex">
-												<img src="../assets/images/faces/face2.jpg" alt="user">
-												<div>
-													<p class="text-info mb-1">Adam Warren</p>
-													<p class="mb-0">You have done a great job #TW111</p>
-													<small>10:30 am</small>
-												</div>
-											</div>
-										</li>
-										<li>
-											<div class="d-flex">
-												<img src="../assets/images/faces/face3.jpg" alt="user">
-												<div>
-													<p class="text-info mb-1">Leonard Thornton</p>
-													<p class="mb-0">Sales dashboard have been created</p>
-													<small>11:30 am</small>
-												</div>
-											</div>
-										</li>
-										<li>
-											<div class="d-flex">
-												<img src="../assets/images/faces/face4.jpg" alt="user">
-												<div>
-													<p class="text-info mb-1">George Morrison</p>
-													<p class="mb-0">Sales dashboard have been created</p>
-													<small>8:50 am</small>
-												</div>
-											</div>
-										</li>
-										<li>
-											<div class="d-flex">
-												<img src="../assets/images/faces/face5.jpg" alt="user">
-												<div>
-													<p class="text-info mb-1">Ryan Cortez</p>
-													<p class="mb-0">Herbs are fun and easy to grow.</p>
-													<small>9:00 am</small>
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div> -->
-						</div>
-					</div>
-
-
-					<div class="row">
-						<div class="col-12 grid-margin stretch-card">
-							
-
-							<!-- products-table.component.html -->
-							 
-
-						</div>
-					</div>
-
-
-
-
-
-
-					<!-- <div class="col-12 border-2"> 
-					 <router-outlet></router-outlet> 
-					</div> -->
-
+	<main class="flex-grow-1 container py-4 border-1">
+		 
 			
-					 			
+		<!-- <div class="col-12 ">
+					<app-todo-stats [todos]="todos"></app-todo-stats>
+				</div> -->
+		<!-- <div class="col-5 "> 
+					<app-todo-chart [todos]="todos"></app-todo-chart>
+				</div> -->
 
+			 
 
-
-
-
+			<section class="container border-2">
+				<router-outlet></router-outlet> 
+			</section>
+			<app-components></app-components>
+			 
+	</main>
+	<!-- Footer -->
+	<footer class="py-4 bg-dark" data-bs-theme="dark">
+		<div class="container">
+			<div class="d-lg-flex justify-content-between py-3 py-lg-2">
+				<div class="small mb-2 mb-lg-0">
+					<p class="text-muted mb-0 me-5">© 2023 FreeFrontend.dev. All rights reserved.</p>
+				</div>
+				<div class="d-flex small align-items-end justify-content-between">
+					<div>
+						<a class="d-block d-lg-inline text-muted ms-lg-3 mb-2 mb-lg-0" href="">Privacy Policy</a> <a
+							class="d-block d-lg-inline text-muted ms-lg-3 mb-2 mb-lg-0" href="">Terms</a> <a
+							class="d-block d-lg-inline text-muted ms-lg-3 mb-2 mb-lg-0" href="">Cookies</a> <a
+							class="d-block d-lg-inline text-muted ms-lg-3" href="">Sitemap</a>
+					</div>
+					<div class="d-none d-lg-block ms-3">
+						<a class="me-2" href=""><svg class="bi bi-pinterest text-primary" fill="currentColor" height="16"
+								viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M8 0a8 8 0 0 0-2.915 15.452c-.07-.633-.134-1.606.027-2.297.146-.625.938-3.977.938-3.977s-.239-.479-.239-1.187c0-1.113.645-1.943 1.448-1.943.682 0 1.012.512 1.012 1.127 0 .686-.437 1.712-.663 2.663-.188.796.4 1.446 1.185 1.446 1.422 0 2.515-1.5 2.515-3.664 0-1.915-1.377-3.254-3.342-3.254-2.276 0-3.612 1.707-3.612 3.471 0 .688.265 1.425.595 1.826a.24.24 0 0 1 .056.23c-.061.252-.196.796-.222.907-.035.146-.116.177-.268.107-1-.465-1.624-1.926-1.624-3.1 0-2.523 1.834-4.84 5.286-4.84 2.775 0 4.932 1.977 4.932 4.62 0 2.757-1.739 4.976-4.151 4.976-.811 0-1.573-.421-1.834-.919l-.498 1.902c-.181.695-.669 1.566-.995 2.097A8 8 0 1 0 8 0z">
+								</path>
+							</svg></a> <a class="me-2" href=""><svg class="bi bi-twitter text-primary" fill="currentColor" height="16"
+								viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z">
+								</path>
+							</svg></a> <a class="me-2" href=""><svg class="bi bi-facebook text-primary" fill="currentColor" height="16"
+								viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z">
+								</path>
+							</svg></a>
+					</div>
+					<div class="d-lg-none">
+						<a class="me-2" href=""><svg class="bi bi-pinterest text-primary" fill="currentColor" height="16"
+								viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M8 0a8 8 0 0 0-2.915 15.452c-.07-.633-.134-1.606.027-2.297.146-.625.938-3.977.938-3.977s-.239-.479-.239-1.187c0-1.113.645-1.943 1.448-1.943.682 0 1.012.512 1.012 1.127 0 .686-.437 1.712-.663 2.663-.188.796.4 1.446 1.185 1.446 1.422 0 2.515-1.5 2.515-3.664 0-1.915-1.377-3.254-3.342-3.254-2.276 0-3.612 1.707-3.612 3.471 0 .688.265 1.425.595 1.826a.24.24 0 0 1 .056.23c-.061.252-.196.796-.222.907-.035.146-.116.177-.268.107-1-.465-1.624-1.926-1.624-3.1 0-2.523 1.834-4.84 5.286-4.84 2.775 0 4.932 1.977 4.932 4.62 0 2.757-1.739 4.976-4.151 4.976-.811 0-1.573-.421-1.834-.919l-.498 1.902c-.181.695-.669 1.566-.995 2.097A8 8 0 1 0 8 0z">
+								</path>
+							</svg></a> <a class="me-2" href=""><svg class="bi bi-twitter text-primary" fill="currentColor" height="16"
+								viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z">
+								</path>
+							</svg></a> <a class="me-2" href=""><svg class="bi bi-facebook text-primary" fill="currentColor" height="16"
+								viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z">
+								</path>
+							</svg></a>
+					</div>
 				</div>
 			</div>
-		</main>
+		</div>
+	</footer>
+
 </div>
 
 

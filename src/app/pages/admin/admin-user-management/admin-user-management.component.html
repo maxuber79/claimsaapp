@@ -1,0 +1,109 @@
+<!-- <div class="container mt-4"> -->
+ 
+	
+
+	<div class="row mb-3">
+		<div class="col-12 text-start">
+			<div class="card ">
+				<div class="card-body">
+
+					<h1 class="mb-3"><i class="bi bi-people-fill"></i> Administración de Roles</h1>
+					<p>Desde esta sección podrás buscar a los usuarios y gestionar sus accesos.</p>
+					<nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
+						<ol class="breadcrumb mb-0">
+							<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'analytics']">Home</a></li>
+							<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'admin-users']">Management users</a></li>
+						</ol>
+					</nav>
+
+				</div>
+			</div>
+			
+
+
+
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			<div *ngIf="isLoading" class="text-center ">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Cargando...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<!-- Campo de búsqueda -->
+					 <label for="search-term" class="form-label">Buscador de usuarios</label>
+					<input id="search-term" class="form-control" type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="Ingresa aqui nombre de usuario" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="co-12">
+			<div class="card">
+				<div class="card-body">
+					<!-- Tabla de usuarios -->
+					<table class="table table-light table-hover align-middle mb-0">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Nombre</th>
+								<th>Email</th>
+								<th>Status</th>
+								<th>Rol</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let user of filteredUsers; let i = index">
+								<td>{{ user.uid.slice(-6).toUpperCase() }}</td>
+								<td>{{ user.name }} {{ user.last_name }}</td>
+								<td>{{ user.email }}</td>
+					
+								<!-- Status -->
+								<td>
+									<span class="badge" [ngClass]="user.activo ? 'bg-success' : 'bg-danger'">
+										{{ user.activo ? 'Habilitado' : 'Deshabilitado' }}
+									</span>
+								</td>
+					
+								<!-- Rol -->
+								<td>
+									<span class="badge"
+										[ngClass]="{'bg-success': user.rol === 'Administrador','bg-warning text-dark': user.rol === 'Ejecutivo','bg-danger': !user.rol || user.rol === ''}">
+										{{ user.rol || 'Sin rol' }}
+									</span>
+								</td>
+					
+								<!-- Acciones -->
+								<td class="d-flex gap-2">
+									<button class="btn btn-sm btn-outline-{{ user.activo ? 'danger' : 'success' }}"
+										(click)="toggleUser(user.uid, !user.activo)">
+										{{ user.activo ? 'Deshabilitar' : 'Habilitar' }}
+									</button>
+					
+									<a class="btn btn-sm btn-outline-primary" [routerLink]="['/dashboard/edit-role', user.uid]">
+										Editar Rol
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	
+<!-- </div> -->

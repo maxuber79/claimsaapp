@@ -39,7 +39,7 @@ export const routes: Routes = [
 		path: 'dashboard', 
 		component: DashboardComponent,
 		canActivate: [authGuard], // protege todas las hijas
-  	loadChildren: () => import('./pages/dashboard/dashboard.rutes').then(m => m.default) // 👈 OJO aquí
+  	loadChildren: () => import('./pages/dashboard/dashboard.routes').then(m => m.routes) // 👈 OJO aquí
 	}, 	
 	{ path: 'welcome', component: WelcomeComponent, canActivate: [authGuard] },
 	{ 

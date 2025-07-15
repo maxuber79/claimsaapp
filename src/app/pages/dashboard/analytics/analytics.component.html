@@ -1,0 +1,71 @@
+<!-- <section id="analytics">
+	<div class="col-12 border-1 bg-light ">
+		<p>profile-view works!</p>
+	</div>
+</section> -->
+<!-- Sección de bienvenida y perfil -->
+<div class="row border-2">
+	<div class="col-12 border-2">
+		<!-- Spinner mientras carga -->
+		<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+		<div *ngIf="!isLoading && userData">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-center mb-4 mb-lg-0 py-4">
+						<div class="position-relative d-inline-block  ">
+							<img [src]="userData.photoURL || imageDefault "
+								class="border border-5 border-primary rounded-circle profile-pic border-opacity-25 object-fit-cover p-1"
+								alt="Profile Picture" width="100" height="100" />
+						</div>
+						<div class="ms-3 text-start ">
+							<h2 class="m-0 p-0">Hola, {{ userData.name || 'Invitado' }}</h2>
+							<h6 class="m-0 p-0">Bienvenido a tu aplicación</h6>
+							<p class="m-0 p-0 text-muted">Este es tu panel de control, aquí puedes administrar tus tareas, ver
+								estadísticas y
+								más.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- section cards metrics -->
+<div class="row border-2">
+	<div class="col-md-6 col-xl-3 my-3" *ngFor="let card of metrics">
+		<app-card-metric [icon]="card.icon" [count]="card.count" [label]="card.label" [color]="card.color"
+			[footerText]="card.footerText" [trendIcon]="card.trendIcon">
+		</app-card-metric>
+	</div>
+</div>
+<!-- Section graficos -->
+<div class="row border-2">
+	<!-- Gráfico Lineal -->
+	<div class="col-12 grid-margin">
+		<app-line-chart [ticketsData]="tickets"></app-line-chart>
+	</div>
+
+	<!-- Gráfico de satisfacción -->
+	<div class="col-sm-12 col-md-6 col-xl-6 grid-margin stretch-card">
+		<app-satisfaction-chart [positive]="satisfaction?.positive || 0" [negative]="satisfaction?.negative || 0">
+		</app-satisfaction-chart>
+	</div>
+
+	<!-- Gráfico de canales -->
+	<div class="col-sm-12 col-md-6 col-xl-6 grid-margin stretch-card">
+		<app-channels-chart [channels]="channels"></app-channels-chart>
+	</div>
+</div>
+<!-- Otros elementos de la página -->
+<div class="row border-2">
+	<div class="col-md-8 grid-margin stretch-card">
+		<app-reclamos-table></app-reclamos-table>
+	</div>
+	<div class="col-md-4 stretch-card grid-margin">
+		<app-notification-list [notifications]="notifications"></app-notification-list>
+	</div>
+</div>

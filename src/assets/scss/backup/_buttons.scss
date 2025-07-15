@@ -1,0 +1,510 @@
+@use '../abstracts'as *;
+@use 'sass:color';
+
+/*
+* @Buttons             
+**/
+$btn-colors: ("primary":$primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $light,
+  "dark": $dark,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "info": $info,
+  "white": $white,
+  "getstarted": $getstarted);
+
+@each $type,
+$color in $btn-colors {
+  /* 
+	$darker-color: color.adjust($color, $lightness: -15%);
+  $lighter-color: color.adjust($color, $lightness: 20%);
+	*/
+  $darker-color: color.adjust($color, $lightness: -15%);
+  $lighter-color: color.adjust($color, $lightness: 20%);
+
+  .btn-type {
+    padding: $padding;
+    border-radius: $b-radius !important;
+    box-sizing: border-box;
+    border-width: 2px;
+    display: inline-block;
+    font-family: $font-buttons, sans-serif;
+    font-size: $font-size;
+    color: $font-white;
+    font-weight: $font-weight;
+    transition: all 0.2s ease-in-out;
+    line-height: 2;
+    width: $btn-width;
+
+    @media (max-width: 640px) {
+      display: block;
+      margin: 1.25rem auto;
+      width: 100%;
+    }
+
+    &.btn--#{$type} {
+      border-color: $color;
+      color: $font-white;
+      background-color: $color;
+      text-decoration: none !important;
+
+      &:hover,
+      &:focus {
+        color: $white;
+        background-color: $darker-color;
+        border-color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem $lighter-color;
+      }
+
+      &[disabled]:hover,
+      &[disabled]:focus {
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+
+      // 🌗 Dark Mode Styles
+      body.dark-mode & {
+        background-color: darken($color, 5%);
+        color: $white;
+        border-color: $color;
+
+        &:hover,
+        &:focus {
+          background-color: $darker-color;
+          color: $white;
+        }
+      }
+    }
+  }
+
+  .btn-border {
+    padding: $padding;
+    border-radius: $b-radius;
+    box-sizing: border-box;
+    border-width: 2px;
+    background-color: transparent;
+    display: inline-block;
+    font-family: $font-buttons, sans-serif;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    transition: all 0.2s ease-in-out;
+    line-height: 2;
+    width: $btn-width;
+    text-decoration: none;
+
+    @media (max-width: 640px) {
+      display: block;
+      margin: 1.25rem auto;
+      width: 100%;
+    }
+
+    &.btn--#{$type} {
+      border: 2px solid $color;
+      color: $color;
+
+      &:hover,
+      &:focus {
+        background-color: $darker-color;
+        color: $white !important;
+        border-color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem $lighter-color;
+      }
+
+      &[disabled]:hover,
+      &[disabled]:focus {
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+
+      // 🌗 Dark Mode Styles
+      body.dark-mode & {
+        background-color: transparent;
+        border-color: lighten($color, 10%);
+        color: lighten($color, 10%);
+
+        &:hover,
+        &:focus {
+          background-color: $darker-color;
+          color: $white !important;
+        }
+      }
+    }
+  }
+}
+
+$btn-colors: ("primary":$primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $light,
+  "dark": $dark,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "info": $info,
+  "white": $white,
+  "getstarted": $getstarted);
+
+@each $type,
+$color in $btn-colors {
+
+  $darker-color: darken($color, 15%);
+  $lighter-color: lighten($color, 20%);
+
+  .btn-type {
+    padding: $padding;
+    border-radius: $b-radius !important;
+    box-sizing: border-box;
+    border-width: 2px;
+    display: inline-block;
+    font-family: $font-buttons, sans-serif;
+    font-size: $font-size;
+    color: $font-white;
+    font-weight: $font-weight;
+    transition: all .2s ease-in-out;
+    line-height: 2;
+    width: $btn-width;
+
+    @media(max-width: 640px) {
+      display: block;
+      margin: 1.25rem auto;
+      width: 100%;
+    }
+
+    /* Botones con colores dinámicos */
+    &.btn--#{$type} {
+      border-color: $color;
+      color: $font-white;
+      background-color: $color;
+      text-decoration: none !important;
+      border: 2px solid $color;
+
+      &:hover,
+      &:focus {
+        color: $white;
+        background-color: $darker-color;
+        border: 2px solid $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 .2rem $lighter-color;
+      }
+
+      &[disabled]:hover,
+      &[disabled]:focus {
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+    }
+  }
+
+  .btn-border {
+    padding: $padding;
+    border-radius: $b-radius;
+    box-sizing: border-box;
+    border-width: 2px;
+    background-color: transparent;
+    display: inline-block;
+    font-family: $font-buttons, sans-serif;
+    font-size: $font-size;
+    //color: $font-white;
+    font-weight: $font-weight;
+    transition: all .2s ease-in-out;
+    line-height: 2;
+    width: $btn-width;
+    text-decoration: none;
+
+    @media(max-width: 640px) {
+      display: block;
+      margin: 1.25rem auto;
+      width: 100%;
+    }
+
+    /*** Button colors dinamics ***/
+
+    &.btn--#{$type} {
+      border: 2px solid $color;
+      color: $color;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        background-color: $darker-color;
+        color: $white !important;
+        border-color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 .2rem $lighter-color;
+      }
+
+      &[disabled]:hover,
+      &[disabled]:focus {
+        text-decoration: none;
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+    }
+  }
+}
+
+/*** BUTTONS with Dark Mode ***/
+$btn-colors: ("primary":$primary,
+  "secondary": $secondary,
+  "accent": $accent,
+  "light": $light,
+  "dark": $dark,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger,
+  "info": $info,
+  "white": $white,
+  "getstarted": $getstarted);
+
+@each $type,
+$color in $btn-colors {
+  $darker-color: color.adjust($secondary, $lightness: -20%);
+  $lighter-color: color.adjust($secondary, $lightness: 20%);
+
+  .btn-type {
+    padding: $padding;
+    border-radius: $b-radius !important;
+    box-sizing: border-box;
+    border-width: 2px;
+    display: inline-block;
+    font-family: $font-buttons, sans-serif;
+    font-size: $font-size;
+    color: $font-white;
+    font-weight: $font-weight;
+    transition: all 0.2s ease-in-out;
+    line-height: 2;
+    width: $btn-width;
+
+    @media (max-width: 640px) {
+      display: block;
+      margin: 1.25rem auto;
+      width: 100%;
+    }
+
+    &.btn--#{$type} {
+      border-color: $color;
+      color: $font-white;
+      background-color: $color;
+      text-decoration: none !important;
+
+      &:hover,
+      &:focus {
+        color: $white;
+        background-color: $darker-color;
+        border-color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem $lighter-color;
+      }
+
+      &[disabled]:hover,
+      &[disabled]:focus {
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+
+      // 🌗 Dark Mode Styles
+      body.dark-mode & {
+        background-color: darken($color, 5%);
+        color: $white;
+        border-color: $color;
+
+        &:hover,
+        &:focus {
+          background-color: $darker-color;
+          color: $white;
+        }
+      }
+    }
+  }
+
+  .btn-border {
+    padding: $padding;
+    border-radius: $b-radius;
+    box-sizing: border-box;
+    border-width: 2px;
+    background-color: transparent;
+    display: inline-block;
+    font-family: $font-buttons, sans-serif;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    transition: all 0.2s ease-in-out;
+    line-height: 2;
+    width: $btn-width;
+    text-decoration: none;
+
+    @media (max-width: 640px) {
+      display: block;
+      margin: 1.25rem auto;
+      width: 100%;
+    }
+
+    &.btn--#{$type} {
+      border: 2px solid $color;
+      color: $color;
+
+      &:hover,
+      &:focus {
+        background-color: $darker-color;
+        color: $white !important;
+        border-color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem $lighter-color;
+      }
+
+      &[disabled]:hover,
+      &[disabled]:focus {
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+
+      // 🌗 Dark Mode Styles
+      body.dark-mode & {
+        background-color: transparent;
+        border-color: lighten($color, 10%);
+        color: lighten($color, 10%);
+
+        &:hover,
+        &:focus {
+          background-color: $darker-color;
+          color: $white !important;
+        }
+      }
+    }
+  }
+}
+
+/*
+* @Buttons wrapper           
+**/
+.wrapp-btn {
+  display: inline-block;
+  width: 100%;
+
+  @media (max-width: 640px) {
+    margin: 0.5rem 0;
+    text-align: center; // Se centraliza por defecto en móviles
+  }
+
+  &.btn-left {
+    text-align: left;
+  }
+
+  &.btn-right {
+    text-align: right;
+  }
+
+  &.btn-center {
+    text-align: center;
+  }
+}
+
+/*
+* @Buttons Sizes         
+**/
+@mixin size-btn($py, $px, $fsize, $lh, $radius: null) {
+  padding: $py $px !important;
+  font-size: $fsize !important;
+  line-height: $lh !important;
+
+  @if $radius {
+    border-radius: $radius !important;
+  }
+}
+
+$btn-sizes: (btn-xl: (0.5rem, 1.875rem, 1.3rem, 1.8, 22px),
+  btn-lg: (0.5rem, 2.3rem, 1.25rem, 1.5, null),
+  btn-md: (0.375rem, 1.7rem, 1rem, 1.5, null),
+  btn-sm: (0.25rem, 0.6rem, 0.75rem, 1.5, null),
+  btn-xxs: (0.25rem, 1.3rem, 0.7rem, 1.6, null));
+
+.btn {
+
+  &.btn-border,
+  &.btn-full,
+  &.btn-getstarted,
+  &.btn-type,
+  &.btn-getstarted,
+  &.btn-border,
+  &.btn-table {
+
+    @each $size,
+    $values in $btn-sizes {
+      &.#{$size} {
+        @include size-btn(nth($values, 1), nth($values, 2), nth($values, 3), nth($values, 4), nth($values, 5));
+      }
+    }
+
+    .icono {
+      font-size: inherit !important; // Hereda el tamaño del botón
+    }
+
+    &.btn-sm .icono {
+      font-size: .875rem !important;
+    }
+
+    &.btn-xxs .icono {
+      font-size: .7rem !important;
+    }
+  }
+}
+
+.wrapp-links {
+  display: inline-block;
+  margin: 1rem 0 0 0;
+  width: 100%;
+
+  @media (max-width: 640px) {
+    text-align: left;
+    display: inline-block;
+  }
+
+  &.links-right {
+    text-align: right;
+
+    @media (max-width: 640px) {
+      text-align: left;
+      display: inline-block;
+    }
+  }
+
+  &.links-center {
+    text-align: center;
+
+    @media (max-width: 640px) {
+      text-align: left;
+      display: inline-block;
+    }
+  }
+
+  &.links-left {
+    text-align: left;
+
+    @media (max-width: 640px) {
+      text-align: left;
+      display: inline-block;
+    }
+  }
+}

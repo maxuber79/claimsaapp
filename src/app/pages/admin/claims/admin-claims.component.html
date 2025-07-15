@@ -1,0 +1,297 @@
+<div class="row">
+	<div class="col-12 border-2">
+		<div class="card">
+			<div class="card-body">
+				<!-- Satar Spinner -->
+				<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+					<div class="spinner-border" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+				<!-- end spinner -->
+				<div class="row">
+					<div class="col-6">
+						<h2 class="h3 mb-3">Administración de Reclamaciones</h2>
+						<p class="mb-0">Aquí puedes gestionar todas las reclamaciones de los usuarios.</p>
+					</div>
+					<div class="col-6 text-end">
+						<button class="btn btn-full --primary m-1 btn-sm" (click)="openNewModal()">
+							<i class="bi bi-plus-circle me-1"></i> Nuevo Reclamo
+						</button>
+						<button class="btn btn-full --secondary m-1 btn-sm" (click)="resetData()">
+							<i class="bi bi-arrow-clockwise"></i> Restaurar datos originales
+						</button>
+						<!-- ☑️ Botón eliminar seleccionados --> 
+						<button class="btn btn-full --danger m-1 btn-sm" [disabled]="!hasSelected()" (click)="deleteSelected()">
+							<i class="bi bi-trash"></i> Eliminar seleccionados ({{ selectedCount() }})
+						</button>
+					</div>
+					<div class="col-6">
+						<label for="filterStatus" class="form-label">Filtrar por Estado</label>
+						<select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+							<option value="">Todos</option>
+							<option *ngFor="let estado of estadosDisponibles" [value]="estado">{{ estado }}</option>
+						</select>
+					</div>
+					<div class="col-6">
+						<label for="filterChannel" class="form-label">Filtrar por Canal</label>
+						<select class="form-select" [(ngModel)]="selectedChannel" (change)="applyFilters()">
+							<option value="">Todos</option>
+							<option *ngFor="let canal of canalesDisponibles" [value]="canal">{{ canal }}</option>
+						</select>
+					</div>
+					<div class="col-12">
+						<div class="table-responsive">
+							<table class="table table-light table-hover align-middle">
+								<thead>
+									<tr>
+										<th class="text-center">
+											<input type="checkbox" [(ngModel)]="masterChecked" (change)="toggleAll()" />
+										</th>
+										<th>Nombre</th>
+										<th>Tipo</th>
+										<th>Fecha</th>
+										<th>Estado</th>
+										<th>Asignado a</th>
+										<th>Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let r of paginatedReclamos">
+										<td class="text-center">
+											<input type="checkbox" [(ngModel)]="r.selected" (change)="checkMasterState()" />
+										</td>
+										<td>{{ r.nombre }}</td>
+										<td>{{ r.tipo }}</td>
+										<td>{{ r.fecha }}</td>
+										<td>
+											<!-- <span class="badge bg-secondary">{{ r.estado }}</span> -->
+											<span class="badge" [ngClass]="{
+												'bg-primary': r.estado === 'Iniciado',
+												'bg-warning text-dark': r.estado === 'Pendiente',
+												'bg-danger': r.estado === 'Cancelado',
+												'bg-success': r.estado === 'Cerrado',
+												'bg-secondary': r.estado !== 'Iniciado' && r.estado !== 'Cerrado' && r.estado !== 'Pendiente' && r.estado !== 'Cancelado'
+											}">
+												{{ r.estado }}
+											</span>
+										</td>
+										<td>
+											{{ getExecutiveName(r.uidEjecutivo || '') }}
+										</td>
+										<td>
+											<button class="btn btn-sm btn-info me-1" (click)="editItem(r)">
+												<i class="bi bi-eye"></i>
+											</button>
+											<button class="btn btn-sm btn-warning me-1" (click)="editItem(r)">
+												<i class="bi bi-pencil"></i>
+											</button>
+											<button class="btn btn-sm btn-danger me-1" (click)="deleteItem(r)">
+												<i class="bi bi-trash"></i>
+											</button>
+											<button class="btn btn-sm btn-success me-1" (click)="assignToExecutive(r)">
+												<i class="bi bi-person-check"></i>
+											</button>
+											<button class="btn btn-sm btn-secondary" (click)="infoRow(r)">
+												<i class="bi bi-info-circle-fill"></i>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-6 text-start">
+						<small>Página {{ currentPage }} de {{ totalPages }}</small>
+					</div>
+					<div class="col-6 text-end">
+						<!-- 🔢 Paginación -->
+						<nav>
+							<ul class="pagination pagination-sm mb-0">
+								<li class="page-item" [class.disabled]="currentPage === 1">
+									<button class="page-link" (click)="changePage(currentPage - 1)">Anterior</button>
+								</li>
+								<li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+									[class.active]="currentPage === i + 1">
+									<button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+								</li>
+								<li class="page-item" [class.disabled]="currentPage === totalPages">
+									<button class="page-link" (click)="changePage(currentPage + 1)">Siguiente</button>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+
+
+
+				
+				
+			</div>
+		</div>		
+	</div>
+</div>
+ 
+
+<!-- Modal para nuevo reclamo -->
+<div class="modal fade show d-block" *ngIf="showNewModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content rounded shadow-lg">
+			<div class="modal-header">
+				<h5 class="modal-title">Agregar Nuevo Reclamo</h5>
+				<button type="button" class="btn-close" (click)="cancelNewClaim()"></button>
+			</div>
+			<div class="modal-body">
+				<form class="row g-3" *ngIf="newClaim">
+					<div class="col-md-6">
+						<label class="form-label">Nombre del Cliente</label>
+						<input [(ngModel)]="newClaim.nombre" name="nombre" class="form-control" required />
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Tipo de Reclamo</label>
+						<input [(ngModel)]="newClaim.tipo" name="tipo" class="form-control" />
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Foto (URL)</label>
+						<input [(ngModel)]="newClaim.foto" name="foto" class="form-control" />
+					</div>
+					<div class="col-md-3">
+						<label class="form-label">Casos Totales</label>
+						<input type="number" [(ngModel)]="newClaim.total" name="total" class="form-control" />
+					</div>
+					<div class="col-md-3">
+						<label class="form-label">Fecha</label>
+						<input type="date" [(ngModel)]="newClaim.fecha" name="fecha" class="form-control" />
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Estado</label>
+						<select class="form-select" [(ngModel)]="newClaim.estado" name="estado">
+							<option value="Pendiente">Pendiente</option>
+							<option value="Cancelado">Cancelado</option>
+							<option value="Cerrado">Cerrado</option>
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" (click)="cancelNewClaim()">Cancelar</button>
+				<button class="btn btn-primary" (click)="saveNewClaim()">Guardar Reclamo</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal de edición --> 
+<div class="modal fade show d-block" *ngIf="showModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content rounded shadow-lg">
+			<div class="modal-header">
+				<h5 class="modal-title">Detalle de Reclamo 33</h5>
+				<button type="button" class="btn-close" (click)="cancelEdit()"></button>
+			</div>
+			<div class="modal-body">
+				<form *ngIf="selectedClaim" class="row g-3">
+					<div class="col-md-6">
+						<label class="form-label">Nombre</label>
+						<input [(ngModel)]="selectedClaim.nombre" name="nombre" class="form-control" [disabled]="isViewOnly" />
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Asunto</label>
+						<input [(ngModel)]="selectedClaim.tipo" name="tipo" class="form-control" [disabled]="isViewOnly" />
+					</div>
+					<div class="col-12">
+						<label class="form-label">Descripción</label>
+						<textarea [(ngModel)]="selectedClaim.detail" name="detail" rows="3" class="form-control"
+							[disabled]="isViewOnly"></textarea>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Estado</label>
+						<select [(ngModel)]="selectedClaim.estado" name="estado" class="form-select" [disabled]="isViewOnly">
+							<option value="Iniciado">Iniciado</option>
+							<option value="Pendiente">Pendiente</option>
+							<option value="Cancelado">Cancelado</option>
+							<option value="Cerrado">Cerrado</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Fecha</label>
+						<input [(ngModel)]="selectedClaim.fecha" name="fecha" type="date" class="form-control"
+							[disabled]="isViewOnly" />
+					</div>
+					<div class="col-md-12">
+						<label class="form-label">Ejecutivo asignado</label>
+						<select [(ngModel)]="selectedClaim.uidEjecutivo" name="ejecutivo" class="form-select">
+							<option [ngValue]="''" disabled selected>Selecciona un ejecutivo</option>
+							<option *ngFor="let ejecutivo of executives" [ngValue]="ejecutivo.uid">
+								{{ ejecutivo.name || ejecutivo.email }}
+							</option>
+						</select>
+					</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button class="btn btn-secondary" (click)="cancelEdit()">Cerrar</button>
+
+				<!-- Mostrar solo si está en modo lectura -->
+				<button class="btn btn-warning" *ngIf="isViewOnly" (click)="enableEditing()">
+					Editar
+				</button>
+
+				<!-- Mostrar solo si está en modo edición -->
+				<button class="btn btn-primary" *ngIf="!isViewOnly" (click)="saveChanges()">
+					Guardar Cambios
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL CREAR NUEVO RECLAMO -->
+<div class="modal fade show d-block" *ngIf="showNewModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo Reclamo...</h5>
+        <button type="button" class="btn-close" (click)="showNewModal = false"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Nombre</label>
+            <input [(ngModel)]="newClaim.nombre" name="newNombre" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Asunto</label>
+            <input [(ngModel)]="newClaim.tipo" name="newTipo" class="form-control" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Descripción</label>
+            <textarea [(ngModel)]="newClaim.detail" name="newDetail" class="form-control" rows="3"></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Fecha</label>
+            <input [(ngModel)]="newClaim.fecha" name="newFecha" type="date" class="form-control" />
+          </div>
+
+					<!-- 👤 Selector de ejecutivo -->
+					<div class="col-md-12">
+						<label class="form-label">Asignar a Ejecutivo</label>
+						<select class="form-select" [(ngModel)]="selectedExecutiveUid" name="ejecutivo" required>
+							<option [ngValue]="''" disabled selected>Selecciona un ejecutivo</option>
+							<option *ngFor="let ejecutivo of executives" [value]="ejecutivo.uid">
+								{{ ejecutivo.name + ' ' + ejecutivo.last_name }} - {{ ejecutivo.email }}
+							</option>
+							</select>
+					</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="showNewModal = false">Cancelar</button>
+        <button class="btn btn-success" (click)="saveNewClaim()">Crear Reclamo</button>
+      </div>
+    </div>
+  </div>
+</div>
