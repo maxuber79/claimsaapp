@@ -11,13 +11,13 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-						<li class="nav-item">
+					<!-- 	<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="#">Home</a>
-						</li>
-						<li class="nav-item">
+						</li> -->
+						<!-- <li class="nav-item">
 							<a class="nav-link" href="#">Link</a>
-						</li>
-						<li class="nav-item dropdown">
+						</li> -->
+						<!-- <li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Dropdown
 							</a>
@@ -29,10 +29,10 @@
 								</li>
 								<li><a class="dropdown-item" href="#">Something else here</a></li>
 							</ul>
-						</li>
-						<li class="nav-item">
+						</li> -->
+						<!-- <li class="nav-item">
 							<a class="nav-link disabled" aria-disabled="true">Disabled</a>
-						</li>
+						</li> -->
 					</ul>
 					 
 					<!-- Center elements -->
@@ -57,22 +57,25 @@
 					<!-- Center elements -->
 					<div class="dropdown text-end">
 						<a href="#" class="text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-							<img [src]=" userData?.photoURL || imageDefault "  alt="mdo" width="32" height="32" class="rounded-circle">
+							<img [src]="userData?.photoURL || imageDefault"  alt="mdo" width="32" height="32" class="border border-light-subtle border-2 object-fit-cover rounded-circle">
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end text-small">
-							<li>
+							<!-- <li>
 								<a class="dropdown-item" href="#">New project...</a>
-							</li>
-							<li>
+							</li> -->
+							<!-- <li>
 								<a class="dropdown-item" [routerLink]="['/dashboard/todo']" >To-Do</a>
-							</li>
+							</li> -->
 							<li>
-								<a class="dropdown-item" [routerLink]="['/dashboard/profile', userData?.uid]">Profile</a>
+								<a class="dropdown-item" [routerLink]="['/dashboard/profile', this.uid]">Mi perfil</a>
 							</li>
 							<li>
 								<a class="dropdown-item" [routerLink]="['/dashboard/claims']">Mis Reclamos</a>
 							</li>
-							<li>
+							<li *ngIf="userRol === 'Ejecutivo' || userRol === 'Administrador'">
+								<a class="dropdown-item" [routerLink]="['/dashboard/claims-executive']">Reclamos Executive</a>
+							</li>
+							<li *ngIf="userRol === 'Administrador'">
 								<a class="dropdown-item" [routerLink]="['/dashboard/admin-users']">
 									Admin Usuarios
 								</a>
@@ -89,7 +92,7 @@
 			</div>
 		</nav>
 	</header>
-	<main class="flex-grow-1 container py-4 border-1">
+	<main class="flex-grow-1 container py-4 ">
 		 
 			
 		<!-- <div class="col-12 ">
@@ -101,10 +104,10 @@
 
 			 
 
-			<section class="container border-2">
+			<section class="container ">
 				<router-outlet></router-outlet> 
 			</section>
-			<app-components></app-components>
+			<!-- <app-components></app-components> -->
 			 
 	</main>
 	<!-- Footer -->

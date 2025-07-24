@@ -1,300 +1,435 @@
-import { Component, OnInit } from '@angular/core';
-import { Claim } from '../../../models/claims'; // ajusta si está en otra ruta
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Claim } from '../../../models/claims';
 import { ClaimsService } from '../../../services/claims.service';
-import { ClaimsDummyService } from '../../../services/claims-dummy.service';
 import { UserService } from '../../../services/user.service';
 import { AlertService } from '../../../services/alert.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserModel } from '../../../models/user';
-import { MockDataService } from '../../../services/mock-data.service';
-
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-claims',
-	standalone: true,
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './admin-claims.component.html',
   styleUrls: ['./admin-claims.component.scss']
 })
-export class AdminClaimsComponent implements OnInit {
-
-  reclamos: Claim[] = [];
-  uid: string = '';
-	isLoading: boolean = true;
-
-	// Lista de ejecutivos (poblar desde Firestore)
-	ejecutivos: { uid: string, nombre: string }[] = [];
-	 
+export class AdminClaimsComponent implements OnInit, OnDestroy {
 
 
+	userUid: string | null = null; // UID del usuario autenticado
+	userData: UserModel | null = null; 
 
-  // 🔘 Filtros
-  selectedStatus: string = '';
-  selectedChannel: string = '';
+  allClaims: Claim[] = [];
+  filteredClaims: Claim[] = [];
+  pagedClaims: Claim[] = [];
+  isLoading: boolean = true;
+  errorMessage: string | null = null;
+  private subscriptions: Subscription = new Subscription();
 
-  // ✅ Paginación
+  executives: UserModel[] = [];
+  selectedExecutiveUid: string = '';
+
+  searchTerm: string = '';
+  filterStatus: string = 'Todos';
+
   currentPage = 1;
-  itemsPerPage = 6;
+  itemsPerPage = 10;
 
-  // ✅ Checkbox maestro
   masterChecked = false;
+  showDeleteButton: boolean = false;
 
-  // ✅ Modal
-	isViewOnly = true; // 🔒 Modo lectura por defecto
-  selectedClaim: Claim | null = null;
-  showModal = false;
+  showNewModal: boolean = false;
+  newClaim: Claim = this.getEmptyClaim();
 
-	// ✅ Reclamo nuevo
-	showNewModal: boolean = false;
-	newClaim: Claim = this.getEmptyClaim();
-	executives: UserModel[] = [];
-	selectedExecutiveUid: string = '';
 
-	estadosDisponibles: string[] = ['Pendiente', 'En Proceso', 'Resuelto', 'Cancelado', 'Cerrado'];
-	canalesDisponibles: string[] = ['Web', 'App', 'WhatsApp', 'Call Center']; // o 'tipo' según tu modelo
-	searchTerm: string = '';
-	filterEstado: string = '';
-	filterCanal: string = ''; 
+	// ✅ Modal
+	selectedClaim: Claim | null = null; // 🔥 Nuevo: el reclamo seleccionado para ver/editar
+  isViewOnly: boolean = false; // 🔥 Nuevo: controla si los campos están solo para lectura
+	showModal: boolean = false; // 🔥 Nuevo: para controlar la visibilidad del modal de Ver/Editar 
+  isEditing: boolean = false; // 🔥 Nuevo: Controla si el modo de edición está activo dentro del modal
+	imageDefault = 'https://randomuser.me/api/portraits/men/40.jpg'; // Imagen por defecto	
+
 
   constructor(
     private claimsService: ClaimsService,
-    private claimsDummyService: ClaimsDummyService,
     private userService: UserService,
     private alert: AlertService,
-		private mockData: MockDataService
-  ) {}
+		private authService: AuthService,
+  ) { }
 
   ngOnInit(): void {
-    this.userService.getCurrentUserUid().subscribe(uid => {
-      if (!uid) return;
-      this.uid = uid;
 
-      // Traemos reclamos de dummy y Firebase
-      this.loadClaims();
-    });
 
-		this.userService.getExecutives().subscribe({
-			next: (executives) => {
-				this.executives = executives;
-				console.log('👥 Ejecutivos:', executives);
-			},
-			error: (error) => {
-				console.error('❌ Error al cargar ejecutivos:', error);
+
+		this.authService.getCurrentUser().subscribe( userData => {
+			if (userData) {
+				this.userUid = userData.uid;
+				console.log('📦 Usuario autenticado:', this.userUid);
+
+				this.userService.getUserProfile(this.userUid).subscribe({
+					next: (profile) => {
+						this.userData = profile || null;
+						console.log('%c<<< infoData | dashboard >>>', 'background: #198754; color: #fff; padding: 2px 5px;', this.userData);
+					},
+					error: (err:Error) => {
+						console.error('❌ Error al cargar perfil de usuario:', err);
+					}
+				});
+
+
 			}
 		});
+
+    this.loadExecutives();
+    this.loadAllClaims();
   }
 
-loadClaims() {
-	this.isLoading = true;
+  loadExecutives(): void {
+    const sub = this.userService.getExecutives().subscribe({
+      next: (executives: UserModel[]) => {
+        this.executives = executives;
+        console.log('✅ Ejecutivos cargados:', this.executives);
+      },
+      error: (err: any) => {
+        console.error('❌ Error al cargar ejecutivos:', err);
+        this.alert.error('No se pudieron cargar los ejecutivos.');
+      }
+    });
+    this.subscriptions.add(sub);
+  }
 
-	this.claimsDummyService.getClaimsByUser(this.uid).subscribe(dummy => {
-		this.claimsService.getAllClaims().subscribe(firebase => {
-			this.reclamos = [...dummy, ...firebase].map(r => ({ ...r, selected: false }));
-			this.applyFilters();
-			this.isLoading = false;
-		});
-	});
+  loadAllClaims(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+    const sub = this.claimsService.getAllClaims().subscribe({
+      next: (claims: Claim[]) => {
+        this.allClaims = claims.map(c => ({ ...c, selected: false }));
+        console.log('✅ Todos los reclamos cargados:', this.allClaims);
+        this.isLoading = false;
+        this.applyFilters();
+      },
+      error: (err: any) => {
+        console.error('❌ Error al cargar todos los reclamos:', err);
+        this.errorMessage = 'No se pudieron cargar los reclamos. Inténtalo de nuevo más tarde.';
+        this.isLoading = false;
+      }
+    });
+    this.subscriptions.add(sub);
+  }
+
+  applyFilters(): void {
+    let tempClaims = [...this.allClaims];
+
+    if (this.searchTerm) {
+      tempClaims = tempClaims.filter(claim =>
+        claim.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+
+    if (this.filterStatus && this.filterStatus !== 'Todos') {
+      tempClaims = tempClaims.filter(claim =>
+        claim.estado === this.filterStatus
+      );
+    }
+
+    if (this.selectedExecutiveUid) {
+      tempClaims = tempClaims.filter(claim =>
+        claim.uidEjecutivo === this.selectedExecutiveUid
+      );
+    }
+
+    this.filteredClaims = tempClaims;
+    this.currentPage = 1;
+    this.updatePagedClaims();
+    this.updateDeleteButtonState();
+    this.masterChecked = this.filteredClaims.every(claim => claim.selected);
+  }
+
+  updatePagedClaims(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.pagedClaims = this.filteredClaims.slice(startIndex, endIndex);
+  }
+
+  openNewModal(): void {
+  this.resetNewClaim();
+  this.showNewModal = true;
+  console.log('💡 showNewModal es:', this.showNewModal); // Añade esta línea
 }
+
+  closeNewModal(): void {
+    this.showNewModal = false;
+  }
 	
-
-  // 🔄 Filtros + paginación combinados
-  get paginatedReclamos(): Claim[] {
-		const filtered = this.reclamos.filter(r =>
-			(!this.searchTerm || r.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
-			(!this.filterEstado || r.estado === this.filterEstado) &&
-			(!this.filterCanal || r.tipo === this.filterCanal)
-		);
-	
-		const start = (this.currentPage - 1) * this.itemsPerPage;
-		return filtered.slice(start, start + this.itemsPerPage);
-	}
-
-	applyFilters(): void {
-		// No es necesario hacer nada porque ya estás filtrando con getters reactivos
-	}	
-
-  // ✅ Checkboxes
-  toggleAll(): void {
-    this.paginatedReclamos.forEach(item => item.selected = this.masterChecked);
-  }
-
-  checkMasterState(): void {
-    this.masterChecked = this.paginatedReclamos.every(item => item.selected);
-  }
-
-  hasSelected(): boolean {
-    return this.reclamos.some(r => r.selected);
-  }
-
-  selectedCount(): number {
-    return this.reclamos.filter(r => r.selected).length;
-  }
-
-  deleteSelected(): void {
-    this.reclamos = this.reclamos.filter(r => !r.selected);
-    this.masterChecked = false;
-    this.alert.info('Reclamos eliminados correctamente');
-  }
-
-  // ✅ Acciones
-  deleteItem(item: Claim): void {
-    this.reclamos = this.reclamos.filter(r => r.id !== item.id);
-    this.alert.success('Reclamo eliminado');
-  }
-
-  editItem(item: Claim): void {
-    this.selectedClaim = { ...item };
-		this.isViewOnly = true; // Se abre como solo lectura
-    this.showModal = true;
-  }
-
-	enableEditing() {
-		this.isViewOnly = false; // 🔓 Activa los campos
-	}
-
-  cancelEdit(): void {
-    this.selectedClaim = null;
-    this.showModal = false;
-  }
-
-  saveChanges(): void {
-    if (!this.selectedClaim?.nombre || !this.selectedClaim?.tipo || !this.selectedClaim?.estado) {
-      this.alert.warning('Completa los campos requeridos');
+	saveNewClaim(): void {
+    if (!this.newClaim.nombre || !this.newClaim.estado || !this.selectedExecutiveUid) {
+      this.alert.showToastError('Por favor, completa todos los campos requeridos (nombre, estado, ejecutivo).', 'Campos Requeridos');
       return;
     }
 
-    const idx = this.reclamos.findIndex(r => r.id === this.selectedClaim!.id);
-    if (idx !== -1) {
-      this.reclamos[idx] = { ...this.selectedClaim!, selected: false };
-      this.alert.success('Reclamo actualizado');
+    this.newClaim.uidEjecutivo = this.selectedExecutiveUid;
+    this.newClaim.id = this.generateUUID();
+
+    this.isLoading = true;
+    this.claimsService.createClaim(this.newClaim.uidEjecutivo, this.newClaim)
+      .then(() => {
+        this.alert.success('Nuevo reclamo asignado con éxito.');
+        this.closeNewModal();
+        this.loadAllClaims();
+      })
+      .catch((err: any) => {
+        console.error('❌ Error al crear reclamo:', err);
+        this.alert.error('Ocurrió un error al crear el reclamo.');
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
+  }
+
+  resetNewClaim(): void {
+    this.newClaim = this.getEmptyClaim();
+    this.selectedExecutiveUid = '';
+  }
+
+  getEmptyClaim(): Claim {
+    return {
+      id: '',
+      nombre: '',
+      tipo: '',
+      total: 0,
+      estado: 'Pendiente',
+      fecha: new Date().toISOString().split('T')[0],
+      uidEjecutivo: '',
+      selected: false
+    };
+  }
+
+  generateUUID(): string {
+    return crypto.randomUUID();
+  }
+
+  resetData(): void {
+    this.searchTerm = '';
+    this.filterStatus = 'Todos';
+    this.selectedExecutiveUid = '';
+    this.currentPage = 1;
+    this.loadAllClaims();
+    this.alert.showToastInfo('Filtros restablecidos y datos recargados.', 'Información');
+  }
+
+  toggleMasterCheckbox(): void {
+    this.masterChecked = !this.masterChecked;
+    this.filteredClaims.forEach(claim => claim.selected = this.masterChecked);
+    this.updateDeleteButtonState();
+  }
+
+  toggleClaimSelection(claim: Claim): void {
+    claim.selected = !claim.selected;
+    this.masterChecked = this.filteredClaims.every(c => c.selected);
+    this.updateDeleteButtonState();
+  }
+
+  hasSelectedClaims(): boolean {
+    return this.filteredClaims.some(claim => claim.selected);
+  }
+
+  updateDeleteButtonState(): void {
+    this.showDeleteButton = this.hasSelectedClaims();
+  }
+
+  async deleteSelectedClaims(): Promise<void> {
+    const selectedClaims = this.filteredClaims.filter(claim => claim.selected);
+
+    if (selectedClaims.length === 0) {
+      this.alert.showToastInfo('No hay reclamos seleccionados para eliminar.', 'Información');
+      return;
     }
 
-    this.cancelEdit();
+    const confirmed = await this.alert.confirm('¿Estás seguro?', 'Esta acción eliminará los reclamos seleccionados de forma permanente.');
+    if (!confirmed) {
+      return;
+    }
+
+    this.isLoading = true;
+    const deletePromises: Promise<void>[] = [];
+
+    for (const claim of selectedClaims) {
+      if (claim.uidEjecutivo && claim.id) {
+        deletePromises.push(
+          this.claimsService.deleteClaim(claim.uidEjecutivo, claim.id)
+            .catch(error => {
+              console.error(`❌ Error al eliminar el reclamo ${claim.id}:`, error);
+              this.alert.error(`No se pudo eliminar el reclamo: ${claim.nombre}`);
+            })
+        );
+      } else {
+        console.warn(`⚠️ No se pudo eliminar el reclamo (falta UID o ID):`, claim);
+      }
+    }
+
+    Promise.all(deletePromises)
+      .then(() => {
+        this.alert.success('✅ Reclamos seleccionados eliminados con éxito.');
+        this.loadAllClaims();
+      })
+      .catch(error => {
+        console.error('Un error inesperado ocurrió durante la eliminación masiva:', error);
+      })
+      .finally(() => {
+        this.isLoading = false;
+        this.masterChecked = false;
+        this.updateDeleteButtonState();
+      });
   }
 
-  // Placeholder para asignación a ejecutivo
-  assignToExecutive(reclamo: Claim): void {
-		console.log('Asignar reclamo:', reclamo);
-    this.alert.info('Función para asignar a ejecutivo aún no implementada');
+  getExecutiveName(uidEjecutivo: string | undefined): string {
+    if (!uidEjecutivo) {
+      return 'N/A';
+    }
+    const executive = this.executives.find(exec => exec.uid === uidEjecutivo);
+    return executive ? `${executive.name || ''} ${executive.last_name || ''}`.trim() : 'N/A';
   }
 
-	get totalPages(): number {
-		const filtered = this.reclamos.filter(r =>
-			(!this.searchTerm || r.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
-			(!this.filterEstado || r.estado === this.filterEstado) &&
-			(!this.filterCanal || r.tipo === this.filterCanal)
-		);
-		return Math.ceil(filtered.length / this.itemsPerPage);
-	}	
+  // 🔥 Función para ver un reclamo (abre en modo solo lectura)
+  viewClaim(claim: Claim): void {
+		console.log('👁️ Ver reclamo:', claim);
+    this.selectedClaim = { ...claim }; // Clona el objeto para evitar mutación directa
+    this.isViewOnly = true; // Abre en modo solo lectura
+    this.showModal = true; // Abre el modal de Ver/Editar
+    this.alert.showToastInfo(`Viendo reclamo: ${claim.nombre}`, 'Ver Reclamo');
+  }
 
-	changePage(page: number): void {
-		if (page >= 1 && page <= this.totalPages) {
-			this.currentPage = page;
-		}
-	}	
+  // 🔥 Función para editar un reclamo (abre en modo editable, o se puede llamar desde viewClaim)
+  editClaim(claim: Claim): void {
+    console.log('✏️ Editar reclamo button editClaim:', claim);
+		this.selectedClaim = { ...claim }; // Clona el objeto
+    this.isViewOnly = false; // Abre en modo editable
+    this.showModal = true; // Abre el modal de Ver/Editar
+    this.alert.showToastInfo(`Editando reclamo: ${claim.nombre}`, 'Editar Reclamo'); 
+  }
 
-	openNewModal(): void {
-		this.newClaim = this.getEmptyClaim(); // Reinicia los datos
-		this.selectedExecutiveUid = ''; // Limpia la selección del ejecutivo
-		this.showNewModal = true;
-		//this.loadEjecutivos();  
-	}
-	
+	openViewEditModal(claim: Claim, viewMode: boolean = true): void {
+    console.log(`Abriendo modal para ver/editar reclamo:`, claim);
+    this.selectedClaim = { ...claim }; // Clona el objeto para evitar mutación directa
+    this.isViewOnly = true; // Siempre inicia en modo de visualización
+    this.isEditing = false; // 🔥 Asegúrate de que no esté en modo edición al abrir
+    this.showModal = true;
+    this.alert.showToastInfo(`Viendo reclamo: ${claim.nombre}`, 'Ver Reclamo');
+  }
+
+	// 🔥 Habilita el modo de edición dentro del modal
+  enableEdit(): void {
+    this.isViewOnly = false; // Desactiva el modo solo lectura
+    this.isEditing = true; // 🔥 Activa el modo de edición
+    this.alert.showToastInfo('Modo de edición activado.', 'Editar Reclamo');
+  }
+
+	// 🔥 Alterna el modo de solo lectura dentro del modal
+  // Alterna el modo de solo lectura dentro del modal
+  toggleEditMode(): void {
+    this.isViewOnly = !this.isViewOnly;
+    this.alert.showToastInfo(
+      this.isViewOnly ? 'Modo de visualización activado.' : 'Modo de edición activado.',
+      'Cambio de Modo'
+    );
+  }
+
+	saveChanges(): void {
+		console.log('💾 Guardando cambios para el reclamo:', this.selectedClaim);
+     if (this.selectedClaim && this.selectedClaim.uidEjecutivo && this.selectedClaim.id) {
+      this.claimsService.updateClaim(this.selectedClaim.uidEjecutivo, this.selectedClaim)
+        .then(() => {
+          this.alert.showToastSuccess('✅ Reclamo actualizado con éxito.', 'OK!');
+          this.loadAllClaims(); // Recarga los datos para reflejar el cambio
+          this.cancelEdit(); // Cierra el modal
+        })
+        .catch(err => {
+          console.error('❌ Error al actualizar el reclamo:', err);
+          this.alert.showToastError('Ocurrió un error al actualizar el reclamo.', 'Error');
+        });
+    } else {
+      this.alert.showToastError('No hay reclamo seleccionado o faltan datos para actualizar.', 'Error');
+    }  
+  }
+
+	// 🔥 Cierra el modal de Ver/Editar y limpia el reclamo seleccionado
+	cancelEdit(): void {
+    this.selectedClaim = null;
+    this.showModal = false;
+    this.isEditing = false; // 🔥 Reinicia el estado de edición al cerrar
+    this.isViewOnly = false; // Reinicia también el modo de visualización
+  }
+
+	// 🔥 Guarda los cambios del reclamo editado
+  saveEditedClaim(): void {
+    if (this.selectedClaim && this.selectedClaim.uidEjecutivo && this.selectedClaim.id) {
+      this.claimsService.updateClaim(this.selectedClaim.uidEjecutivo, this.selectedClaim)
+        .then(() => {
+          this.alert.success('✅ Reclamo actualizado con éxito.');
+          this.loadAllClaims(); // Recarga los datos para reflejar el cambio
+          this.cancelEdit(); // Cierra el modal
+        })
+        .catch(err => {
+          console.error('❌ Error al actualizar el reclamo:', err);
+          this.alert.error('Ocurrió un error al actualizar el reclamo.');
+        });
+    } else {
+      this.alert.showToastError('No hay reclamo seleccionado o faltan datos para actualizar.', 'Error');
+    }
+  }
+
 	cancelNewClaim(): void {
 		this.newClaim = this.getEmptyClaim(); // Limpia
 		this.showNewModal = false;
 	}
-	
-	saveNewClaim() {
-		if (!this.newClaim.nombre || !this.newClaim.tipo || !this.newClaim.estado || !this.selectedExecutiveUid) {
-			this.alert.warning('Completa todos los campos, incluyendo el ejecutivo asignado.');
-			return;
-		}
-	
-		const nuevo: Claim = {
-			...this.newClaim,
-			id: this.mockData.generateUUID(), // Puedes dejarlo o usar `doc().id` si quieres auto-ID
-			uidEjecutivo: this.selectedExecutiveUid,
-			selected: false
-		};
-	
-		/* this.claimsService.createClaim(this.selectedExecutiveUid, nuevo)
-			.then(() => {
-				this.reclamos.unshift(nuevo); // Opcional: para que se vea al instante en la UI
-				this.saveToLocal(); // Si deseas mantenerlo en localStorage
-				this.alert.success('✅ Reclamo creado y asignado con éxito.');
-				this.showNewModal = false;
-				// 🔄 Vuelve a cargar la lista actualizada
-				this.loadClaims();
-				this.resetNewClaim();
-			})
-			.catch(err => {
-				console.error('❌ Error al guardar reclamo:', err);
-				this.alert.error('Ocurrió un error al guardar el reclamo.');
-			}); */
-			this.claimsService.createClaim(this.selectedExecutiveUid, nuevo)
-				.then(() => {
-					this.loadClaims();
-					this.alert.success('Nuevo reclamo asignado con éxito.');
-					this.showNewModal = false;
-				})
-				.catch((err: any) => {
-					console.error('❌ Error al crear reclamo:', err);
-					this.alert.error('Ocurrió un error al crear el reclamo.');
-				});
-			
-	}
-	
-	resetNewClaim() {
-		this.newClaim = this.getEmptyClaim();
-		this.selectedExecutiveUid = '';
-	}
-	
-	getEmptyClaim(): Claim {
-		return {
-			id: '',
-			nombre: '',
-			tipo: '',
-			estado: 'Pendiente',
-			fecha: new Date().toISOString().split('T')[0],
-			foto: '',
-			total: 0, 
-    	uidEjecutivo: '', // 👈 este campo nuevo
-			selected: false
-		};
-	}
 
-	generateUUID(): string {
-		return crypto.randomUUID();
-	}
-
-	private saveToLocal(): void {
-		localStorage.setItem('claims', JSON.stringify(this.reclamos));
-	}
-
-	resetData() {
-    localStorage.removeItem('claims');
-    //this.ngOnInit();
-		this.currentPage = 1;         // Reinicia paginación
-  	this.ngOnInit(); 
-    this.alert.showToastInfo('Datos restaurados a valores por defecto', 'Información');
+  getTotalPages(): number {
+    return Math.ceil(this.filteredClaims.length / this.itemsPerPage);
   }
 
-	infoRow(info:any) {
-		console.log('Información del button:', info);
-	}
+  getPagesArray(): number[] {
+    return Array.from({ length: this.getTotalPages() }, (_, i) => i + 1);
+  }
 
-	/* loadEjecutivos() {
-		this.userService.getAllEjecutivos().subscribe(users => {
-			this.ejecutivos = users; // [{ uid: 'abc', nombre: 'Juan Pérez' }, ...]
-		});
-	} */
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+      this.updatePagedClaims();
+    }
+  }
 
-	getExecutiveName(uid: string): string {
-		const exec = this.executives.find(e => e.uid === uid);
-		return exec ? `${exec.name} (${exec.email})` : 'No asignado';
-	}
-	
-	
+  onItemsPerPageChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.itemsPerPage = Number(target.value);
+    this.currentPage = 1;
+    this.updatePagedClaims();
+  }
+
+	// 🔥 Función para eliminar un solo reclamo (llamada desde el botón en cada fila) 🔥
+  deleteClaim(claimId: string): void {
+    const claimToDelete = this.allClaims.find(claim => claim.id === claimId);
+
+    if (claimToDelete && claimToDelete.uidEjecutivo) {
+      if (confirm('¿Estás seguro de que quieres eliminar este reclamo?')) {
+        this.claimsService.deleteClaim(claimToDelete.uidEjecutivo, claimId)
+          .then(() => {
+            this.alert.success('✅ Reclamo eliminado con éxito.');
+            this.loadAllClaims();
+          })
+          .catch(err => {
+            console.error('❌ Error al eliminar el reclamo:', err);
+            this.alert.error('Ocurrió un error al eliminar el reclamo.');
+          });
+      }
+    } else {
+      this.alert.showToastError('No se pudo encontrar el reclamo para eliminar o falta el UID del ejecutivo.', 'Error');
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }

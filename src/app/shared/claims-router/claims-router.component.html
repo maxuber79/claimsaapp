@@ -1,10 +1,39 @@
- 
-<span class="badge badge-full-primary">claims-router works!</span>
-<app-admin-claims *ngIf="showAdmin">
-	<h2>Admin Claims</h2>
-	<p>Here you can manage admin claims.</p>
-</app-admin-claims>
-<app-executive-claims *ngIf="showExecutive">
-	<h2>Executive Claims</h2>
-	<p>Here you can manage executive claims.</p>
-</app-executive-claims>
+<div class="row">
+<!-- 	<div class="col-12">
+		<span class="badge badge-full-primary">claims-router works!</span>
+	</div> -->
+	<div class="col-12">
+		<!-- Spinner mientras carga -->
+		<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center">
+			<div class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Cargando rol...</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">		
+		<!-- <p>Rol actual: <span class="badge badge-full-primary">{{role}}</span></p> -->
+		<app-admin-claims *ngIf="showAdmin">
+			<h2>Admin Claims</h2>
+			<p>Here you can manage admin claims.</p>
+		</app-admin-claims>
+
+		<app-executive-claims *ngIf="showExecutive">
+			<h2>Executive Claims</h2>
+			<p>Here you can manage executive claims.</p>
+		</app-executive-claims>
+
+		<!-- Fallback si no hay rol -->
+		<div *ngIf="!isLoading && !showAdmin && !showExecutive" class="alert alert-danger mt-3">
+			No se pudo determinar tu rol. Contacta al administrador.
+		</div>
+
+
+</div> 
+
+
+
+
+
+
+
+

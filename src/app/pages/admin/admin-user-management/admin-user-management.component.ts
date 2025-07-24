@@ -12,9 +12,14 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./admin-user-management.component.scss']
 })
 export class AdminUserManagementComponent implements OnInit {
+
+
   users: UserModel[] = [];
   filteredUsers: UserModel[] = [];
   searchTerm: string = '';
+
+
+	
 
 	loading: boolean = true;
 	isSaving: boolean = false;

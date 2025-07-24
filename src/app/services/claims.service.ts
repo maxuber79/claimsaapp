@@ -36,7 +36,7 @@ export class ClaimsService {
     return setDoc(ref, { ...claim, id });
   }
 
-	// 🔄 Actualiza un reclamo (por ejemplo, cambiar estado)
+	// 🔄 Actualiza un reclamo existente. (por ejemplo, cambiar estado)
   updateClaim(uid: string, claim: Claim): Promise<void> {
     const ref = doc(this.firestore, `users/${uid}/claims/${claim.id}`);
     return updateDoc(ref, { ...claim });
@@ -79,18 +79,23 @@ getAllClaims(): Observable<Claim[]> {
   );
 }
 
-/* 
-
-// 👉 Obtiene reclamos por uid
-private getClaimsByUid(uid: string): Promise<Claim[]> {
-  const claimsRef = collection(this.firestore, `users/${uid}/claims`);
-  return getDocs(claimsRef).then(snap =>
-    snap.docs.map(doc => ({ ...(doc.data() as Claim), uidEjecutivo: uid }))
-  );
-}
+/**
+   * 🎯 Obtiene los reclamos de un ejecutivo específico por su UID.
+   * @param uid El UID del ejecutivo.
+   * @returns Observable<Claim[]> Un observable de un array de reclamos.
+   */
+  getClaimsByUid(uid: string): Observable<Claim[]> {
+    const claimsRef = collection(this.firestore, `users/${uid}/claims`);
+    // Convertimos la Promise de getDocs a un Observable usando 'from' de RxJS
+    return from(getDocs(claimsRef)).pipe(
+      map(snapshot =>
+        snapshot.docs.map(doc => ({ ...(doc.data() as Claim), uidEjecutivo: uid, id: doc.id })) // 🔥 Asegúrate de incluir el 'id' del documento
+      )
+    );
+  }
 
 // 🌍 Obtiene todos los reclamos de todos los ejecutivos
-getAllClaims(): Observable<Claim[]> {
+/*getAllClaims(): Observable<Claim[]> {
   const usersRef = collection(this.firestore, 'users');
 
   return from(getDocs(usersRef)).pipe(

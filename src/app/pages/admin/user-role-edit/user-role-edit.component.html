@@ -8,7 +8,7 @@
 					<ol class="breadcrumb mb-0">
 						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'analytics']">Home</a></li>
 						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'admin-users']">Management users</a></li>
-						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'edit-role', userData?.uid]">Edit Role</a></li>
+						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'edit-role', userData.uid]">Edit Role</a></li>
 					</ol>
 				</nav>
 			</div>
@@ -21,18 +21,18 @@
 	<form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
 		<div class="row">
 			<div class="col-12 mb-3">
-				<span class="badge text-bg-primary">uid: {{ userData?.uid }}</span>
+				<span class="badge text-bg-primary">uid: {{ userData.uid }}</span>
 			</div>
 			<div class="col-sm-12 col-md-6">
 				<div class="mb-3">
 					<label class="form-label">Email:</label>
-					<input class="form-control" [value]="userData?.email" disabled />
+					<input class="form-control" [value]="userData.email" disabled />
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-6">
 				<div class="mb-3">
 					<label class="form-label">Nombre:</label>
-					<input class="form-control" [value]="userData?.name + ' ' + userData?.last_name" disabled />
+					<input class="form-control" [value]="userData.name + ' ' + userData.last_name" disabled />
 				</div>
 			</div>
 		</div>

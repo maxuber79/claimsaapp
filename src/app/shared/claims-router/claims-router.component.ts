@@ -13,23 +13,31 @@ import { ClaimsDummyService } from '../../services/claims-dummy.service';
   styleUrls: ['./claims-router.component.scss']
 })
 export class ClaimsRouterComponent implements OnInit {
-  role: string | null = null;
-  showAdmin = false;
-  showExecutive = false;
+  
+	
+	
+	role: string | null = null;
+  showAdmin: boolean = false;
+  showExecutive: boolean = false;
+	isLoading: boolean = true;
+
 
   constructor(private userService: UserService, private claimsDummyService: ClaimsDummyService) {}
 
   ngOnInit(): void {
-		this.userService.getCurrentUserRole().subscribe(role => {
+		this.userService.getCurrentUserRole().subscribe( role => {
+			this.isLoading = false; // Desactiva el spinner al cargar el componente
 			console.log('🧪 Rol recibido desde el servicio:', role);
 			this.role = role;
 			if (role === 'Administrador') {
-				this.showAdmin = true;
-			} else if (role === 'Ejecutivo') {
-				this.showExecutive = true;
-			} else {
-				console.warn('⚠️ Rol no reconocido:', role);
-			}
+        this.showAdmin = true;
+				this.isLoading = false; // Desactiva el spinner al cargar el componente
+      } else if (role === 'Ejecutivo') {
+        this.showExecutive = true;
+				
+      } else {
+        console.warn('⚠️ Rol desconocido o no asignado');
+      }
 		});
 
 

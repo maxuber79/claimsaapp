@@ -22,10 +22,12 @@ import { AuthService } from '../../services/auth.service';
 export class ProfileViewComponent implements OnInit {
   
 	
-	uid: string | null = ''; 
+	uid: string = ''; 
 	profileForm!: FormGroup;
 	profileUserForm!: FormGroup; 
 	userData: UserModel | null = null; 
+
+	
   editMode: boolean = false; // Cambia a true si quieres que el formulario esté en modo edición por defecto
 	isDisabled: boolean = false; // Cambia a true si quieres que el formulario esté deshabilitado por defecto
 	loadUserData: any;
@@ -53,19 +55,27 @@ export class ProfileViewComponent implements OnInit {
 	}
 
   ngOnInit(): void {
-		console.log('%c<<< Start ngOnInit >>>', 'background: #6610f2; color: #ffffff; padding: 2px 5px;');
+		console.log('%c<<< Start ngOnInit >>>', 'background: #fff3cd; color: #664d03; padding: 2px 5px;');
+  
+	
+	const routeUid = this.route.snapshot.paramMap.get('uid');
+	console.log('%c<<< UID desde la ruta >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', routeUid);
 
-		//this.uid = this.route.snapshot.paramMap.get('uid') || '';
-		this.uid = this.route.parent?.snapshot.paramMap.get('uid') || '';
-		console.log('%c<<< uid | profile >>>', 'background: #d63384; color: #fff; padding: 2px 5px;', this.uid);
 
-		this.profileForm = this.fb.group({
-			uid: [{ value: this.uid, disabled: true }], // UID no editable
+
+  if (!routeUid) {
+    console.error('❌ No se encontró UID en la ruta');
+    return; // salimos para evitar llamadas inválidas
+  }
+
+	//Inicializamos el formulario
+	this.profileUserForm = this.fb.group({
+			uid: [{ value: '', disabled: true }], // UID no editable
 			photoURL: [''],// opcional
 			name: [''],
 			last_name: [''],
 			user_name: [''],
-			email: [{ value: '', disabled: true }], // UID no editable
+			email: [''], // UID no editable
 			phone: [''],
 			mobile: [''],
 			address: [''],
@@ -79,206 +89,100 @@ export class ProfileViewComponent implements OnInit {
 			facebook: [''],
 			bio: ['']
 		});
+  this.uid = routeUid; // ahora ya es string seguro
 
-		this.profileUserForm = this.fb.group({
-			uid: [{ value: this.uid, disabled: true }], // UID no editable
-			photoURL: [''],// opcional
-			name: [''],
-			last_name: [''],
-			user_name: [''],
-			email: [{ value: '', disabled: true }], // UID no editable
-			phone: [''],
-			mobile: [''],
-			address: [''],
-			city: [''],
-			commune: [''],
-			profession: [''],
-			website: [''],
-			github: [''],
-			instagram: [''],
-			twitter: [''],
-			facebook: [''],
-			bio: ['']
-		});
-		console.log('%c<<< Formulario inicializado >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', this.profileUserForm);
+  this.userService.getUserData(this.uid).subscribe({
+    next: (user) => {
+      this.userData = { ...user, uid: this.uid, email: user?.email ?? '' }; 
+      this.perfil = { ...user, uid: this.uid, email: user?.email ?? '' };
+      this.isLoading = false;
 
-		this.route.parent?.paramMap.subscribe( params => {
-			this.uid = params.get('uid') || '';
-			console.log('%c<<< uid | profile-view >>>', 'background: #d63384; color: #fff; padding: 2px 5px;', this.uid);
-		});
-     
+      console.log('✅ Usuario cargado:', this.userData);
 
-			
-			 
-			this.userService.getUserData(this.uid ?? '').subscribe({
-				next: (user) => {
-					this.userData = user; 
-					this.perfil = user;
-					this.isLoading = false;
-					console.log('✅ Usuario cargado:', user);
-				
-					this.profileForm.patchValue({
-						photoURL: this.perfil?.photoURL || '',
-						name: this.perfil?.name || '',
-						last_name: this.perfil?.last_name || '',
-						user_name: this.perfil?.user_name || '',
-						email: this.perfil?.email || '',
-						phone: this.perfil?.phone || '',
-						mobile: this.perfil?.mobile || '',
-						address: this.perfil?.address || '',
-						city: this.perfil?.city || '',
-						commune: this.perfil?.commune || '',
-						profession: this.perfil?.profession || '',
-						website: this.perfil?.website || '',
-						github: this.perfil?.github || '',
-						instagram: this.perfil?.instagram || '',
-						twitter: this.perfil?.twitter || '',
-						facebook: this.perfil?.facebook || '',
-						bio: this.perfil?.bio || ''
-					});
-					this.profileUserForm.patchValue({
-						photoURL: this.perfil?.photoURL || '',
-						name: this.perfil?.name || '',
-						last_name: this.perfil?.last_name || '',
-						user_name: this.perfil?.user_name || '',
-						email: this.perfil?.email || '',
-						phone: this.perfil?.phone || '',
-						mobile: this.perfil?.mobile || '',
-						address: this.perfil?.address || '',
-						city: this.perfil?.city || '',
-						commune: this.perfil?.commune || '',
-						profession: this.perfil?.profession || '',
-						website: this.perfil?.website || '',
-						github: this.perfil?.github || '',
-						instagram: this.perfil?.instagram || '',
-						twitter: this.perfil?.twitter || '',
-						facebook: this.perfil?.facebook || '',
-						bio: this.perfil?.bio || ''
-					});
-					console.log('%c<<< Formulario patchValue >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', this.profileUserForm.value);
-				
-				
-				
-				
-				},
-				error: (err) => {
-					console.error('❌ Error al cargar usuario:', err);
-					this.isLoading = false;
-				},
-				complete() {
-					console.log('%c<<< Usuario cargado correctamente >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');					 
-				},
-			});
-		
-
-		if (this.uid) {
-			console.log('🆔 UID recibido en profile:', true, 'uid:',this.uid);
-			// obtener datos desde el servicio usando el uid
-
-			combineLatest({
-				perfil: this.userService.getUserData(this.uid),
-				config: this.authService.getCurrentUser().pipe(take(1)) // aseguramos un valor único del usuario
-			}).subscribe({
-				next: ({ perfil, config }) => {
-					this.perfil = perfil;
-					this.config = config;
-					console.log('✅ combineLatest:', { perfil, config });
-
-										
-
-
-
-
-				},
-				error: (err) => {
-					console.error('❌ Error al obtener datos del perfil/config:', err);
-				}
+      this.profileUserForm.patchValue({
+				uid: this.perfil?.uid || '', // UID no editable
+				photoURL: this.perfil?.photoURL || '',
+				name: this.perfil?.name || '',
+				last_name: this.perfil?.last_name || '',
+				user_name: this.perfil?.user_name || '',
+				email: this.perfil?.email || '',
+				phone: this.perfil?.phone || '',
+				mobile: this.perfil?.mobile || '',
+				address: this.perfil?.address || '',
+				city: this.perfil?.city || '',
+				commune: this.perfil?.commune || '',
+				profession: this.perfil?.profession || '',
+				website: this.perfil?.website || '',
+				github: this.perfil?.github || '',
+				instagram: this.perfil?.instagram || '',
+				twitter: this.perfil?.twitter || '',
+				facebook: this.perfil?.facebook || '',
+				bio: this.perfil?.bio || ''
 			});
 
-			/* this.userService.getUserData(this.uid).subscribe({
-				next: (perfil) => {
-					this.perfil = perfil;
-					console.log('✅ Perfil cargado:', perfil);
-				},
-				error: (err) => console.error('❌ Error en getUserData:', err)
-			});
-			
-			this.AuthService.getCurrentUser().pipe(take(1)).subscribe({
-				next: (config) => {
-					this.config = config;
-					console.log('✅ Usuario autenticado:', config);
-				},
-				error: (err) => console.error('❌ Error en getCurrentUser:', err)
-			}); */
-			
+       
 
-			/* forkJoin({
-				perfil: this.userService.getUserData(this.uid).pipe(take(1)),
-				config: this.AuthService.getCurrentUser()
-			}).subscribe({
-				next: ({ perfil,config }) => {
-					this.perfil = perfil;
-					console.info('<< Perfil >>', this.perfil); 
-					this.config = config;
-					console.info('<< Config >>', this.config);
-				},
-				error: (err: Error) => {console.error('%cHTTP Error', 'background: #f8d7da; color: #842029; padding: 2px 5px;', err);},
-				complete: () => {console.log('%cHTTP request completed.', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');}
-				 
-			}); */
-		}
+      console.log('%c<<< Formulario patchValue >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', this.profileUserForm.value);
+    },
+    error: (err) => {
+      console.error('❌ Error al cargar usuario:', err);
+      this.isLoading = false;
+    },
+    complete: () => {
+      console.log('%c<<< Usuario cargado correctamente >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');
+    }
+  });
+}
 
-		
+
+	initForm(): void {
+	
 	}
 
 	onFileSelected(event: Event) {
-		const file = (event.target as HTMLInputElement).files?.[0];
-		if (file) {
-			const localUrl = URL.createObjectURL(file);
-			this.previewUrl = localUrl; // Para mostrar
-			this.imageFile = file;      // Para guardar si lo necesitas
-			this.fileName = `avatar_${Date.now()}_${file.name}`;
-		}
+		 
 	}
 
 	/**
    * 🔄 Cargar perfil del usuario desde Firestore y armar el formulario
    */
 	loadUserProfile(uid: string): void {
-		this.userService.getUserProfile(uid).subscribe(user => {
-			console.log('🧠 userData desde loadUserProfile:', user);
-			if (user) {
-				this.userData = user;
-				console.log('✅ Perfil cargado despues del if:', this.userData); 
-			} else {
-				console.warn('⚠️ No se encontró perfil para UID:', uid);
-			}
-		});
+		console.log('%c<<< Start loadUserProfile >>>', 'background: #198754; color: #ffffff; padding: 2px 5px;');
 	} 
 
 	saveProfile(): void {
-		if (this.profileForm.valid && this.uid) {
-			const updatedData = this.profileForm.getRawValue(); // incluye los campos deshabilitados como email
-	
-			this.userService.updateUserProfile(this.uid, updatedData).subscribe({
-				next: () => {
-					console.log('%c✅ Perfil actualizado correctamente', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');
-					this.alertService.success('Perfil actualizado correctamente');
-					this.perfil = updatedData; // opcional: actualiza el modelo local
-					this.editMode = false;
-				},
-				error: (err) => {
-					console.error('%c❌ Error al actualizar perfil:', 'background: #f8d7da; color: #842029; padding: 2px 5px;', err);
-				}
-			});
+		console.log('Guardar perfil');
+		console.log('%c<<< Guardar perfil >>>', 'background: #0d6efd; color: #fff; padding: 2px 5px;');
+
+		if (this.profileUserForm.invalid) {
+			alert('⚠️ El formulario es inválido. Revisa los campos.');
+			return;
 		}
-	}
-	toggleEdit(): void {
+
+		const updatedData = this.profileUserForm.value;
+  	const uid = this.uid;
+		console.log('%c<<< uid >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', uid);
+		console.log('%c<<< Datos a guardar >>>', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', updatedData);
+
+		 this.userService.updateUserProfile(this.uid, updatedData).subscribe({
+			next: () => {
+					console.log('%c✅ Perfil actualizado correctamente', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');
+				this.alertService.success('Perfil actualizado correctamente');
+				this.toggleEdit(); // salir de modo edición
+			},
+			error: (err) => {
+				console.error('%c❌ Error al actualizar perfil:', 'background: #f8d7da; color: #842029; padding: 2px 5px;', err);
+				this.alertService.error('❌ Error al guardar perfil, revisa la consola');
+			}
+  	});  
+	}  
+	 
+	toggleEdit(): void { 
 		if (this.editMode && this.perfil) {
 			// Si cancela edición, restablecer valores originales
-			this.profileForm.patchValue(this.perfil); // asumimos que ya tenés perfil cargado
+			this.profileUserForm.patchValue(this.perfil); 
 		}
 		this.editMode = !this.editMode;
-	}
+	} 
 
 }

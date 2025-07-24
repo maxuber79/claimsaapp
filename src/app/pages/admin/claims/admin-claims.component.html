@@ -1,145 +1,204 @@
-<div class="row">
-	<div class="col-12 border-2">
-		<div class="card">
-			<div class="card-body">
-				<!-- Satar Spinner -->
-				<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
-					<div class="spinner-border" role="status">
-						<span class="visually-hidden">Loading...</span>
+ <div class="row">
+	<div class="col-12 grid-margin"> 
+		<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+		<div *ngIf="!isLoading && userData">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-center mb-4 mb-lg-0 py-4">
+						<div class="position-relative d-inline-block">
+							<img [src]="userData.photoURL || imageDefault "
+								class="border border-5 border-primary rounded-circle profile-pic border-opacity-25 object-fit-cover"
+								alt="Profile Picture" width="100" height="100" />
+						</div>
+						<div class="ms-3 text-start">
+							<h2 class="m-0 p-0">Hola, {{ userData.name || 'Invitado' }}</h2>
+							<h6 class="m-0 p-0">Bienvenido a tu aplicación</h6>
+							<p class="m-0 p-0 text-muted">Este es tu panel de control, aquí puedes administrar tus tareas, ver
+								estadísticas y más.</p>
+							<p class="m-0 p-0 text-muted"><span class="badge badge-type badge-outline-info">{{ userData.rol ||
+									'Desconocido' }}</span></p>
+						</div>
 					</div>
 				</div>
-				<!-- end spinner -->
-				<div class="row">
-					<div class="col-6">
-						<h2 class="h3 mb-3">Administración de Reclamaciones</h2>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<div class="row">
+	<div class="col-12 border-1 grid-margin">
+		<div class="card">
+			<div class="card-body">
+				<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+					<div class="spinner-border" role="status">
+						<span class="visually-hidden">Cargando...</span>
+					</div>
+				</div>
+
+				<div *ngIf="errorMessage" class="col-12 mt-3">
+					<div class="alert alert-danger text-center" role="alert">
+						{{ errorMessage }}
+					</div>
+				</div>
+
+				<div *ngIf="!isLoading && !errorMessage" class="row">
+					<div class="col-6 border-3">
+						<h2 class="h3 m-0">Administración de Reclamaciones</h2>
 						<p class="mb-0">Aquí puedes gestionar todas las reclamaciones de los usuarios.</p>
 					</div>
-					<div class="col-6 text-end">
+					<div class="col-6 border-3 bg-light d-flex justify-content-end align-items-center">
 						<button class="btn btn-full --primary m-1 btn-sm" (click)="openNewModal()">
 							<i class="bi bi-plus-circle me-1"></i> Nuevo Reclamo
 						</button>
-						<button class="btn btn-full --secondary m-1 btn-sm" (click)="resetData()">
-							<i class="bi bi-arrow-clockwise"></i> Restaurar datos originales
-						</button>
-						<!-- ☑️ Botón eliminar seleccionados --> 
-						<button class="btn btn-full --danger m-1 btn-sm" [disabled]="!hasSelected()" (click)="deleteSelected()">
-							<i class="bi bi-trash"></i> Eliminar seleccionados ({{ selectedCount() }})
+						<button class="btn btn-full --danger m-1 btn-sm" [disabled]="!showDeleteButton"
+							(click)="deleteSelectedClaims()">
+							<i class="bi bi-trash me-1"></i> Eliminar Seleccionados
 						</button>
 					</div>
-					<div class="col-6">
-						<label for="filterStatus" class="form-label">Filtrar por Estado</label>
-						<select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
-							<option value="">Todos</option>
-							<option *ngFor="let estado of estadosDisponibles" [value]="estado">{{ estado }}</option>
-						</select>
+
+					<div class="col-12 py-3  border-3">
+						<div class="row g-3 align-items-center">
+							<div class="col-md-3">
+								<label for="searchTerm" class="form-label visually-hidden">Buscar por Nombre</label>
+								<input type="text" id="searchTerm" class="form-control" placeholder="Buscar por nombre..."
+									[(ngModel)]="searchTerm" (input)="applyFilters()">
+							</div>
+							<div class="col-md-3">
+								<label for="filterStatus" class="form-label visually-hidden">Filtrar por Estado</label>
+								<select id="filterStatus" class="form-select" [(ngModel)]="filterStatus" (change)="applyFilters()">
+									<option value="Todos">Todos los Estados</option>
+									<option value="Iniciado">Iniciado</option>
+									<option value="Pendiente">Pendiente</option>
+									<option value="Cancelado">Cancelado</option>
+									<option value="Cerrado">Cerrado</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label for="selectedExecutive" class="form-label visually-hidden">Filtrar por Ejecutivo</label>
+								<select class="form-select" id="selectedExecutive" [(ngModel)]="selectedExecutiveUid"
+									(change)="applyFilters()">
+									<option value="">Todos los Ejecutivos</option>
+									<option *ngFor="let ejecutivo of executives" [value]="ejecutivo.uid">
+										{{ ejecutivo.name }} {{ ejecutivo.last_name }}
+									</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<button class="btn btn-full --primary m-1 w-100" (click)="resetData()">
+									<i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+								</button>
+							</div>
+						</div>
 					</div>
-					<div class="col-6">
-						<label for="filterChannel" class="form-label">Filtrar por Canal</label>
-						<select class="form-select" [(ngModel)]="selectedChannel" (change)="applyFilters()">
-							<option value="">Todos</option>
-							<option *ngFor="let canal of canalesDisponibles" [value]="canal">{{ canal }}</option>
-						</select>
-					</div>
-					<div class="col-12">
+					<div class="col-12 border-2 mt-3">
 						<div class="table-responsive">
 							<table class="table table-light table-hover align-middle">
 								<thead>
 									<tr>
-										<th class="text-center">
-											<input type="checkbox" [(ngModel)]="masterChecked" (change)="toggleAll()" />
+										<th>
+											<input type="checkbox" [checked]="masterChecked" (change)="toggleMasterCheckbox()"
+												class="form-check-input" />
 										</th>
 										<th>Nombre</th>
 										<th>Tipo</th>
 										<th>Fecha</th>
 										<th>Estado</th>
-										<th>Asignado a</th>
+										<th>Ejecutivo Asignado</th>
 										<th>Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let r of paginatedReclamos">
-										<td class="text-center">
-											<input type="checkbox" [(ngModel)]="r.selected" (change)="checkMasterState()" />
-										</td>
-										<td>{{ r.nombre }}</td>
-										<td>{{ r.tipo }}</td>
-										<td>{{ r.fecha }}</td>
+									<tr *ngIf="pagedClaims.length === 0">
+										<td colspan="7" class="text-center text-muted py-4">No se encontraron reclamos con los filtros
+											aplicados.</td>
+									</tr>
+									<tr *ngFor="let claim of pagedClaims">
 										<td>
-											<!-- <span class="badge bg-secondary">{{ r.estado }}</span> -->
+											<input type="checkbox" [checked]="claim.selected" (change)="toggleClaimSelection(claim)"
+												class="form-check-input" />
+										</td>
+										<td>{{ claim.nombre }}</td>
+										<td>{{ claim.tipo }}</td>
+										<td>{{ claim.fecha | date:'shortDate' }}</td>
+										<td>
 											<span class="badge" [ngClass]="{
-												'bg-primary': r.estado === 'Iniciado',
-												'bg-warning text-dark': r.estado === 'Pendiente',
-												'bg-danger': r.estado === 'Cancelado',
-												'bg-success': r.estado === 'Cerrado',
-												'bg-secondary': r.estado !== 'Iniciado' && r.estado !== 'Cerrado' && r.estado !== 'Pendiente' && r.estado !== 'Cancelado'
+												'bg-primary': claim.estado === 'Iniciado',
+												'bg-warning text-dark': claim.estado === 'Pendiente',
+												'bg-danger': claim.estado === 'Cancelado',
+												'bg-success': claim.estado === 'Cerrado'
 											}">
-												{{ r.estado }}
+												{{ claim.estado }}
 											</span>
 										</td>
 										<td>
-											{{ getExecutiveName(r.uidEjecutivo || '') }}
+											{{ getExecutiveName(claim.uidEjecutivo) }}
 										</td>
-										<td>
-											<button class="btn btn-sm btn-info me-1" (click)="editItem(r)">
-												<i class="bi bi-eye"></i>
+										<td>											
+											<button class="btn btn-full --info m-1 btn-sm" (click)="openViewEditModal(claim, true)">
+												<i class="bi bi-eye-fill"></i> Ver/Editar
 											</button>
-											<button class="btn btn-sm btn-warning me-1" (click)="editItem(r)">
-												<i class="bi bi-pencil"></i>
-											</button>
-											<button class="btn btn-sm btn-danger me-1" (click)="deleteItem(r)">
+											<!-- <button class="btn btn-sm btn-info me-1" (click)="viewClaim(claim)">
+																							<i class="bi bi-eye"></i>
+																						</button> -->
+											<!-- <button class="btn btn-sm btn-warning" (click)="editClaim(claim)">
+																							<i class="bi bi-pencil"></i>
+																						</button> -->
+											<!-- <button class="btn btn-danger btn-sm" (click)="deleteClaim(claim.id!)">
 												<i class="bi bi-trash"></i>
-											</button>
-											<button class="btn btn-sm btn-success me-1" (click)="assignToExecutive(r)">
-												<i class="bi bi-person-check"></i>
-											</button>
-											<button class="btn btn-sm btn-secondary" (click)="infoRow(r)">
-												<i class="bi bi-info-circle-fill"></i>
-											</button>
+											</button> -->
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
-					<div class="col-6 text-start">
-						<small>Página {{ currentPage }} de {{ totalPages }}</small>
+					<div class="co-sm-12 col-md-6 py-3 border-2 d-flex justify-content-start align-items-center">
+						<p class="mb-0">Elementos por página:
+							<select (change)="onItemsPerPageChange($event)" [ngModel]="itemsPerPage"
+								class="form-select form-select-sm d-inline-block w-auto ms-2">
+								<option [value]="10">10</option>
+								<option [value]="25">25</option>
+								<option [value]="50">50</option>
+								<option [value]="100">100</option>
+							</select>
+						</p>
+						<span class="mx-2">
+							Página {{ currentPage }} de {{ getTotalPages() }}
+						</span>
 					</div>
-					<div class="col-6 text-end">
-						<!-- 🔢 Paginación -->
-						<nav>
-							<ul class="pagination pagination-sm mb-0">
+					<div class="co-sm-12 col-md-6 py-3 border-2 d-flex justify-content-end align-items-center">
+						<nav aria-label="Page navigation">
+							<ul class="pagination mb-0">
 								<li class="page-item" [class.disabled]="currentPage === 1">
-									<button class="page-link" (click)="changePage(currentPage - 1)">Anterior</button>
+									<a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
 								</li>
-								<li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
-									[class.active]="currentPage === i + 1">
-									<button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+								<li class="page-item" *ngFor="let page of getPagesArray()" [class.active]="page === currentPage">
+									<a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
 								</li>
-								<li class="page-item" [class.disabled]="currentPage === totalPages">
-									<button class="page-link" (click)="changePage(currentPage + 1)">Siguiente</button>
+								<li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+									<a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
 								</li>
 							</ul>
 						</nav>
 					</div>
 				</div>
-
-
-
-				
-				
 			</div>
-		</div>		
+		</div>
 	</div>
 </div>
  
 
 <!-- Modal para nuevo reclamo -->
-<div class="modal fade show d-block" *ngIf="showNewModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
+<!-- <div class="modal fade show d-block" *ngIf="showModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content rounded shadow-lg">
 			<div class="modal-header">
 				<h5 class="modal-title">Agregar Nuevo Reclamo</h5>
-				<button type="button" class="btn-close" (click)="cancelNewClaim()"></button>
+				<button type="button" class="btn-close" aria-label="Close" (click)="cancelEdit()"></button>
 			</div>
 			<div class="modal-body">
 				<form class="row g-3" *ngIf="newClaim">
@@ -174,39 +233,43 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-secondary" (click)="cancelNewClaim()">Cancelar</button>
+				<button type="button" class="btn btn-secondary" (click)="closeNewModal()">Cancelar</button>
 				<button class="btn btn-primary" (click)="saveNewClaim()">Guardar Reclamo</button>
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <!-- Modal de edición --> 
 <div class="modal fade show d-block" *ngIf="showModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content rounded shadow-lg">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Detalle de Reclamo 33</h5>
-				<button type="button" class="btn-close" (click)="cancelEdit()"></button>
+				<h5 class="modal-title">
+					{{ isEditing ? 'Editar Reclamo' : 'Ver Reclamo' }}
+					<span class="badge bg-secondary ms-2" *ngIf="selectedClaim?.id">{{ selectedClaim?.id }}</span>
+				</h5>
+				<button type="button" class="btn-close" aria-label="Close" (click)="cancelEdit()"></button>
 			</div>
 			<div class="modal-body">
-				<form *ngIf="selectedClaim" class="row g-3">
+				<form class="row g-3" *ngIf="selectedClaim">
+					<!-- <div class="col-md-6">
+						<label class="form-label">ID Reclamo</label>
+						<input type="text" [value]="selectedClaim.id" class="form-control" disabled />
+					</div> -->
 					<div class="col-md-6">
 						<label class="form-label">Nombre</label>
-						<input [(ngModel)]="selectedClaim.nombre" name="nombre" class="form-control" [disabled]="isViewOnly" />
+						<input [(ngModel)]="selectedClaim.nombre" name="selectedNombre" class="form-control" [disabled]="isViewOnly"
+							required />
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Asunto</label>
-						<input [(ngModel)]="selectedClaim.tipo" name="tipo" class="form-control" [disabled]="isViewOnly" />
+						<input [(ngModel)]="selectedClaim.tipo" name="selectedTipo" class="form-control" [disabled]="isViewOnly" />
 					</div>
-					<div class="col-12">
-						<label class="form-label">Descripción</label>
-						<textarea [(ngModel)]="selectedClaim.detail" name="detail" rows="3" class="form-control"
-							[disabled]="isViewOnly"></textarea>
-					</div>
+					
 					<div class="col-md-6">
 						<label class="form-label">Estado</label>
-						<select [(ngModel)]="selectedClaim.estado" name="estado" class="form-select" [disabled]="isViewOnly">
+						<select [(ngModel)]="selectedClaim.estado" name="selectedEstado" class="form-select" [disabled]="isViewOnly">
 							<option value="Iniciado">Iniciado</option>
 							<option value="Pendiente">Pendiente</option>
 							<option value="Cancelado">Cancelado</option>
@@ -215,45 +278,59 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Fecha</label>
-						<input [(ngModel)]="selectedClaim.fecha" name="fecha" type="date" class="form-control"
+						<input [(ngModel)]="selectedClaim.fecha" name="selectedFecha" type="date" class="form-control"
 							[disabled]="isViewOnly" />
 					</div>
-					<div class="col-md-12">
-						<label class="form-label">Ejecutivo asignado</label>
-						<select [(ngModel)]="selectedClaim.uidEjecutivo" name="ejecutivo" class="form-select">
-							<option [ngValue]="''" disabled selected>Selecciona un ejecutivo</option>
-							<option *ngFor="let ejecutivo of executives" [ngValue]="ejecutivo.uid">
-								{{ ejecutivo.name || ejecutivo.email }}
+					<div class="col-md-6">
+						<label class="form-label">Ejecutivo Asignado</label>
+						<select class="form-select" [(ngModel)]="selectedClaim.uidEjecutivo" name="selectedEjecutivo" [disabled]="isViewOnly">
+							<option *ngFor="let ejecutivo of executives" [value]="ejecutivo.uid">
+								{{ ejecutivo.name + ' ' + ejecutivo.last_name }} - {{ ejecutivo.email }}
 							</option>
 						</select>
 					</div>
+					<div class="col-12">
+						<label class="form-label">Descripción</label>
+						<textarea [(ngModel)]="selectedClaim.detail" name="selectedDetail" class="form-control" rows="3"
+							[disabled]="isViewOnly"></textarea>
+					</div>
+					 
 				</form>
+				<div *ngIf="!selectedClaim" class="alert alert-warning">
+					No se ha cargado ningún reclamo para ver/editar.
+				</div>
 			</div>
-
 			<div class="modal-footer">
-				<button class="btn btn-secondary" (click)="cancelEdit()">Cerrar</button>
-
-				<!-- Mostrar solo si está en modo lectura -->
-				<button class="btn btn-warning" *ngIf="isViewOnly" (click)="enableEditing()">
-					Editar
+				<!-- <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">
+					<i class="bi" [ngClass]="isViewOnly ? 'bi-pencil' : 'bi-eye'"></i>
+					{{ isViewOnly ? 'Editar' : 'Solo Lectura' }}
 				</button>
-
-				<!-- Mostrar solo si está en modo edición -->
-				<button class="btn btn-primary" *ngIf="!isViewOnly" (click)="saveChanges()">
+				<button type="button" class="btn btn-primary" [disabled]="isViewOnly" (click)="saveEditedClaim()">
 					Guardar Cambios
+				</button>
+				<button type="button" class="btn btn-danger" (click)="cancelEdit()">Cerrar</button> -->
+				<button type="button" class="btn btn-full --danger m-1" (click)="cancelEdit()">Cerrar</button>
+				
+				<button type="button" class="btn btn-full --primary m-1" (click)="enableEdit()" *ngIf="!isEditing">
+					<i class="bi bi-pencil-square me-1"></i> Habilitar Edición
+				</button>
+				
+				<button type="button" class="btn btn-full --success m-1" (click)="saveChanges()" [disabled]="!isEditing"
+					*ngIf="isEditing">
+					<i class="bi bi-save me-1"></i> Guardar Cambios
 				</button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- MODAL CREAR NUEVO RECLAMO -->
+<!-- button showNewModal() Modal crt -->
 <div class="modal fade show d-block" *ngIf="showNewModal" style="background-color: rgba(0,0,0,0.4); z-index: 1050;">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content rounded shadow-lg">
       <div class="modal-header">
-        <h5 class="modal-title">Nuevo Reclamo...</h5>
-        <button type="button" class="btn-close" (click)="showNewModal = false"></button>
+        <h5 class="modal-title">Nuevo Reclamo</h5>
+				<button type="button" class="btn-close" aria-label="Close" (click)="cancelNewClaim()"></button>
       </div>
       <div class="modal-body">
         <form class="row g-3">
@@ -289,8 +366,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="showNewModal = false">Cancelar</button>
-        <button class="btn btn-success" (click)="saveNewClaim()">Crear Reclamo</button>
+        <button class="btn btn-full --primary m-1" (click)="showNewModal = false">Cancelar</button>
+        <button class="btn btn-full --success m-1" (click)="saveNewClaim()">Crear Reclamo</button>
       </div>
     </div>
   </div>

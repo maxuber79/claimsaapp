@@ -15,6 +15,7 @@ export interface Claim {
 
 	/** UID del ejecutivo asignado */
 	uidEjecutivo?: string;
+	fromJson?: boolean; // 🔥 Nueva propiedad para indicar si viene del JSON
 }
 
 export interface ClaimResponse {

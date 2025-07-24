@@ -61,8 +61,8 @@ export class DashboardComponent implements OnInit {
 	channelData: number[] = [40, 25, 20, 15];
 	notifications: any[] = [];
 	channelsData: { name: string; value: number }[] = [];
-
-
+	perfil: UserModel | null = null; 
+	userRol: string = ''; // puede ser 'Administrador' | 'Ejecutivo' | 'Usuario'
 	constructor(
 		private route: ActivatedRoute,
 		private auth: Auth,
@@ -81,180 +81,43 @@ export class DashboardComponent implements OnInit {
    */
 	ngOnInit(): void {
 		console.log('📦 Iniciando carga de usuario en dashboard...');
-		/* this.uid = this.route.snapshot.paramMap.get('uid') || '';
-		console.log('%c<<< uid | dashboard >>>', 'background: #d63384; color: #fff; padding: 2px 5px;', this.uid); */
 
-
-		/* combineLatest({
-						metrics: this.mockService.getDashboardMetrics(),//this.userService.getUserData(this.uid),
-						tickets: this.mockService.getDashboardMetrics(),
-						satisfaction: this.mockService.getDashboardMetrics(),
-						channels: this.mockService.getDashboardMetrics()// aseguramos un valor único del usuario
-					}).subscribe({
-						next: ({ metrics,tickets,satisfaction,channels}) => {
-							this.metrics = metrics;
-							this.tickets = tickets;
-							console.log('%c<<< MÉTRICAS >>>', 'background:#0d6efd;color:#fff;padding:2px 5px;', this.metrics.metrics);
-							console.log('%c<<< TICKETS >>>', 'background:#198754;color:#fff;padding:2px 5px;', this.tickets);
-							console.log('%c<<< SATISFACCIÓN >>>', 'background:#ffc107;color:#000;padding:2px 5px;',satisfaction);
-							console.log('%c<<< CANALES >>>', 'background:#6610f2;color:#fff;padding:2px 5px;', channels);
-							 his.metrics = data.metrics;
-							this.tickets = data.tickets;
-							this.satisfaction = data.satisfaction;
-							this.channels = data.channels;  
-						},
-						error: (err) => {
-							console.error('❌ Error al obtener datos del servicio:', err);
-						},
-						complete: () => {
-							console.log('%c<<< complete graphics data >>>', 'background: #198754; color: #ffffff; padding: 2px 5px;');
-						}
-					}); */
-
-
-		 this.mockService.getDashboardMetrics().subscribe({
-			next: (data) => {
-				console.log('%c<<< Datos recibidos del servicio >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;', data.metrics);
-				this.metrics = data.metrics;
-				console.log('%c<<< MÉTRICAS >>>', 'background:#0d6efd;color:#fff;padding:2px 5px;', this.metrics);
-				this.tickets = data.chartData.tickets;
-				console.log('%c<<< TICKETS >>>', 'background:#198754;color:#fff;padding:2px 5px;', this.tickets);
-				this.satisfaction = data.chartData.satisfaction;
-				console.log('%c<<< SATISFACCIÓN >>>', 'background:#ffc107;color:#000;padding:2px 5px;',this.satisfaction);
-				this.channels = data.chartData.channel;
-				console.log('%c<<< CANALES >>>', 'background:#6610f2;color:#fff;padding:2px 5px;', this.channels);
-			},
-			error: (err) => {
-				console.error('❌ Error al obtener datos del servicio:', err);
-			},
-			complete: () => {
-				console.log('%c<<< complete graphics data >>>', 'background: #198754; color: #ffffff; padding: 2px 5px;');
-			} 
-		});  
-
-		this.mockService.getNotifications().subscribe(data => {
-			this.notifications = data;
-			console.log('📣 Notificaciones cargadas:', this.notifications);
-		});
-
-		this.authService.getAuthState().subscribe({
-			next: (user) => {
-				//console.log('%c<<< user form dashboard >>>', 'background: #198754; color: #fff; padding: 2px 5px;', user);
-			},
-			error: (err: Error) => {console.error('%cHTTP Error', 'background: #f8d7da; color: #842029; padding: 2px 5px;', err);},
-			complete: () => {console.log('%cHTTP request completed.', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');}
-		});
-
-		this.authService.getCurrentUser().pipe(
-			switchMap(user => this.userService.getUserData(user.uid))
-		).subscribe({
-			next: (data) => {
-				//console.log('%c<<< infoData | dashboard >>>', 'background: #198754; color: #fff; padding: 2px 5px;', data);
-			},
-			error: (err: Error) => {console.error('%cHTTP Error', 'background: #f8d7da; color: #842029; padding: 2px 5px;', err);},
-			complete: () => {console.log('%cHTTP request completed.', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');}
-		});
-
-
-
-		//console.log('%c<<< other | dashboard >>>', 'background: #198754; color: #fff; padding: 2px 5px;', this.auth);
-		onAuthStateChanged(this.auth, (user) => {
-			if (user && user.uid) {
-				this.userService.getUserData(user.uid).subscribe({
-					next: (data) => {
-						this.userData = data ? {
-							...(data as UserModel),
-							createdDate: data.created_at?.seconds ? new Date(data.created_at.seconds * 1000) : undefined
-						} : null;
-						/* this.userData = data ? {
-							...(data as UserModel),
-							createdDate: new Date((data.created_at?.seconds ?? 0) * 1000)
-						} : null; */
-						this.profilePhotoURL = user.photoURL || this.imageDefault;
-						//console.log('%c<<< userData | PhotoURL >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;', this.profilePhotoURL);
-
-						/* console.log('%c<<< info | dashboard >>>', 'background: #198754; color: #fff; padding: 2px 5px;', this.userData);
-						console.log('%c<<< uid | dashboard >>>', 'background: #d63384; color: #fff; padding: 2px 5px;', this.userData?.uid); */
-						this.isLoading = false;
-					},
-					error: (err) => {
-						console.error('Error al cargar el perfil:', err);
-						this.isLoading = false;
+		this.authService.getCurrentUser().subscribe( user => {
+			if (user) {
+				this.uid = user.uid;
+				console.log(`%c 📦 Usuario autenticado: ${user.uid}:`,'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', user);
+				
+				this.userService.getUserData(user.uid).subscribe( userData => {
+					console.log(`%c 📦 Usuario autenticado ----> ${user.uid}:`,'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', userData);
+					this.userData = userData;
+					this.uid = userData?.uid || '';
+					this.perfil = userData;
+					this.userRol = userData?.rol || 'Usuario'; // <-- aquí obtienes el rol
+					console.log('Rol del usuario:', this.userRol);
+				/* 	this.authService.getCurrentUser().pipe(
+						switchMap(user => this.userService.getUserData(user.uid))
+					).subscribe({
+						next: (data) => {
+							this.uid = data?.uid || '';
+							this.userService.getUserData(this.uid).subscribe({
+					next: (user) => {
+						this.perfil = user;
+						this.userRol = user?.rol || 'Usuario'; // <-- aquí obtienes el rol
+						console.log('Rol del usuario:', this.userRol);
 					}
+				}); */
+					/*this.userData = {
+					...userData,
+					email: userData.email ?? '',
+					photoURL: userData.photoURL ?? this.imageDefault
+				};
+				console.log(`%c 📦 Usuario autenticado: ${user.uid}:`,'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', user);
+				this.profilePhotoURL = user.photoURL || this.imageDefault;
+				this.apodoUser = user.displayName || 'Usuario'; */
 				});
-			} else {
-				console.warn('Usuario no autenticado');
-				this.isLoading = false;
 			}
 		});
-
-		this.userService.getUserData('').subscribe(user => {
-			//console.log('📥 Valor recibido desde getUserData() componente dashboard:', user); // DEBUG
-      if (user) {
-        this.userData = user;
-				//console.log('✅ userData asignado:', this.userData); 
-      } else {
-        console.warn('⚠️ No hay usuario logueado. Redirigiendo a login...');
-        this.router.navigate(['/login']);
-      }
-      this.isLoading = false;
-    });
-    /* onAuthStateChanged(this.auth, async (user) => {
-      if (user) {
-				console.log('%c<<< info user >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;', user);
-        try {
-          const userData = await this.userService.getUserProfile(user.uid);
-					const uid = user.uid; // 👈 Aquí está el UID del usuario autenticado
-         	// ✅ Normalización manual del objeto completo
-					// this.userData = {
-					//	uid: userData.uid,
-					//
-					//	...data,
-					//	 createdDate: new Date(userData.created_at.seconds * 1000) // Fecha legible
-					//};  
-
-					console.log('%c<<< userData >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;', userData);
-					
-					 this.userService.getUserProfile(uid).subscribe({
-						next: (user) => {
-							this.userData = user ?? null;
-							console.log('%c[DEBUG] Datos del usuario cargados:', 'background: #0d6efd; color: white;', this.userData);
-							this.loading = false;
-						},
-						error: (error) => {
-							console.error('%c[ERROR] al cargar datos del perfil:', 'background: red; color: white;', error);
-							this.loading = false;
-						}
-					});
-
-
-        } catch (error) {
-          console.error('❌ Error al obtener datos:', error);
-          this.userData = null;
-        }
-      }
-      this.loading = false;
-    }); */
-
-		this.todoService.getPendingTodosCount().subscribe(count => {
-			this.pendingCount = count;
-			console.log('🔴 Tareas pendientes:', count);
-		});
-
-		this.todoService.getTodos().subscribe({
-			next: (todos) => {
-				this.todos = todos;
-				console.log('📌 Todos recibidos en dashboard:', this.todos); // <-- Aquí
-				//this.alertService.showToastSuccess('Tareas cargadas correctamente', 'Éxito');
-				this.alertaService.showToastSuccess('Tareas cargadas correctamente', 'Éxito');
-			},
-			error: (error) => {
-				console.error('❌ Error al obtener tareas:', error);
-			},
-			complete: () => {console.log('%cHTTP request completed.', 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;');}
-		});
-		
-  }
+	}
 
 	async onLogout() {
 		try {
