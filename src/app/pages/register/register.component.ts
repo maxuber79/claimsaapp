@@ -1,7 +1,7 @@
 import { Component, VERSION } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors  } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router'; 
 
 // Firebase Auth y Firestore
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
@@ -11,7 +11,7 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 @Component({
   selector: 'app-register',
 	standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -100,7 +100,9 @@ export class RegisterComponent {
         last_name,
         user_name,
         email,
-        created_at: new Date()
+        rol: 'Ejecutivo',            // 👈 por defecto Ejecutivo
+				isProfileComplete: false,    // 👈 para obligar a completar después
+				created_at: new Date()
       });
 
       console.log('✅ Usuario registrado correctamente:', uid);

@@ -119,19 +119,26 @@
 							</div>
 						</div>
 
-						<div class="row form-group">
+							<div class="row form-group">
+								<label for="email" class="col-sm-3 col-form-label">Email</label>
+								<div class="col-sm-9">
+									<input type="text" id="staticEmail" class="form-control-plaintext" formControlName="email" [readonly]="!editMode">
+								</div>
+							</div>
+
+						<!-- <div class="row form-group">
 							<label for="staticEmail" class="col-sm-3 col-form-label">Email</label>
 							<div class="col-sm-9">
 								<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
 							</div>
-						</div>
+						</div> -->
 
-						<div class="row form-group">
+						<!-- <div class="row form-group">
 							<label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
 							<div class="col-sm-9">
 								<input type="password" class="form-control" id="inputPassword">
 							</div>		
-						</div>
+						</div> -->
 							
 						<div class="row form-group">
 							<label for="photoURL" class="col-sm-3 col-form-label">URL foto perfil...</label>
@@ -163,12 +170,7 @@
 							</div>
 						</div>
 
-						<div class="row form-group">
-							<label for="email" class="col-sm-3 col-form-label">Email</label>
-							<div class="col-sm-9">
-								<input type="email" id="email" class="form-control" formControlName="email" [readonly]="!editMode">
-							</div>
-						</div>
+					
 
 						<div class="row form-group">
 							<label for="phone" class="col-sm-3 col-form-label">Teléfono</label>
@@ -191,7 +193,10 @@
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="row g-0">
+
+
+
 							<div class="col-sm-12 col-md-6">
 								<div class="row form-group">
 									<label for="city" class="col-sm-6 col-form-label">Ciudad</label>
@@ -200,10 +205,12 @@
 									</div>
 								</div>
 							</div>
+
+
 							<div class="col-sm-12 col-md-6">
 								<div class="row form-group">
-									<label for="commune" class="col-sm-4 col-form-label">Comuna</label>
-									<div class="col-sm-8">
+									<label for="commune" class="col-sm-3 col-form-label">Comuna</label>
+									<div class="col-sm-9">
 										<input type="text" id="commune" class="form-control" formControlName="commune" [readonly]="!editMode">
 									</div>
 								</div>

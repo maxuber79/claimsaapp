@@ -71,11 +71,11 @@ export class ProfileViewComponent implements OnInit {
 	//Inicializamos el formulario
 	this.profileUserForm = this.fb.group({
 			uid: [{ value: '', disabled: true }], // UID no editable
+			email: [{ value: '', disabled: true }], // Email no editable
 			photoURL: [''],// opcional
 			name: [''],
 			last_name: [''],
-			user_name: [''],
-			email: [''], // UID no editable
+			user_name: [''],			
 			phone: [''],
 			mobile: [''],
 			address: [''],

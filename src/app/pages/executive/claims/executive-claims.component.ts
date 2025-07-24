@@ -115,63 +115,40 @@ export class ExecutiveClaimsComponent implements OnInit, OnDestroy {
   ) {}
 
   // Método que se ejecuta al inicializar el componente
-  ngOnInit(): void {
-    this.initializeForm();
+ ngOnInit(): void {
+  this.initializeForm();
 
-		this.authService.getAuthState().subscribe(user => {
-			if (user) {
-				this.currentUserUid = user.uid; 
-				console.log(`🔐 Usuario autenticado: ${user.email} (UID: ${this.currentUserUid})`);
-				this.userService.getUserData(this.currentUserUid || '').subscribe({
-					next: (user: UserModel | null) => {
-						//this.userData = { ...user, email: user.email ?? '' } as UserModel;
-						this.userData = user || null; // Maneja el caso de usuario no encontrado
-						console.log('%c<<< userData | executive >>>', 'background: #198754; color: #fff; padding: 2px 5px;', this.userData);
+  this.authService.getAuthState().subscribe(user => {
+    if (user) {
+      this.currentUserUid = user.uid;
+      console.log(`🔐 Usuario autenticado: ${user.email} (UID: ${this.currentUserUid})`);
 
+      this.userService.getUserData(this.currentUserUid).subscribe({
+        next: (userData: UserModel | null) => {
+          this.userData = userData || null;
+          console.log('%c<<< userData | executive >>>', 'background: #198754; color: #fff;', this.userData);
 
+          if (this.userData && this.userData.uid) {
+            // ✅ 1) Trae métricas
+            this.claimsService.getUserClaims(this.userData.uid).subscribe((claims: Claim[]) => {
+              this.updateMetrics(claims);
+              console.log('%c<<< claims para métricas >>>', 'background: #198754; color: #fff;', claims);
+            });
 
-            // 2️⃣ Traemos sus claims desde Firestore
-            if (this.userData && this.userData.uid) {
-              this.claimsService.getUserClaims(this.userData.uid).subscribe((claims: Claim[]) => {
-                this.updateMetrics(claims);
-								console.log('%c<<< claims >>>', 'background: #198754; color: #fff; padding: 2px 5px;', claims);
-              });
-            }
+            // ✅ 2) Carga los reclamos de la tabla
+            this.loadExecutiveClaims(this.userData.uid);
+          } else {
+            console.warn('⚠️ No se encontró userData.uid, no se cargan reclamos');
+          }
+        },
+        error: (err: Error) => {
+          console.error('❌ Error al obtener datos del usuario:', err);
+        }
+      });
+    }
+  });
+}
 
-
-
-
-
-
-
-
-					},
-					error: (err:Error) => {
-						console.error('❌ Error al obtener datos del usuario:', err);
-					}
-				})
-			}
-		}); 
-
-		
-
-		/* this.mockService.getDashboardMetrics().subscribe({
-			next: (data) => {
-				console.log('%c<<< Datos recibidos del servicio >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;', data.metrics);
-				this.metrics = data.metrics;
-				console.log('%c<<< MÉTRICAS >>>', 'background:#0d6efd;color:#fff;padding:2px 5px;', this.metrics);
-				 
-			},
-			error: (err) => {
-				console.error('❌ Error al obtener datos del servicio:', err);
-			},
-			complete: () => {
-				console.log('%c<<< complete graphics data >>>', 'background: #198754; color: #ffffff; padding: 2px 5px;');
-			} 
-		}); */
-
-    this.loadExecutiveClaims();
-  }
 
 	/**
    * 🔄 Actualiza las métricas según el estado de los reclamos
@@ -203,35 +180,32 @@ export class ExecutiveClaimsComponent implements OnInit, OnDestroy {
   }
 
   // Carga los reclamos del ejecutivo actual (o el UID de prueba)
-  loadExecutiveClaims(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
+  loadExecutiveClaims(uid: string): void {
+  this.isLoading = true;
+  this.errorMessage = null;
 
-    const sub = this.claimsService.getClaimsByUid(this.TEST_EXECUTIVE_UID).pipe(
-      map(claims => {
-        return claims.map(c => ({ ...c, selected: false }));
-      }),
-      catchError(error => {
-        console.error('❌ Error al cargar reclamos del ejecutivo:', error);
-        this.errorMessage = 'No se pudieron cargar los reclamos. Inténtalo de nuevo más tarde.';
-        this.isLoading = false;
-        return EMPTY;
-      })
-    ).subscribe({
-      next: (claims: Claim[]) => {
-        this.executiveClaims = claims; // Se asignan TODOS los reclamos cargados
-        this.isLoading = false;
-        console.log('✅ Reclamos del ejecutivo cargados:', this.executiveClaims);
-        console.log('Cantidad de reclamos cargados:', this.executiveClaims.length);
-        this.updateDeleteButtonState();
-        this.masterChecked = false;
-        // Cuando los reclamos se cargan, aplica los filtros y actualiza la paginación
-        this.applyFilters();
-      },
-    });
+  const sub = this.claimsService.getClaimsByUid(uid).pipe(
+    map(claims => claims.map(c => ({ ...c, selected: false }))),
+    catchError(error => {
+      console.error('❌ Error al cargar reclamos del ejecutivo:', error);
+      this.errorMessage = 'No se pudieron cargar los reclamos. Inténtalo de nuevo más tarde.';
+      this.isLoading = false;
+      return EMPTY;
+    })
+  ).subscribe({
+    next: (claims: Claim[]) => {
+      this.executiveClaims = claims;
+      this.isLoading = false;
+      console.log('✅ Reclamos del ejecutivo cargados:', this.executiveClaims);
+      this.updateDeleteButtonState();
+      this.masterChecked = false;
+      this.applyFilters(); // Actualiza paginación y filtros
+    },
+  });
 
-    this.subscriptions.add(sub);
-  }
+  this.subscriptions.add(sub);
+}
+
 
   // Aplica los filtros de búsqueda y estado a los reclamos
   applyFilters(): void {
@@ -289,7 +263,7 @@ export class ExecutiveClaimsComponent implements OnInit, OnDestroy {
         .then(() => {
           this.alert.success('✅ Reclamo actualizado con éxito.');
           this.cancelEdit(); // Cierra el modal y resetea
-          this.loadExecutiveClaims(); // Recarga los reclamos para reflejar el cambio
+          this.loadExecutiveClaims(updatedClaim.uidEjecutivo!); // ✅ usa el UID del reclamo
         })
         .catch(err => {
           console.error('❌ Error actualizando reclamo:', err);
@@ -373,19 +347,21 @@ export class ExecutiveClaimsComponent implements OnInit, OnDestroy {
     }
 
     Promise.all(deletePromises)
-      .then(() => {
-        this.alert.success('✅ Reclamos seleccionados eliminados con éxito.');
-        this.loadExecutiveClaims(); // Recarga los reclamos para actualizar la tabla
-      })
-      .catch(error => {
-        console.error('Un error inesperado ocurrió durante la eliminación masiva:', error);
-      })
-      .finally(() => {
-        this.isLoading = false;
-        this.masterChecked = false;
-        this.updateDeleteButtonState();
-      });
-  }
+  .then(() => {
+    this.alert.success('✅ Reclamos seleccionados eliminados con éxito.');
+    if (this.currentUserUid) {
+      this.loadExecutiveClaims(this.currentUserUid); // ✅ recarga con el UID logueado
+    }
+  })
+  .catch(error => {
+    console.error('Un error inesperado ocurrió durante la eliminación masiva:', error);
+  })
+  .finally(() => {
+    this.isLoading = false;
+    this.masterChecked = false;
+    this.updateDeleteButtonState();
+  });
+	}
 
   // Métodos para Paginación
 
