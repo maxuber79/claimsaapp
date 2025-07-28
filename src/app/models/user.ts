@@ -1,4 +1,5 @@
 export interface UserModel {
+status: any;
 	uid:         string;
 	bio?:         string;
 	name?:        string;

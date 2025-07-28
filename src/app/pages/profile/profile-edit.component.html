@@ -1,1 +1,228 @@
-<p>profile-edit works!</p>
+<!-- <div class="row">
+	<div class="col">
+		<div *ngIf="isLoading" class="text-center my-5">
+			<div class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Cargando...</span>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+<div class="row">
+	<div class="col-12 text-start grid-margin">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12">
+						<!-- <h1 class="m-0 p-0">Perfil de Usuario</h1> -->
+						<nav aria-label="breadcrumb" class="">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+								<li class="breadcrumb-item" aria-current="page"><a [routerLink]="['/dashboard/admin-users']">Admin Users</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Editor de perfil</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-4 grid-margin">
+		<div class="card mb-4">
+			<div class="card-body text-center">
+				<div class="position-relative d-inline-block">
+					<img [src]="userData?.photoURL || defaultImage " class="rounded-circle object-fit-cover profile-pic"
+						alt="Profile Picture" width="120" height="120" />
+					<input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #fileInput />
+					<button class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle"
+						(click)="fileInput.click()">
+						<i class="fas fa-camera"></i>
+					</button>
+				</div>
+				<h5 class="my-2">{{ userData?.name + ' ' + userData?.last_name || 'N/A' }}</h5>
+				<p class="text-muted mb-1"><span
+						class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">{{userData?.profession || 'N/A'}}</span>
+				</p>
+				<p class="text-muted mb-2">{{userData?.address || 'N/A'}}, {{userData?.city || 'N/A'}}</p>
+				<p class="mb-4"><span class="badge bg-success-subtle text-dark px-3 py-2 rounded-pill">
+						{{ userData?.uid || 'N/A' }}
+					</span></p>
+				<div class="d-flex justify-content-center mb-2">
+					<button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
+					<button type="button" data-mdb-button-init data-mdb-ripple-init
+						class="btn btn-outline-primary ms-1">Message</button>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-4">
+			<div class="card-body">
+				<ul class="list-group list-group-flush rounded-3">
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<i class="fas fa-globe fa-lg text-warning"></i>
+						<p class="mb-0">{{userData?.website || 'N/A'}}</p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<i class="fab fa-github fa-lg text-body"></i>
+						<p class="mb-0">{{userData?.github || 'N/A' }}</p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
+						<p class="mb-0">{{userData?.twitter || 'N/A' }}</p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
+						<p class="mb-0">{{userData?.instagram || 'N/A' }}</p>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center p-3">
+						<i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
+						<p class="mb-0">{{userData?.facebook || 'N/A'}}</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8 grid-margin">
+		<div class="card mb-4">
+			<form [formGroup]="profileEditUserForm" (ngSubmit)="saveProfile()">
+				<div class="card-body">
+					<!-- uid -->
+					<div class="row form-group">
+						<label for="uid" class="col-sm-3 col-form-label">UID</label>
+						<div class="col-sm-9">
+							<input type="text" id="uid" class="form-control" formControlName="uid" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="email" class="col-sm-3 col-form-label">Email</label>
+						<div class="col-sm-9">
+							<input type="text" id="staticEmail" class="form-control-plaintext" formControlName="email"
+								[readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="photoURL" class="col-sm-3 col-form-label">URL foto perfil...</label>
+						<div class="col-sm-9">
+							<input id="photoURL" type="url" class="form-control" formControlName="photoURL" placeholder="https://..."
+								[readonly]="!editMode" />
+							<div class="form-text text-end">Pega una URL de imagen pública (por ejemplo desde <a
+									href="https://imgur.com/upload" target="_blank">Imgur</a>)</div>
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="name" class="col-sm-3 col-form-label">Nombres</label>
+						<div class="col-sm-9">
+							<input type="text" id="name" class="form-control" formControlName="name" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="last_name" class="col-sm-3 col-form-label">Apellidos</label>
+						<div class="col-sm-9">
+							<input type="text" id="last_name" class="form-control" formControlName="last_name" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="user_name" class="col-sm-3 col-form-label">Username</label>
+						<div class="col-sm-9">
+							<input type="text" id="user_name" class="form-control" formControlName="user_name" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="phone" class="col-sm-3 col-form-label">Teléfono</label>
+						<div class="col-sm-9">
+							<input type="text" id="phone" class="form-control" formControlName="phone" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="mobile" class="col-sm-3 col-form-label">Celular</label>
+						<div class="col-sm-9">
+							<input type="text" id="mobile" class="form-control" formControlName="mobile" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="address" class="col-sm-3 col-form-label">Dirección</label>
+						<div class="col-sm-9">
+							<input type="text" id="address" class="form-control" formControlName="address" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row g-0">
+						<div class="col-sm-12 col-md-6">
+							<div class="row form-group">
+								<label for="city" class="col-sm-6 col-form-label">Ciudad</label>
+								<div class="col-sm-6">
+									<input type="text" id="city" class="form-control" formControlName="city" [readonly]="!editMode">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6">
+							<div class="row form-group">
+								<label for="commune" class="col-sm-3 col-form-label">Comuna</label>
+								<div class="col-sm-9">
+									<input type="text" id="commune" class="form-control" formControlName="commune" [readonly]="!editMode">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="profession" class="col-sm-3 col-form-label">Profesión</label>
+						<div class="col-sm-9">
+							<input type="text" id="profession" class="form-control" formControlName="profession"
+								[readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="website" class="col-sm-3 col-form-label">Sitio Web</label>
+						<div class="col-sm-9">
+							<input type="text" id="website" class="form-control" formControlName="website" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="github" class="col-sm-3 col-form-label">GitHub</label>
+						<div class="col-sm-9">
+							<input type="text" id="github" class="form-control" formControlName="github" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="instagram" class="col-sm-3 col-form-label">Instagram</label>
+						<div class="col-sm-9">
+							<input type="text" id="instagram" class="form-control" formControlName="instagram" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="twitter" class="col-sm-3 col-form-label">Twitter</label>
+						<div class="col-sm-9">
+							<input type="text" id="twitter" class="form-control" formControlName="twitter" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="facebook" class="col-sm-3 col-form-label">Facebook</label>
+						<div class="col-sm-9">
+							<input type="text" id="facebook" class="form-control" formControlName="facebook" [readonly]="!editMode">
+						</div>
+					</div>
+					<div class="row form-group">
+						<label for="bio" class="col-sm-3 col-form-label">Biografía</label>
+						<div class="col-sm-9">
+							<textarea rows="4" id="bio" class="form-control" formControlName="bio" [readonly]="!editMode"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer py-3">
+					<div class="wrapp-btn btn-right">
+						<button type="button" class="btn btn-full m-1" [ngClass]="editMode ? '--danger' : '--primary'"
+							(click)="toggleEdit()">
+							{{ editMode ? 'Cancelar edición' : 'Editar perfil' }}
+						</button>
+						<!-- <button *ngIf="editMode" type="submit" class="btn btn-full --success m-1" [disabled]="profileUserForm.invalid">
+								Guardar cambios ..
+							</button> -->
+						<button *ngIf="editMode" type="submit" class="btn btn-full --success m-1">Guardar cambios</button>
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

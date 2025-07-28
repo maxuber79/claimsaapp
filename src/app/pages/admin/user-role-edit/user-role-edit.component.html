@@ -1,59 +1,92 @@
-<div class="row border-2">
-	<div class="col-12 mb-3">
+<div class="row">
+	<div class="col-12 grid-margin">
 		<div class="card">
-			<div class="card-body">
-				<h1 class="mb-3"><i class="bi bi-people-fill"></i> Administración de Roles</h1>
-				<p>Desde esta sección podrás buscar a los usuarios y gestionar sus accesos.</p>
-				<nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
+			<div class="card-body">				 
+				<nav aria-label="breadcrumb" class="">
 					<ol class="breadcrumb mb-0">
 						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'analytics']">Home</a></li>
 						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'admin-users']">Management users</a></li>
-						<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'edit-role', userData.uid]">Edit Role</a></li>
+						<li class="breadcrumb-item">Editar Role</li>
 					</ol>
 				</nav>
 			</div>
 		</div>
 	</div>
 </div>
-
-<div class="card p-4">
-	<h4 class="mb-1">Editar Rol del Usuario </h4>
-	<form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
-		<div class="row">
-			<div class="col-12 mb-3">
-				<span class="badge text-bg-primary">uid: {{ userData.uid }}</span>
-			</div>
-			<div class="col-sm-12 col-md-6">
-				<div class="mb-3">
-					<label class="form-label">Email:</label>
-					<input class="form-control" [value]="userData.email" disabled />
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-6">
-				<div class="mb-3">
-					<label class="form-label">Nombre:</label>
-					<input class="form-control" [value]="userData.name + ' ' + userData.last_name" disabled />
-				</div>
-			</div>
-		</div>
+<div class="row">
+	<div class="col-12 grid-margin">
+		<div class="card p-4">
+			<h4 class="mb-1">Editar Rol del Usuario </h4>
+			<form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+				<div class="row">
 		
-
-		<div class="col-sm-12 col-md-6 mb-4">
-			<label class="form-label">Selecciona el Rol:</label>
-			<select class="form-select" formControlName="rol">
-				<option value="Administrador">Administrador</option>
-				<option value="Ejecutivo">Ejecutivo</option>
-			</select>
-		</div>
-
-		<div class="col-12">
-			<div class="wrapp-btn text-end">
-				<button type="submit" class="btn btn-primary" [disabled]="roleForm.invalid">
-					Guardar Cambios
-					</button>
-			</div>
-		</div>
-
 		
-	</form>
+					<div class="col-12">
+						<!-- uid: <span class="badge badge-type badge-outline-info">{{ userData.uid }}</span> -->
+						<div class="form-group">
+							<label class="form-label">UID</label>
+							<input class="form-control" [value]="userData.uid" disabled />
+						</div>
+					</div>
+		
+		
+					<div class="col-sm-12 col-md-6">
+						<div class="form-group">
+							<label class="form-label">Email</label>
+							<input class="form-control" [value]="userData.email" disabled />
+						</div>
+					</div>
+		
+		
+					<div class="col-sm-12 col-md-6">
+						<div class="form-group">
+							<label class="form-label">Nombre</label>
+							<input class="form-control" [value]="userData.name + ' ' + userData.last_name" disabled />
+						</div>
+					</div>
+		
+		
+		
+					<div class="col-sm-12 col-md-6">
+						<div class="form-group">
+							<label class="form-label">Selecciona el Rol</label>
+							<select class="form-select" formControlName="rol">
+								<option value="Administrador">Administrador</option>
+								<option value="Ejecutivo">Ejecutivo</option>
+							</select>
+						</div>
+					</div>
+		
+					<div class="col-sm-12 col-md-6">
+						<div class="form-group">
+							<label class="form-label">Selecciona el Rol</label>
+						</div>
+						<div class="form-check form-switch">
+							<!-- ✅ Conectado al FormControl "status" -->
+							<input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault"
+								formControlName="status">
+		
+							<!-- ✅ Muestra "activo/inactivo" usando userData.activo 
+									Estatus {{ userData.activo ? 'activo' : 'inactivo' }} usuario
+									-->
+							<label class="form-check-label" for="switchCheckDefault">
+								Estatus {{ roleForm.get('status')?.value ? 'activo' : 'inactivo' }} usuario
+							</label>
+						</div>
+					</div>
+		
+		
+					<div class="col-12">
+						<div class="wrapp-btn text-end">
+							<button type="submit" class="btn btn-full --primary m-1" [disabled]="roleForm.invalid">
+								Guardar Cambios
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
 </div>
+	

@@ -25,52 +25,70 @@ export class UserRoleEditComponent implements OnInit {
     private alertService: AlertService 
   ) {}
 
-  ngOnInit(): void {
-     this.userId = this.route.snapshot.paramMap.get('uid') || '';
-		 console.log('📍 UID capturado desde ruta:', this.userId);
+	ngOnInit(): void {
+		this.userId = this.route.snapshot.paramMap.get('uid') || '';
+		console.log('📍 UID capturado desde ruta:', this.userId);
 
-		 if (!this.userId) {
-      console.warn('⚠️ No se pudo obtener el UID desde la URL');
-      return;
-    }
+		if (!this.userId) {
+			console.warn('⚠️ No se pudo obtener el UID desde la URL');
+			return;
+		}
+
+		// ✅ Inicializamos el formulario con rol y status
 		this.roleForm = this.fb.group({
-      rol: ['', Validators.required],
-    });
+			rol: ['', Validators.required],
+			status: [false] // el switch
+		});
 
-    this.userService.getUserProfile(this.userId).subscribe( (user:any) => {
+		// ✅ Traemos el usuario seleccionado
+		this.userService.getUserProfile(this.userId).subscribe((user: any) => {
 			if (user) {
 				this.userData = user;
-				this.roleForm.patchValue({ rol: user.rol || 'Ejecutivo' });
+
+				// ✅ Mapeamos activo -> status del formulario
+				this.roleForm.patchValue({
+					rol: user.rol || 'Ejecutivo',
+					status: user.activo || false
+				});
+
+				console.log('✅ Usuario cargado para editar rol/estatus:', this.userData);
 			} else {
 				console.warn('⚠️ Usuario no encontrado con UID:', this.userId);
 			}
 		});
-		
-  }
+	}
+
 
   get rol() {
 		return this.roleForm.get('rol');
 	}
 
 	onSubmit() {
-		if (this.roleForm.invalid || !this.userData?.uid) {
-			console.warn('⚠️ Formulario inválido o UID no disponible.');
-			return;
-		}
-		const nuevoRol = this.roleForm.value.rol;
-		console.log('📍 Rol seleccionado:', this.roleForm.value);
+  if (this.roleForm.invalid || !this.userData?.uid) {
+    console.warn('⚠️ Formulario inválido o UID no disponible.');
+    return;
+  }
 
-		this.userService.updateUserRole(this.userData.uid, nuevoRol)
+  // ✅ Extraemos rol y status desde el formulario
+  const { rol, status } = this.roleForm.value;
+  console.log('📍 Datos a guardar:', { rol, status });
+
+  // ✅ Guardamos ambos en Firestore en paralelo
+  const rolPromise = this.userService.updateUserRole(this.userData.uid, rol);
+  const statusPromise = this.userService.toggleUserStatus(this.userData.uid, status);
+
+  Promise.all([rolPromise, statusPromise])
     .then(() => {
-      console.log('✅ Rol actualizado correctamente');       
-			this.alertService.showToastSuccess('Rol actualizado con éxito', 'Mensaje');
+      console.log('✅ Rol y estatus actualizados correctamente');
+      this.alertService.showToastSuccess('Usuario actualizado con éxito ✅', 'Mensaje');
       this.router.navigate(['/dashboard/admin-users']);
     })
     .catch((error: any) => {
-      console.error('❌ Error al actualizar el rol:', error);
-      this.alertService.error('Error al actualizar rol');
+      console.error('❌ Error al actualizar rol/estatus:', error);
+      this.alertService.error('Error al actualizar usuario');
     });
-	}
+}
+
 
   /* onSubmit() {
     if (this.roleForm.valid) {

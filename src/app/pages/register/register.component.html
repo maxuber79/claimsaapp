@@ -27,7 +27,7 @@
 							<!-- Formulario reactivo con submit atado a la función onSubmit() -->
 							 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
 								<div class="row">
-									<div class="col-6 border-2">
+									<div class="col-6">
 										<!-- NOMBRE -->
 										<div class="form-floating mb-3">
 											<!-- Campo de texto conectado a formControlName="name" -->
@@ -43,17 +43,9 @@
 												*ngIf="getControl['name'].errors && getControl['name'].invalid && getControl['name'].touched">
 												<div *ngIf="getControl['name'].errors['required']">El nombre completo es obligatorio!</div>
 											</div>
-										</div>
-										<div class="bd-callout bd-callout-code">
-											<small>
-												<strong>Valid ? </strong>{{ getControl['name'].valid}} | <strong>Invalid ? </strong>{{
-												getControl['name'].invalid}} | <strong>Touched ? </strong>{{ getControl['name'].touched}} | <strong>Untouched ?
-												</strong>{{ getControl['name'].untouched}} | <strong>Dirty ? </strong>{{ getControl['name'].dirty}} |
-												<strong>Pristine ? </strong>{{getControl['name'].pristine}}
-											</small>
-										</div>
+										</div> 
 									</div>
-									<div class="col-6 border-2">
+									<div class="col-6">
 										<!-- APELLIDO -->
 										<div class="form-floating mb-3">
 											<input type="text" class="form-control" id="last_name" placeholder="Apellido" formControlName="last_name" [ngClass]="{ 
@@ -66,18 +58,10 @@
 												<div *ngIf="getControl['last_name'].errors['required']">El nombre completo es obligatorio!</div>
 											</div>
 										</div>
-										<div class="bd-callout bd-callout-code">
-											<small>
-												<strong>Valid ? </strong>{{ getControl['last_name'].valid}} | <strong>Invalid ? </strong>{{
-												getControl['last_name'].invalid}} | <strong>Touched ? </strong>{{ getControl['last_name'].touched}} |
-												<strong>Untouched ?
-												</strong>{{ getControl['last_name'].untouched}} | <strong>Dirty ? </strong>{{ getControl['last_name'].dirty}} |
-												<strong>Pristine ? </strong>{{getControl['last_name'].pristine}}
-											</small>
-										</div>
+										 
 
 									</div>
-									<div class="col-12 border-2">
+									<div class="col-12">
 										<!-- USERNAME -->
 										<div class="form-floating mb-3">
 											<input type="text" class="form-control" id="user_name" placeholder="Nombre de usuario" formControlName="user_name"
@@ -91,17 +75,9 @@
 												<div *ngIf="getControl['user_name'].errors['required']">El nombre completo es obligatorio!</div>
 											</div>
 										</div>
-										<div class="bd-callout bd-callout-code">
-											<small>
-												<strong>Valid ? </strong>{{ getControl['user_name'].valid}} | <strong>Invalid ? </strong>{{
-												getControl['user_name'].invalid}} | <strong>Touched ? </strong>{{ getControl['user_name'].touched}} |
-												<strong>Untouched ?
-												</strong>{{ getControl['user_name'].untouched}} | <strong>Dirty ? </strong>{{ getControl['user_name'].dirty}} |
-												<strong>Pristine ? </strong>{{getControl['user_name'].pristine}}
-											</small>
-										</div>
+										 
 									</div>
-									<div class="col-12 border-2">
+									<div class="col-12">
 										<!-- EMAIL -->
 										<div class="form-floating mb-3">
 											<input type="email" class="form-control" id="email" placeholder="Correo" formControlName="email" [ngClass]="{ 
@@ -114,17 +90,9 @@
 												<div *ngIf="getControl['email'].errors['required']">Ingresa un correo válido.</div>
 											</div>
 										</div>
-										<div class="bd-callout bd-callout-code">
-											<small>
-												<strong>Valid ? </strong>{{ getControl['email'].valid}} | <strong>Invalid ? </strong>{{
-												getControl['email'].invalid}} | <strong>Touched ? </strong>{{ getControl['email'].touched}} |
-												<strong>Untouched ?
-												</strong>{{ getControl['email'].untouched}} | <strong>Dirty ? </strong>{{ getControl['email'].dirty}} |
-												<strong>Pristine ? </strong>{{getControl['email'].pristine}}
-											</small>
-										</div>
+										 
 									</div>
-									<div class="col-12 border-2">
+									<div class="col-12">
 										<!-- CONTRASEÑA -->
 										<div class="input-group form-floating mb-3">
 											<input
@@ -151,18 +119,8 @@
 												</div>
 											</div>
 										</div>
-
-										<div class="bd-callout bd-callout-code">
-											<small>
-												<strong>Valid ? </strong>{{ getControl['password'].valid}} | <strong>Invalid ? </strong>{{
-												getControl['password'].invalid}} | <strong>Touched ? </strong>{{ getControl['password'].touched}} |
-												<strong>Untouched ?
-												</strong>{{ getControl['password'].untouched}} | <strong>Dirty ? </strong>{{ getControl['password'].dirty}} |
-												<strong>Pristine ? </strong>{{getControl['password'].pristine}}
-											</small>
-										</div>
 									</div>
-									<div class="col-12 border-2">
+									<div class="col-12">
 										<!-- CONFIRMAR CONTRASEÑA -->
 										<div class="input-group form-floating mb-3">
 											<input [type]="confirmPasswordVisible ? 'text' : 'password'" class="form-control" id="confirmPassword"
@@ -189,18 +147,6 @@
 												Las contraseñas no coinciden.
 											</div>
 										</div>
-
-										<div class="bd-callout bd-callout-code">
-											<small>
-												<strong>Valid ? </strong>{{ getControl['confirmPassword'].valid}} | <strong>Invalid ? </strong>{{
-												getControl['confirmPassword'].invalid}} | <strong>Touched ? </strong>{{ getControl['confirmPassword'].touched}} |
-												<strong>Untouched ?
-												</strong>{{ getControl['confirmPassword'].untouched}} | <strong>Dirty ? </strong>{{
-												getControl['confirmPassword'].dirty}} |
-												<strong>Pristine ? </strong>{{getControl['confirmPassword'].pristine}}
-											</small>
-										</div>
-
 									</div>
 									<div class="col-12">
 									
@@ -221,31 +167,7 @@
 										</div>
 									</div>
 									<div class="col-12 text-center mt-5">
-										<p class="login-wrapper-footer-text">Did you save your password? <a [routerLink]="['/']"
-												id="back-to-login-from-forget-link">Back to Login</a></p>
-									</div>
-									<div class="col-12">
-										 
-											<div class="row">
-												<div class="col-12 p-3">
-													<div class="bd-callout bd-callout-code">
-														<strong>Estado del formulario:</strong>
-														<hr>
-														<span class="mx-1">VALID: <span
-																[class]="registerForm.status=='VALID' ? 'badge text-bg-success mx-1': 'badge text-bg-danger mx-1'">{{
-																registerForm.valid
-																}}</span></span>
-														<span class="mx-1">INVALID: <span
-																[class]="registerForm.status =='INVALID' ? 'badge text-bg-success mx-1': 'badge text-bg-danger mx-1'">{{
-																registerForm.invalid }}</span></span>
-														<span class="mx-1">STATUS: <span class="badge text-bg-primary mx-1">{{ registerForm.status }}</span></span>
-														<span class="mx-1">DISABLED: <span class="badge text-bg-warning mx-1">{{ registerForm.disabled }}</span></span>
-														<hr>
-														<pre>{{ registerForm.value | json }}</pre>
-													</div>
-												</div>
-											</div>				
-										 
+										<p class="login-wrapper-footer-text">Did you save your password? <a [routerLink]="['/']" id="back-to-login-from-forget-link">Back to Login</a></p>
 									</div>
 								</div><!--./row-->
 							</form>

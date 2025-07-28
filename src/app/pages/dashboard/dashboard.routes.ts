@@ -22,16 +22,35 @@ export const routes: Routes = [
 
 			// ✅ Otras rutas hijas
       { path: 'todo', component: TodoListComponent },
-      {
+     /*  {
 				path: 'edit-role/:uid',
 				loadComponent: () =>
 					import('../admin/user-role-edit/user-role-edit.component').then( m => m.UserRoleEditComponent)
-			},
+			}, */
       {
 				path: 'admin-users',
-				loadComponent: () =>
-					import('../admin/admin-user-management/admin-user-management.component').then(m => m.AdminUserManagementComponent)
+				children: [
+					{
+						path: '',
+						loadComponent: () =>
+							import('../admin/admin-user-management/admin-user-management.component')
+								.then(m => m.AdminUserManagementComponent)
+					},
+					{
+						path: 'edit-role/:uid',
+						loadComponent: () =>
+							import('../admin/user-role-edit/user-role-edit.component')
+								.then(m => m.UserRoleEditComponent)
+					},
+					{
+						path: 'profile-edit/:uid',
+						loadComponent: () =>
+							import('../profile/profile-edit.component')
+								.then(m => m.ProfileEditComponent)
+					}
+				]
 			},
+
 			{
 				path: 'analytics',
 				loadComponent: () =>
@@ -42,7 +61,7 @@ export const routes: Routes = [
 				loadComponent: () =>
 					import('../profile/profile-view.component').then(m => m.ProfileViewComponent)
 			},
-
+			 
       // ✅ Ruta desconocida dentro del dashboard → claims-router
       { path: '**', redirectTo: '' },
 

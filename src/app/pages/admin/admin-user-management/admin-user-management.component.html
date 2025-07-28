@@ -1,33 +1,26 @@
 <!-- <div class="container mt-4"> -->
 <!-- Header inicial, info del usuario -->
-
-	
-
-	<div class="row mb-3">
-		<div class="col-12 text-start">
+ <div class="row">
+		<div class="col-12 text-start grid-margin">
 			<div class="card ">
 				<div class="card-body">
-
-					<h1 class="mb-3"><i class="bi bi-people-fill"></i> Administración de Roles</h1>
-					<p>Desde esta sección podrás buscar a los usuarios y gestionar sus accesos.</p>
-					<nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
-						<ol class="breadcrumb mb-0">
-							<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'analytics']">Home</a></li>
-							<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'admin-users']">Management users</a></li>
-						</ol>
-					</nav>
-
+					<div class="row">
+						<div class="col-12">
+							<nav aria-label="breadcrumb" class="">
+								<ol class="breadcrumb mb-0">
+									<li class="breadcrumb-item"><a [routerLink]="['/dashboard', 'analytics']">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Admin Users</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
 				</div>
 			</div>
-			
-
-
-
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="col">
+		<div class="col-12">
 			<div *ngIf="isLoading" class="text-center ">
 				<div class="spinner-border text-primary" role="status">
 					<span class="visually-hidden">Cargando...</span>
@@ -37,19 +30,21 @@
 	</div>
 
 	<div class="row">
-		<div class="col-12 mb-3">
+		<div class="col-12 grid-margin">
 			<div class="card">
 				<div class="card-body">
-					<!-- Campo de búsqueda -->
-					 <label for="search-term" class="form-label">Buscador de usuarios</label>
-					<input id="search-term" class="form-control" type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="Ingresa aqui nombre de usuario" />
+					<div class="row form-group">
+						<!-- Campo de búsqueda -->
+						<label for="search-term" class="form-label">Buscador de usuarios</label>
+						<input id="search-term" class="form-control" type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="Ingresa aqui nombre de usuario" />
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="co-12">
+		<div class="co-12 grid-margin">
 			<div class="card">
 				<div class="card-body">
 					<!-- Tabla de usuarios -->
@@ -87,14 +82,18 @@
 					
 								<!-- Acciones -->
 								<td class="d-flex gap-2">
-									<button class="btn btn-sm btn-outline-{{ user.activo ? 'danger' : 'success' }}"
+									<button class="btn btn-full --{{ user.activo ? 'danger' : 'success' }} btn-sm"
 										(click)="toggleUser(user.uid, !user.activo)">
 										{{ user.activo ? 'Deshabilitar' : 'Habilitar' }}
-									</button>
-					
-									<a class="btn btn-sm btn-outline-primary" [routerLink]="['/dashboard/edit-role', user.uid]">
+									</button> 
+									<a class="btn btn-full --primary btn-sm" [routerLink]="['/dashboard/admin-users/edit-role', user.uid]">
 										Editar Rol
 									</a>
+
+									<button class="btn btn-full --info btn-sm"
+										(click)="editUser(user.uid, !user.activo)">
+										 Editar perfil
+									</button>
 								</td>
 							</tr>
 						</tbody>
@@ -103,8 +102,3 @@
 			</div>
 		</div>
 	</div>
-
-	
-
-	
-<!-- </div> -->

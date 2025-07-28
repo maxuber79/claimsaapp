@@ -93,8 +93,8 @@ export class ProfileViewComponent implements OnInit {
 
   this.userService.getUserData(this.uid).subscribe({
     next: (user) => {
-      this.userData = { ...user, uid: this.uid, email: user?.email ?? '' }; 
-      this.perfil = { ...user, uid: this.uid, email: user?.email ?? '' };
+	  this.userData = { ...user, uid: this.uid, email: user?.email ?? '', status: user?.status ?? '' }; 
+	  this.perfil = { ...user, uid: this.uid, email: user?.email ?? '', status: user?.status ?? '' };
       this.isLoading = false;
 
       console.log('✅ Usuario cargado:', this.userData);

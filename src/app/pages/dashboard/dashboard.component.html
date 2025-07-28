@@ -72,9 +72,9 @@
 							<li>
 								<a class="dropdown-item" [routerLink]="['/dashboard/claims']">Mis Reclamos</a>
 							</li>
-							<li *ngIf="userRol === 'Ejecutivo' || userRol === 'Administrador'">
+							<!-- <li *ngIf="userRol === 'Ejecutivo' || userRol === 'Administrador'">
 								<a class="dropdown-item" [routerLink]="['/dashboard/claims-executive']">Reclamos Executive</a>
-							</li>
+							</li> -->
 							<li *ngIf="userRol === 'Administrador'">
 								<a class="dropdown-item" [routerLink]="['/dashboard/admin-users']">
 									Admin Usuarios
@@ -107,7 +107,7 @@
 			<section class="container ">
 				<router-outlet></router-outlet> 
 			</section>
-			<!-- <app-components></app-components> -->
+			 <app-components></app-components> 
 			 
 	</main>
 	<!-- Footer -->

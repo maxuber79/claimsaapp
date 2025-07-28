@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserModel } from '../../../models/user'; // ajusta la ruta si la tenís distinta
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
-import { RouterModule } from '@angular/router';
+import { UserService } from '../../../services/user.service'; 
+import { Router, RouterModule } from '@angular/router';
 @Component({
 	standalone: true,
   selector: 'app-admin-user-management',
@@ -25,7 +25,7 @@ export class AdminUserManagementComponent implements OnInit {
 	isSaving: boolean = false;
 	isLoading: boolean = true;
 
-  constructor( private userService: UserService) {}
+  constructor( private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -58,5 +58,12 @@ export class AdminUserManagementComponent implements OnInit {
 		this.userService.toggleUserStatus(uid, nuevoEstado).then(() => {
 			// Opcional: notificar al usuario
 		});
+	}
+
+	editUser(uid: string, nuevoEstado: boolean) {
+		 console.log('Editando usuario con UID:', uid, 'Nuevo estado:', nuevoEstado);
+
+  	this.router.navigate(['/dashboard/admin-users/profile-edit', uid]);
+
 	}
 }
