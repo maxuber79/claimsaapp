@@ -18,6 +18,8 @@ import { AlertService } from '../../../services/alert.service';
 import { UserService } from '../../../services/user.service';
 import { MockDataService } from '../../../services/mock-data.service';
 import { CardMetricComponent } from '../../dashboard/components/card-metric.component';
+import { Notification } from '../../../models/notification.model';
+
 
 @Component({
   selector: 'app-executive-claims',

@@ -6,19 +6,26 @@ import { Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, forkJoin, of, map, take, tap, switchMap, catchError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router'; // Para obtener el UID de la ruta, si aplica
 
-/* Interfaces */
+
+/* Models Interfaces */
 import { UserModel } from '../../models/user';
+import { UserNotification } from '../../models/UserNotification.model'; // Asegúrate de que la ruta sea correcta
+import { Todo } from '../../models/todo.model';
+/* Services */
+import { AlertService } from '../../services/alert.service';
+import { NotificationService } from '../../services/notification.service';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { TodoService } from '../../services/todo.service';
-import { Todo } from '../../models/todo.model';
+
 
 import { TodoStatsComponent } from '../dashboard/components/todo-stats.component'; // Ajusta la ruta
 import { TodoChartComponent } from '../dashboard/components/todo-chart.component';
-import { AlertService } from '../../services/alert.service';
+
 import { MockDataService } from '../../services/mock-data.service';
  
 import { ComponentsComponent } from '../../shared/components/components.component'; 
+import { Notification } from '../../models/notification.model';
 
 interface Metrics {
 	color: string;
@@ -32,7 +39,7 @@ interface Metrics {
 @Component({
   selector: 'app-dashboard',
 	standalone: true,
-  imports: [CommonModule, RouterModule,ComponentsComponent],
+  imports: [CommonModule, RouterModule, ComponentsComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -59,10 +66,20 @@ export class DashboardComponent implements OnInit {
 	channels: any;
 	channelLabels: string[] = ['Web', 'App', 'WhatsApp', 'Call Center'];
 	channelData: number[] = [40, 25, 20, 15];
-	notifications: any[] = [];
+	//notifications: any[] = [];
 	channelsData: { name: string; value: number }[] = [];
 	perfil: UserModel | null = null; 
 	userRol: string = ''; // puede ser 'Administrador' | 'Ejecutivo' | 'Usuario'
+
+	// 👇 Para notificaciones
+  notifications: UserNotification[] = [];
+  pendingCountNotification: number = 0;
+  uidNotification: string = '';
+ 
+	showNotiDropdown = false;
+	currentUid: string = '';
+	unreadCount = 0;
+
 	constructor(
 		private route: ActivatedRoute,
 		private auth: Auth,
@@ -71,7 +88,9 @@ export class DashboardComponent implements OnInit {
 		private router: Router,
 		private todoService: TodoService,
 		private alertaService: AlertService,
-		private mockService: MockDataService ) {
+		private mockService: MockDataService,
+		private notificationService: NotificationService
+	) {
 		console.log('%c<<< Start DashboardComponent >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;');
 	}
 
@@ -86,7 +105,10 @@ export class DashboardComponent implements OnInit {
 			if (user) {
 				this.uid = user.uid;
 				console.log(`%c 📦 Usuario autenticado: ${user.uid}:`,'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', user);
-				
+
+				 
+
+
 				this.userService.getUserData(user.uid).subscribe( userData => {
 					console.log(`%c 📦 Usuario autenticado ----> ${user.uid}:`,'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', userData);
 					this.userData = userData;
@@ -115,9 +137,72 @@ export class DashboardComponent implements OnInit {
 				this.profilePhotoURL = user.photoURL || this.imageDefault;
 				this.apodoUser = user.displayName || 'Usuario'; */
 				});
+
+				// ✅ Escuchar notificaciones del usuario actual
+				this.notificationService.getUserNotifications(user.uid).subscribe(nots => {
+					this.notifications = nots;
+					this.unreadCount = nots.filter(n => !n.read).length;
+					console.log('🔔 --- Notificaciones del usuario:', this.notifications);
+					console.log('🔔 ::: Todas las notificaciones:', nots);
+  				console.log('📬 Cantidad de no leídas:', this.unreadCount);
+				
+					nots.forEach(n => console.log(`📄 ${n.message} | Leída: ${n.read}`));
+
+					// Log principal
+					console.log('📬 Cantidad de no leídas ---->', this.unreadCount);
+						this.notifications.forEach(n => {
+						console.log(`🔸 Mensaje: ${n.message} | Leída: ${n.read}`);
+					});
+				});
+
+				//this.listenToNotifications();//-----> Tengo que habilitar cuando esté el servicio de notificaciones listo
 			}
 		});
 	}
+
+	toggleNotiDropdown() {
+  	this.showNotiDropdown = !this.showNotiDropdown;
+	}
+
+	listenToNotifications(): void {
+    this.notificationService.getUserNotifications(this.uidNotification).subscribe(data => {
+      this.notifications = data;
+      this.pendingCountNotification = data.filter(n => !n.read).length;
+
+      console.log('🔔 Notificaciones para', this.uidNotification, ':', this.notifications);
+      console.log('📬 No leídas:', this.pendingCountNotification);
+    });
+  }
+
+	marcarComoLeida(notif: UserNotification): void {
+		console.log('🔔 Marcando como leída la notificación:', notif);
+		if (notif.read || !notif.id || !this.uid) return; // ya está leída o sin ID
+
+		this.notificationService.markAsRead(this.uid, notif.id)
+			.then(() => console.log(`📬 Notificación marcada como leída: ${notif.message}`))
+			.catch(err => console.error('❌ Error al marcar como leída:', err));
+	}
+	
+
+	marcarTodasComoLeidas(): void {
+		if (!this.uid) return;
+
+		this.notificationService.markAllAsRead(this.uid)
+			.then(() => console.log('📬 Todas las notificaciones marcadas como leídas'))
+			.catch(err => console.error('❌ Error al marcar todas como leídas:', err));
+	}
+
+	eliminarNotificacion(notif: UserNotification): void {
+		if (!notif.id || !this.uid) return;
+
+		const confirmar = confirm('¿Estás seguro de eliminar esta notificación?');
+		if (!confirmar) return;
+
+		this.notificationService.deleteNotification(this.uid, notif.id)
+			.then(() => console.log(`🗑️ Notificación eliminada: ${notif.message}`))
+			.catch(err => console.error('❌ Error al eliminar notificación:', err));
+	}
+
 
 	async onLogout() {
 		try {
@@ -139,4 +224,19 @@ export class DashboardComponent implements OnInit {
       console.error('❌ No se encontró UID para navegar al perfil');
     }
   }
+
+	get unreadNotificationsCount(): number {
+		const count = this.notifications?.filter(n => !n.read).length || 0;
+		console.log('🔴 Notificaciones no leídas:', count);
+		return count;
+	}
+
+	get unreadNotifications(): UserNotification[] {
+  return this.notifications
+    .filter(n => !n.read)
+    .slice(0, 5); // solo las primeras 5
+	}
+
+
+
 }

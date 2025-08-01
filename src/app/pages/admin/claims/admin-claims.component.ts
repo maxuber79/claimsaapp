@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { UserModel } from '../../../models/user';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-
+import { CardMetricComponent } from '../../dashboard/components/card-metric.component';
+import { NotificationService } from '../../../services/notification.service';
 @Component({
   selector: 'app-admin-claims',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CardMetricComponent],
   templateUrl: './admin-claims.component.html',
   styleUrls: ['./admin-claims.component.scss']
 })
@@ -52,12 +53,15 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
   isEditing: boolean = false; // 🔥 Nuevo: Controla si el modo de edición está activo dentro del modal
 	imageDefault = 'https://randomuser.me/api/portraits/men/40.jpg'; // Imagen por defecto	
 
+	metrics: any[] = [];
+	claims: any[] = [];
 
   constructor(
     private claimsService: ClaimsService,
     private userService: UserService,
     private alert: AlertService,
 		private authService: AuthService,
+		private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -83,9 +87,53 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
 			}
 		});
 
+		// ⚠️ Solo como prueba (ejecuta esto UNA vez para testear)
+	 /* 	this.notificationService.sendToUser(
+			'KVDf8PfHEWMdic0SQPcxFMizoBf2',
+			'🚀 Notificación de prueba desde Angular'
+		);  */
+
     this.loadExecutives();
     this.loadAllClaims();
   }
+
+	/**
+ * Enviar notificación de prueba al UID seleccionado en el reclamo
+ */
+	sendTestNotification(uidEjecutivo: string): void {
+		console.log('🔔 Enviando notificación al ejecutivo UID:', uidEjecutivo);
+
+		if (!uidEjecutivo) {
+			console.warn('⚠️ UID del ejecutivo no está definido. No se puede enviar notificación.');
+			return;
+		}
+
+		const mensaje = `Se te asignó el reclamo: ${this.newClaim?.nombre || 'sin nombre'}`;
+
+		this.notificationService.sendToUser(uidEjecutivo, mensaje, 'asignado')// 👈 Tipo aquí
+			.then(() => console.log(`✅ Notificación enviada al ejecutivo: ${uidEjecutivo}`))
+			.catch(err => console.error('❌ Error al enviar notificación:', err));
+	}
+
+/* sendTestNotification(): void {
+  const uidEjecutivo = this.selectedClaim?.uidEjecutivo;
+
+	// 🪵 Log de verificación
+  console.log('🔔 Enviando notificación al ejecutivo UID:', uidEjecutivo);
+
+	
+  if (!uidEjecutivo) {
+    console.warn('⚠️ No hay ejecutivo seleccionado. No se puede enviar notificación.');
+    return;
+  }
+
+  const mensaje = `🛎️ Se te asignó el reclamo: ${this.selectedClaim?.nombre || 'sin nombre'}`;
+
+  this.notificationService.sendToUser(uidEjecutivo, mensaje)
+    .then(() => console.log('✅ Notificación enviada con éxito'))
+    .catch(err => console.error('❌ Error al enviar notificación:', err));
+} */
+
 
   loadExecutives(): void {
     const sub = this.userService.getExecutives().subscribe({
@@ -110,6 +158,8 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
         console.log('✅ Todos los reclamos cargados:', this.allClaims);
         this.isLoading = false;
         this.applyFilters();
+				this.claims = [...this.allClaims]; // 👈 Asignamos para que updateMetrics tenga data
+				this.updateMetrics();
       },
       error: (err: any) => {
         console.error('❌ Error al cargar todos los reclamos:', err);
@@ -170,6 +220,13 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
       return;
     }
 
+		// 👇 Asegúrate de setear correctamente el uid del ejecutivo
+  this.newClaim.uidEjecutivo = this.selectedExecutiveUid;
+
+  // 🪵 Log para verificar
+  console.log('🆕 Reclamo preparado para guardar:', this.newClaim);
+  console.log('🎯 UID del ejecutivo seleccionado:', this.selectedExecutiveUid);
+
     this.newClaim.uidEjecutivo = this.selectedExecutiveUid;
     this.newClaim.id = this.generateUUID();
 
@@ -179,6 +236,14 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
         this.alert.success('Nuevo reclamo asignado con éxito.');
         this.closeNewModal();
         this.loadAllClaims();
+				 // 👇 Aquí se manda la notificación al UID
+      	const uid = this.newClaim.uidEjecutivo;
+				if (uid) {
+					this.sendTestNotification(uid); // ✅ uid ya es string
+				} else {
+					console.warn('⚠️ UID del ejecutivo está vacío o undefined. No se enviará notificación.');
+				}
+
       })
       .catch((err: any) => {
         console.error('❌ Error al crear reclamo:', err);
@@ -432,4 +497,64 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
+
+	private updateMetrics(): void {
+  const total = this.claims.length;
+  const iniciados = this.claims.filter(c => c.estado === 'Iniciado').length;
+  const pendientes = this.claims.filter(c => c.estado === 'Pendiente').length;
+  const cancelados = this.claims.filter(c => c.estado === 'Cancelado').length;
+  const cerrados = this.claims.filter(c => c.estado === 'Cerrado').length;
+
+  // 🔍 DEBUG
+  console.log('📊 Métricas actualizadas:');
+  console.log('➡️ Total:', total);
+  console.log('🟦 Iniciados:', iniciados);
+  console.log('🟨 Pendientes:', pendientes);
+  console.log('🟥 Cancelados:', cancelados);
+  console.log('🟩 Cerrados:', cerrados);
+
+  this.metrics = [
+    {
+      icon: 'bi-folder-check',
+      count: total,
+      label: 'Total de Reclamos',
+      color: 'primary',
+      footerText: 'Todos los reclamos registrados',
+      trendIcon: 'bi-bar-chart'
+    },
+    {
+      icon: 'bi-play-circle',
+      count: iniciados,
+      label: 'Iniciados',
+      color: 'info',
+      footerText: 'Reclamos en inicio',
+      trendIcon: 'bi-graph-up'
+    },
+    {
+      icon: 'bi-hourglass-split',
+      count: pendientes,
+      label: 'Pendientes',
+      color: 'warning',
+      footerText: 'Requieren atención',
+      trendIcon: 'bi-exclamation-circle'
+    },
+    {
+      icon: 'bi-x-circle',
+      count: cancelados,
+      label: 'Cancelados',
+      color: 'danger',
+      footerText: 'No continuaron',
+      trendIcon: 'bi-x-circle'
+    },
+    {
+      icon: 'bi-check-circle',
+      count: cerrados,
+      label: 'Cerrados',
+      color: 'success',
+      footerText: 'Reclamos resueltos',
+      trendIcon: 'bi-check-circle'
+    }
+  ];
+}
+
 }

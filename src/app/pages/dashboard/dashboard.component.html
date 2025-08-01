@@ -42,17 +42,144 @@
 								<span><i class="bi bi-gear-fill"></i></span> 
 							</a>
 						</li>
-						<li class="nav-item me-3 me-lg-1">
+						<!-- <li class="nav-item me-3 me-lg-1 dropdown">
+							<a class="nav-link dropdown-toggle position-relative" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="bi bi-bell-fill"></i>
+								<span *ngIf="unreadNotificationsCount > 0" class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 6px; right: -1px;"> {{ unreadNotificationsCount }} </span>
+							</a>
+						
+							<ul class="dropdown-menu dropdown-menu-end p-2 shadow" style="width: 300px;"> 
+								<ng-container *ngIf="notifications as notis">
+									<ng-container *ngIf="notis.length > 0; else noNotifications">
+										<li *ngFor="let notif of notis.slice(0, 5)" class="mb-2">
+											<button class="dropdown-item p-0 text-start text-wrap" [ngClass]="{ 'text-muted': notif.read }"
+												(click)="marcarComoLeida(notif)">
+												<div class="d-flex align-items-start gap-2"> 
+													<i class="bi" [ngClass]="{
+						                  'bi-exclamation-triangle-fill text-warning': notif.message.includes('asignó'),
+						                  'bi-check-circle-fill text-success': notif.message.includes('Cerrado'),
+						                  'bi-pencil-fill text-primary': notif.message.includes('actualizado')
+						                }"></i> 
+													<small class="text-wrap">{{ notif.message }}</small>
+												</div>
+											</button>
+										</li>
+										<li>
+											<button class="btn btn-sm btn-outline-primary w-100 mt-2" (click)="marcarTodasComoLeidas()">
+												✅ Marcar todas como leídas
+											</button>
+										</li>
+									</ng-container>
+								</ng-container> 
+								<ng-template #noNotifications>
+									<li class="text-muted text-center">🔕 Sin notificaciones</li>
+								</ng-template>
+							</ul>
+						</li> -->
+
+
+
+						<li class="nav-item me-3 me-lg-1 dropdown">
+							<a class="nav-link dropdown-toggle position-relative" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="bi bi-bell-fill"></i>
+								<span *ngIf="unreadCount > 0" class="position-absolute translate-middle badge rounded-pill bg-danger"
+									style="top: 6px; right: -1px;">
+									{{ unreadCount }}
+								</span>
+							</a>
+						
+							<div class="dropdown-menu dropdown-menu-end p-0 shadow" style="width: 360px;">
+								<div class="list-group list-group-flush">
+						
+									<!-- Lista de notificaciones -->
+									<!-- <ng-container *ngIf="notifications && notifications.length > 0; else noNotifications"> -->
+									<ng-container *ngIf="unreadNotifications.length > 0; else noNotifications"> 
+										<a *ngFor="let notif of unreadNotifications" href="#" (click)="marcarComoLeida(notif)" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" [ngClass]="{ 'bg-dark bg-opacity-15': notif.read }" style="min-height: 65px;">
+						
+											<!-- Mensaje + ícono -->
+											<div class="d-flex align-items-center">
+												<i class="bi me-3" [ngClass]="{
+						                 'bi-bell-fill text-warning': notif.type === 'asignado',
+						                 'bi-exclamation-circle-fill text-danger': notif.type === 'urgente',
+						                 'bi-pencil-fill text-primary': notif.type === 'editado',
+						                 'bi-check-circle-fill text-success': notif.type === 'cerrado'
+						               }">
+												</i>
+												<span class="text-wrap lh-sm">{{ notif.message }}</span>
+											</div>
+						
+											<!-- Badge según tipo -->
+											<span class="badge rounded-pill ms-3" [ngClass]="{
+						                  'bg-warning text-dark': notif.type === 'asignado',
+						                  'bg-danger': notif.type === 'urgente',
+						                  'bg-primary': notif.type === 'editado',
+						                  'bg-success': notif.type === 'cerrado'
+						                }">
+												{{
+												notif.type === 'asignado' ? 'Asignado' :
+												notif.type === 'urgente' ? 'Urgente' :
+												notif.type === 'editado' ? 'Editado' :
+												notif.message.includes('cerrado') ? 'Cerrado' : 'Info'
+												}}
+											</span>
+						
+										</a>
+						
+										<!-- Marcar todas -->
+										<div class="text-center p-3 border-top">
+											<button class="btn btn-full --success m-1 w-100" (click)="marcarTodasComoLeidas()">
+												<i class="bi bi-check-circle-fill"></i> Marcar todas como leídas
+											</button>
+										</div>
+									</ng-container>
+						
+									<!-- Sin notificaciones -->
+									<ng-template #noNotifications>
+										<div class="list-group-item text-center text-warning-emphasis p-3">
+											<i class="bi bi-bell-slash"></i> Sin notificaciones
+										</div>
+									</ng-template>
+						
+								</div>
+							</div>
+						</li>
+
+
+
+						<!-- <li class="nav-item me-3 me-lg-1 dropdown">
+							<a class="nav-link dropdown-toggle border-2 position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bi bi-bell-fill"></i>
+								<span *ngIf="notifications?.length"
+									class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+									{{ notifications.length }}
+								</span>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end p-2 shadow" style="width: 300px;">
+								<li *ngFor="let notif of notifications.slice(0, 5)">
+									<small class="d-block mb-1 text-wrap">{{ notif.message }}</small>
+									<hr class="my-1" />
+								</li>
+								<li *ngIf="notifications.length === 0" class="text-muted text-center">Sin notificaciones</li>
+								<li>
+									<button class="btn btn-sm btn-link w-100 text-center mt-2" (click)="marcarTodasComoLeidas()">Marcar todas como
+										leídas</button>
+								</li>
+							</ul>
+						</li>   -->
+
+						<!-- <li class="nav-item me-3 me-lg-1">
 							<a class="nav-link" href="#">
 								<span><i class="bi bi-bell-fill"></i></span>
 								 <span *ngIf="pendingCount > 0" class="badge rounded-pill badge-notification bg-danger">{{ pendingCount }}</span> 
-								<!-- @if (pendingCount > 0) {
+								 @if (pendingCount > 0) {
 								<span class="badge bg-danger rounded-pill">
 									{{ pendingCount }}
 								</span>
-							} -->
+							}  
 							</a>
-						</li>
+						</li> -->
 					</ul>					
 					<!-- Center elements -->
 					<div class="dropdown text-end">
@@ -107,7 +234,7 @@
 			<section class="container ">
 				<router-outlet></router-outlet> 
 			</section>
-			 <!-- <app-components></app-components>  -->
+			<!-- <app-components></app-components>  -->
 			 
 	</main>
 	<!-- Footer -->
