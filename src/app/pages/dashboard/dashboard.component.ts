@@ -39,7 +39,7 @@ interface Metrics {
 @Component({
   selector: 'app-dashboard',
 	standalone: true,
-  imports: [CommonModule, RouterModule, ComponentsComponent],
+  imports: [CommonModule, RouterModule, ComponentsComponent ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
