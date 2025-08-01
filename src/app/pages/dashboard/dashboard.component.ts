@@ -146,6 +146,13 @@ export class DashboardComponent implements OnInit {
 					console.log('🔔 ::: Todas las notificaciones:', nots);
   				console.log('📬 Cantidad de no leídas:', this.unreadCount);
 				
+					//Toast alerta de notificaciones
+					if (this.unreadCount > 0) {
+					this.alertaService.showToastWarning(
+						`Tienes ${this.unreadCount} notificación${this.unreadCount === 1 ? '' : 'es'} nueva${this.unreadCount === 1 ? '' : 's'}`, '🔔 Atención'
+						);
+					}
+
 					nots.forEach(n => console.log(`📄 ${n.message} | Leída: ${n.read}`));
 
 					// Log principal
