@@ -51,6 +51,12 @@ export const routes: Routes = [
 				]
 			},
 			{
+				path: 'admin-notifications',
+				loadComponent: () =>
+					import('../admin/admin-notifications/admin-notifications.component')
+						.then(m => m.AdminNotificationsComponent)
+			},
+			{
 				path: 'analytics',
 				loadComponent: () =>
 					import('../dashboard/analytics/analytics.component').then(m => m.AnalyticsComponent)
@@ -67,10 +73,7 @@ export const routes: Routes = [
 			},
 			 
       // ✅ Ruta desconocida dentro del dashboard → claims-router
-      { path: '**', redirectTo: '' },
-
-
-			
+      { path: '**', redirectTo: '' },			
 			
 		]
 	}

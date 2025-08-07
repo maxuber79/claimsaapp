@@ -16,7 +16,7 @@ import { AlertService } from '../../services/alert.service';
 import { NotificationService } from '../../services/notification.service';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
-import { TodoService } from '../../services/todo.service';
+//import { TodoService } from '../../services/todo.service';
 
 
 import { TodoStatsComponent } from '../dashboard/components/todo-stats.component'; // Ajusta la ruta
@@ -25,7 +25,7 @@ import { TodoChartComponent } from '../dashboard/components/todo-chart.component
 import { MockDataService } from '../../services/mock-data.service';
  
 import { ComponentsComponent } from '../../shared/components/components.component'; 
-import { Notification } from '../../models/notification.model';
+//import { Notification } from '../../models/notification.model';
 
 interface Metrics {
 	color: string;
@@ -85,10 +85,8 @@ export class DashboardComponent implements OnInit {
 		private auth: Auth,
 		private userService: UserService,
 		private authService: AuthService,
-		private router: Router,
-		private todoService: TodoService,
-		private alertaService: AlertService,
-		private mockService: MockDataService,
+		private router: Router, 
+		private alertaService: AlertService, 
 		private notificationService: NotificationService
 	) {
 		console.log('%c<<< Start DashboardComponent >>>', 'background: #0d6efd; color: #ffffff; padding: 2px 5px;');

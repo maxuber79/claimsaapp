@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Claim } from '../../../models/claims';
 import { ClaimsService } from '../../../services/claims.service';
 import { UserService } from '../../../services/user.service';
@@ -20,7 +21,7 @@ import { UserNotification } from '../../../models/UserNotification.model';
 @Component({
   selector: 'app-admin-claims',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardMetricComponent],
+  imports: [CommonModule, FormsModule, CardMetricComponent, RouterModule],
   templateUrl: './admin-claims.component.html',
   styleUrls: ['./admin-claims.component.scss']
 })

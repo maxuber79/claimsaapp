@@ -43,3 +43,6 @@ Thumbs.db
 /respaldo
 /.vscode
 /backup
+
+.cursor\rules\nx-rules.mdc
+.github\instructions\nx.instructions.md

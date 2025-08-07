@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   collection,
   collectionData,
@@ -16,15 +16,17 @@ import { UserService } from './user.service';
 import { collection as col, getDocs, query, where } from 'firebase/firestore';
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-
+ 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClaimsService {
 
-  constructor(
-		private firestore: Firestore,
+	private firestore = inject(Firestore); // ✅ Usa inject()
+	 
+
+  constructor( 
     private authService: AuthService,
     private userService: UserService
 	) { console.log('%c<<< Start CLAIMS service >>>','background: #fff3cd; color: #664d03; padding: 2px 5px;'); }

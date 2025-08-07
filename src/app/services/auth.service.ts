@@ -1,6 +1,6 @@
 // src/app/services/auth.service.ts
-import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential,sendPasswordResetEmail, authState } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, UserCredential,sendPasswordResetEmail, authState } from '@angular/fire/auth'; 
 import { onAuthStateChanged, User } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { Observable, from, of, throwError } from 'rxjs';
@@ -14,8 +14,10 @@ import { UserModel } from '../models/user';
 })
 export class AuthService {
   
-	
-	constructor(private auth: Auth) {
+	 
+	private auth = inject(Auth); // 👈 Soluciona el warning
+
+	constructor() {
     console.log('%c<<< Start AUTH service >>>', 'background: #cff4fc; color: #055160; padding: 2px 5px;');
   }
 

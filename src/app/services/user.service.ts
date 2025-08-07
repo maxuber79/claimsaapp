@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Firestore, doc, getDoc, setDoc, collection, collectionData, docData, updateDoc, deleteDoc,query, where } from '@angular/fire/firestore'; 
+import { Auth } from '@angular/fire/auth';
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -8,9 +9,6 @@ import { HttpClient } from '@angular/common/http';
 import { UserModel } from '../models/user';
 /* Servicios */
 import { AuthService } from './auth.service';
-
-
- 
 
 
 @Injectable({
@@ -22,9 +20,11 @@ export class UserService {
   // Asumiremos que el ID del documento en Firestore es el mismo que el 'uid' del usuario.
   private usersCollectionName = 'users';
 
+	private firestore = inject(Firestore); // ✅ Usa inject()
+	private auth = inject(Auth); // ✅ Usa inject()
 
 
-  constructor( private http: HttpClient, private authService: AuthService, private firestore: Firestore ) {
+  constructor( private http: HttpClient, private authService: AuthService) {
 		console.log('%c<<< Start USER service >>>','background: #fff3cd; color: #664d03; padding: 2px 5px;');
 	}
 

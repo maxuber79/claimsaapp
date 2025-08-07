@@ -1,4 +1,23 @@
- <div class="row">
+<div class="row">
+	<div class="col-12 text-start grid-margin">
+		<div class="card ">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12">
+						<nav aria-label="breadcrumb" class="">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Mis reclamos</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
 	<div class="col-12 grid-margin"> 
 		<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
 			<div class="spinner-border" role="status">

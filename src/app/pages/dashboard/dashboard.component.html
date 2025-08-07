@@ -211,9 +211,15 @@
 							</li>
 							<li *ngIf="userRol === 'Ejecutivo'">
 								<a [routerLink]="['/dashboard/notifications', this.uid]" class="dropdown-item">
-									Mis notificaciones
+									Mis notificaciones Ejecutivo
 								</a>
 							<li>
+							<li *ngIf="userRol === 'Administrador'">
+								<a class="dropdown-item" [routerLink]="['/dashboard/admin-notifications']">
+									Mis Notificaciones Administrador
+								</a>
+							</li>
+							<li> 
 								<hr class="dropdown-divider">
 							</li>
 							<li>

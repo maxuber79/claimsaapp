@@ -1,6 +1,7 @@
 // Importaciones necesarias de Angular y RxJS
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 // Importaciones de Firebase y RxJS para operaciones asíncronas
@@ -28,7 +29,8 @@ import { NotificationService } from '../../../services/notification.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-		CardMetricComponent
+		CardMetricComponent,
+		RouterModule 
   ],
   templateUrl: './executive-claims.component.html',
   styleUrl: './executive-claims.component.scss'

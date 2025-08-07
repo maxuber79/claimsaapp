@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, addDoc, query, where, orderBy } from '@angular/fire/firestore';
 import { doc, updateDoc, Timestamp, getDocs, writeBatch, deleteDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -9,7 +9,9 @@ import { UserNotification } from '../models/UserNotification.model'; // Adjust t
 })
 export class NotificationService {
 
-  constructor( private firestore: Firestore ) {
+	private firestore = inject(Firestore); // ✅ Usa inject()
+
+  constructor() {
 		console.log('%c<<< Start NOTIFICATION service >>>','background: #fff3cd; color: #664d03; padding: 2px 5px;');
 	}
 
