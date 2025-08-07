@@ -50,3 +50,12 @@
   background: var(--bs-info);
   color: var(--bs-white)
 }
+
+.notification-message {
+  max-width: 220px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}

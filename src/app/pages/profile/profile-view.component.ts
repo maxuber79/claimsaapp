@@ -75,7 +75,8 @@ export class ProfileViewComponent implements OnInit {
 			photoURL: [''],// opcional
 			name: [''],
 			last_name: [''],
-			user_name: [''],			
+			user_name: [''],
+			username: [''],
 			phone: [''],
 			mobile: [''],
 			address: [''],
@@ -105,6 +106,7 @@ export class ProfileViewComponent implements OnInit {
 				name: this.perfil?.name || '',
 				last_name: this.perfil?.last_name || '',
 				user_name: this.perfil?.user_name || '',
+				username: this.perfil?.username || 'n/a',
 				email: this.perfil?.email || '',
 				phone: this.perfil?.phone || '',
 				mobile: this.perfil?.mobile || '',

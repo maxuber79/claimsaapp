@@ -1,11 +1,12 @@
 export interface UserModel {
 status: any;
-	uid:         string;
+	uid:          string;
 	bio?:         string;
 	name?:        string;
 	last_name?:   string;
-	email:       string;
+	email:        string;
 	user_name?:   string;
+	username?:	  string;
 	surnames?:    string;
 	mobile?:      string;
 	phone?:       string;

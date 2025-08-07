@@ -1,0 +1,64 @@
+<div class="row">
+	<div class="col-12 grid-margin">
+		<div class="card">
+			<div class="card-body">
+					<div class="row">
+						<div class="col-12 py-3 d-flex justify-content-end">
+							<button class="btn btn-full --success" (click)="markAllAsRead()">
+								<i class="bi bi-check-all"></i> Marcar todas como leídas
+							</button>
+						</div>
+						<div class="col-12 mb-3">
+							<h2><i class="bi bi-bell-fill text-warning"></i> Notificaciones <small class="badge badge-type badge-outline-info">{{ notifications.length }} notificación{{ notifications.length === 1
+								? '' : 'es' }}</small></h2>
+							
+						</div>
+						<div class="col-12">
+							<div *ngIf="notifications.length > 0; else noNotificaciones">
+								<div *ngFor="let notif of notifications" class="list-group-item border my-2 p-3 rounded bg-light">
+									<div class="d-flex justify-content-between align-items-center">
+										<div>
+											<strong>{{ notif.message }}</strong><br />
+											<small class="text-muted">Leída: {{ notif.read ? 'Sí' : 'No' }}</small> | <small 
+												class="badge" 
+												[ngClass]="{
+													'badge-full-danger': notif.type === 'urgente',
+													'badge-full-success': notif.type === 'asignado',
+													'badge-full-warning': notif.type === 'editado',
+													'badge-full-primary': notif.type === 'cerrado' 
+												}"
+											>
+												{{ notif.type }} <!-- 'asignado' | 'urgente' | 'editado' | 'cerrado' -->
+											</small>
+										</div>
+							
+										<div class="btn-group">
+											<button class="btn m-1 btn-sm" [ngClass]="notif.read ? 'btn-warning' : 'btn-full --success'"
+												[disabled]="notif.read" (click)="markAsRead(notif)">
+												<i class="bi" [ngClass]="notif.read ? 'bi-check2-circle' : 'bi-check-lg'"></i>
+												{{ notif.read ? 'Notificación leída' : 'Marcar como leída' }}
+											</button>
+											<button class="btn btn-full --danger m-1 btn-sm" (click)="deleteNotification(notif)">
+												<i class="bi bi-trash3-fill"></i> Eliminar
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<ng-template #noNotificaciones>
+								<div class="alert alert-info mt-3">No hay notificaciones</div>
+							</ng-template>
+						</div>
+					</div>
+
+
+
+				
+
+				
+
+			</div>
+		</div>
+	</div>
+</div>

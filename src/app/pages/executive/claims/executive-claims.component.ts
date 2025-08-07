@@ -10,7 +10,7 @@ import { catchError, map, switchMap, filter } from 'rxjs/operators';
 // Modelos de datos
 import { Claim } from '../../../models/claims';
 import { UserModel } from '../../../models/user';
-
+import { UserNotification } from '../../../models/UserNotification.model';
 // Servicios
 import { ClaimsService } from '../../../services/claims.service';
 import { AuthService } from '../../../services/auth.service';
@@ -18,7 +18,7 @@ import { AlertService } from '../../../services/alert.service';
 import { UserService } from '../../../services/user.service';
 import { MockDataService } from '../../../services/mock-data.service';
 import { CardMetricComponent } from '../../dashboard/components/card-metric.component';
-import { Notification } from '../../../models/notification.model';
+import { NotificationService } from '../../../services/notification.service';
 
 
 @Component({
@@ -113,7 +113,8 @@ export class ExecutiveClaimsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private alert: AlertService,
     private userService: UserService,
-		private mockService: MockDataService
+		private mockService: MockDataService,
+		private notificationService: NotificationService 
   ) {}
 
   // Método que se ejecuta al inicializar el componente
@@ -264,6 +265,15 @@ export class ExecutiveClaimsComponent implements OnInit, OnDestroy {
       this.claimsService.updateClaim(updatedClaim.uidEjecutivo!, updatedClaim)
         .then(() => {
           this.alert.success('✅ Reclamo actualizado con éxito.');
+
+					// 📢 Enviar notificación a todos los administradores
+					this.notificationService.sendToAdmins(
+						/* `El ejecutivo <strong>${this.userData?.user_name || 'Desconocido'}</strong> actualizó el reclamo #${updatedClaim.id}`,
+						'admin-alert' */
+						`El ejecutivo <strong>${this.userData?.user_name}</strong> ha <strong>modificado</strong> el reclamo <strong>#${updatedClaim.id}</strong>.`,
+						'admin-alert'
+					);
+
           this.cancelEdit(); // Cierra el modal y resetea
           this.loadExecutiveClaims(updatedClaim.uidEjecutivo!); // ✅ usa el UID del reclamo
         })

@@ -107,21 +107,23 @@
 						                 'bi-check-circle-fill text-success': notif.type === 'cerrado'
 						               }">
 												</i>
-												<span class="text-wrap lh-sm">{{ notif.message }}</span>
+												<!-- <span class="text-wrap lh-sm">{{ notif.message }}</span> -->
+												<span class="notification-message text-wrap lh-sm" [innerHTML]="notif.message">{{ notif.message }}</span>
 											</div>
 						
 											<!-- Badge según tipo -->
-											<span class="badge rounded-pill ms-3" [ngClass]="{
-						                  'bg-warning text-dark': notif.type === 'asignado',
-						                  'bg-danger': notif.type === 'urgente',
-						                  'bg-primary': notif.type === 'editado',
-						                  'bg-success': notif.type === 'cerrado'
+											<span class="badge  ms-3" [ngClass]="{
+						                  'badge-full-warning': notif.type === 'asignado',
+						                  'badge-full-danger': notif.type === 'urgente',
+						                  'badge-full-primary': notif.type === 'editado',
+						                  'badge-full-success': notif.type === 'cerrado',
+						                  'badge-full-secondary': notif.type === 'admin-alert'
 						                }">
 												{{
 												notif.type === 'asignado' ? 'Asignado' :
 												notif.type === 'urgente' ? 'Urgente' :
 												notif.type === 'editado' ? 'Editado' :
-												notif.message.includes('cerrado') ? 'Cerrado' : 'Info'
+												notif.message.includes('cerrado') ? 'Cerrado' : 'Alerta edición'
 												}}
 											</span>
 						
@@ -207,6 +209,10 @@
 									Admin Usuarios
 								</a>
 							</li>
+							<li *ngIf="userRol === 'Ejecutivo'">
+								<a [routerLink]="['/dashboard/notifications', this.uid]" class="dropdown-item">
+									Mis notificaciones
+								</a>
 							<li>
 								<hr class="dropdown-divider">
 							</li>

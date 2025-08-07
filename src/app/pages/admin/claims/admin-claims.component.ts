@@ -10,6 +10,13 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { CardMetricComponent } from '../../dashboard/components/card-metric.component';
 import { NotificationService } from '../../../services/notification.service';
+import { UserNotification } from '../../../models/UserNotification.model';
+
+
+
+
+
+
 @Component({
   selector: 'app-admin-claims',
   standalone: true,
@@ -215,44 +222,49 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
   }
 	
 	saveNewClaim(): void {
-    if (!this.newClaim.nombre || !this.newClaim.estado || !this.selectedExecutiveUid) {
-      this.alert.showToastError('Por favor, completa todos los campos requeridos (nombre, estado, ejecutivo).', 'Campos Requeridos');
-      return;
-    }
+  if (!this.newClaim.nombre || !this.newClaim.estado || !this.selectedExecutiveUid) {
+    this.alert.showToastError(
+      'Por favor, completa todos los campos requeridos (nombre, estado, ejecutivo).',
+      'Campos Requeridos'
+    );
+    return;
+  }
 
-		// 👇 Asegúrate de setear correctamente el uid del ejecutivo
+  // Asignar ejecutivo al nuevo reclamo
   this.newClaim.uidEjecutivo = this.selectedExecutiveUid;
+  this.newClaim.id = this.generateUUID();
 
-  // 🪵 Log para verificar
+  // Logs de depuración
   console.log('🆕 Reclamo preparado para guardar:', this.newClaim);
   console.log('🎯 UID del ejecutivo seleccionado:', this.selectedExecutiveUid);
 
-    this.newClaim.uidEjecutivo = this.selectedExecutiveUid;
-    this.newClaim.id = this.generateUUID();
+  this.isLoading = true;
 
-    this.isLoading = true;
-    this.claimsService.createClaim(this.newClaim.uidEjecutivo, this.newClaim)
-      .then(() => {
-        this.alert.success('Nuevo reclamo asignado con éxito.');
-        this.closeNewModal();
-        this.loadAllClaims();
-				 // 👇 Aquí se manda la notificación al UID
-      	const uid = this.newClaim.uidEjecutivo;
-				if (uid) {
-					this.sendTestNotification(uid); // ✅ uid ya es string
-				} else {
-					console.warn('⚠️ UID del ejecutivo está vacío o undefined. No se enviará notificación.');
-				}
+  this.claimsService.createClaim(this.newClaim.uidEjecutivo, this.newClaim)
+    .then(() => {
+      this.alert.success('Nuevo reclamo asignado con éxito.');
+      this.closeNewModal();
+      this.loadAllClaims();
 
-      })
-      .catch((err: any) => {
-        console.error('❌ Error al crear reclamo:', err);
-        this.alert.error('Ocurrió un error al crear el reclamo.');
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
-  }
+      // ✅ Enviar notificación al ejecutivo
+      this.notificationService.sendToUser(
+        this.selectedExecutiveUid,
+        `Se te asignó un nuevo reclamo: ${this.newClaim.nombre}`,
+        'asignado'
+      )
+      .then(() => console.log('✅ Notificación enviada al ejecutivo'))
+      .catch(err => console.error('❌ Error al enviar notificación:', err));
+
+    })
+    .catch((err: any) => {
+      console.error('❌ Error al crear reclamo:', err);
+      this.alert.error('Ocurrió un error al crear el reclamo.');
+    })
+    .finally(() => {
+      this.isLoading = false;
+    });
+}
+
 
   resetNewClaim(): void {
     this.newClaim = this.getEmptyClaim();
@@ -404,12 +416,36 @@ export class AdminClaimsComponent implements OnInit, OnDestroy {
 
 	saveChanges(): void {
 		console.log('💾 Guardando cambios para el reclamo:', this.selectedClaim);
+
+
      if (this.selectedClaim && this.selectedClaim.uidEjecutivo && this.selectedClaim.id) {
+
+
       this.claimsService.updateClaim(this.selectedClaim.uidEjecutivo, this.selectedClaim)
         .then(() => {
           this.alert.showToastSuccess('✅ Reclamo actualizado con éxito.', 'OK!');
           this.loadAllClaims(); // Recarga los datos para reflejar el cambio
           this.cancelEdit(); // Cierra el modal
+
+
+					if (this.selectedClaim && this.selectedClaim.uidEjecutivo) {
+						const uidEjecutivo: string = this.selectedClaim.uidEjecutivo;
+
+						this.notificationService.sendToUser(
+							uidEjecutivo,                                           // ✅ string garantizado
+							`Se ha actualizado el reclamo #${this.selectedClaim.id}`, // Mensaje
+							'editado'                                                // Tipo
+						)
+						.then(() => console.log('✅ Notificación de edición enviada al ejecutivo'))
+						.catch(err => console.error('❌ Error al enviar notificación de edición:', err));
+					} else {
+						console.warn('⚠️ Reclamo sin ejecutivo asignado. No se envía notificación.');
+					}
+
+
+
+
+
         })
         .catch(err => {
           console.error('❌ Error al actualizar el reclamo:', err);

@@ -50,11 +50,15 @@ export const routes: Routes = [
 					}
 				]
 			},
-
 			{
 				path: 'analytics',
 				loadComponent: () =>
 					import('../dashboard/analytics/analytics.component').then(m => m.AnalyticsComponent)
+			},
+			{
+				path: 'notifications/:uid',
+				loadComponent: () =>
+					import('../notification/notification.component').then(m => m.NotificationsComponent)
 			},
 			{
 				path: 'profile/:uid',

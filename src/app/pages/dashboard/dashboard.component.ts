@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
    * 🚀 Hook de ciclo de vida que se ejecuta al cargar el componente
    * Intenta obtener los datos del usuario autenticado desde Firestore
    */
-	ngOnInit(): void {
+	/* ngOnInit(): void {
 		console.log('📦 Iniciando carga de usuario en dashboard...');
 
 		this.authService.getCurrentUser().subscribe( user => {
@@ -116,26 +116,7 @@ export class DashboardComponent implements OnInit {
 					this.perfil = userData;
 					this.userRol = userData?.rol || 'Usuario'; // <-- aquí obtienes el rol
 					console.log('Rol del usuario:', this.userRol);
-				/* 	this.authService.getCurrentUser().pipe(
-						switchMap(user => this.userService.getUserData(user.uid))
-					).subscribe({
-						next: (data) => {
-							this.uid = data?.uid || '';
-							this.userService.getUserData(this.uid).subscribe({
-					next: (user) => {
-						this.perfil = user;
-						this.userRol = user?.rol || 'Usuario'; // <-- aquí obtienes el rol
-						console.log('Rol del usuario:', this.userRol);
-					}
-				}); */
-					/*this.userData = {
-					...userData,
-					email: userData.email ?? '',
-					photoURL: userData.photoURL ?? this.imageDefault
-				};
-				console.log(`%c 📦 Usuario autenticado: ${user.uid}:`,'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', user);
-				this.profilePhotoURL = user.photoURL || this.imageDefault;
-				this.apodoUser = user.displayName || 'Usuario'; */
+				
 				});
 
 				// ✅ Escuchar notificaciones del usuario actual
@@ -160,12 +141,50 @@ export class DashboardComponent implements OnInit {
 						this.notifications.forEach(n => {
 						console.log(`🔸 Mensaje: ${n.message} | Leída: ${n.read}`);
 					});
-				});
-
-				//this.listenToNotifications();//-----> Tengo que habilitar cuando esté el servicio de notificaciones listo
+				}); 
 			}
 		});
-	}
+	} */
+
+		ngOnInit(): void {
+  console.log('📦 Iniciando carga de usuario en dashboard...');
+
+  this.authService.getCurrentUser().subscribe(user => {
+    if (user) {
+      this.uid = user.uid;
+      console.log(`%c 📦 Usuario autenticado: ${user.uid}:`, 'background: #d1e7dd; color: #0f5132; padding: 2px 5px;', user);
+
+      // Obtener datos de usuario
+      this.userService.getUserData(user.uid).subscribe(userData => {
+        this.userData = userData;
+        this.perfil = userData;
+        this.userRol = userData?.rol || 'Usuario';
+        console.log('Rol del usuario:', this.userRol);
+      });
+
+      // ✅ Obtener notificaciones y mostrar UN SOLO toast si aplica
+      this.notificationService.getUserNotifications(user.uid).subscribe(nots => {
+        this.notifications = nots;
+        this.unreadCount = nots.filter(n => !n.read).length;
+
+        console.log('📬 Cantidad de no leídas ---->', this.unreadCount);
+
+        // Mostrar toast solo una vez por sesión y si hay no leídas
+        const toastShown = sessionStorage.getItem('toastShown');
+        if (this.unreadCount > 0 && !toastShown) {
+          this.alertaService.showToastWarning(
+            `Tienes ${this.unreadCount} notificación${this.unreadCount === 1 ? '' : 'es'} nueva${this.unreadCount === 1 ? '' : 's'}`,
+            '🔔 Atención'
+          );
+          sessionStorage.setItem('toastShown', 'true'); // ya se mostró
+        }
+
+        // Logs informativos
+        nots.forEach(n => console.log(`📄 ${n.message} | Leída: ${n.read}`));
+      });
+    }
+  });
+}
 
 	toggleNotiDropdown() {
   	this.showNotiDropdown = !this.showNotiDropdown;
