@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-
+ 
 // Importaciones de Firebase y RxJS para operaciones asíncronas
 import { Observable, EMPTY, Subscription } from 'rxjs';
 import { catchError, map, switchMap, filter } from 'rxjs/operators';
@@ -25,13 +25,7 @@ import { NotificationService } from '../../../services/notification.service';
 @Component({
   selector: 'app-executive-claims',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-		CardMetricComponent,
-		RouterModule 
-  ],
+  imports: [ CommonModule, FormsModule, ReactiveFormsModule, CardMetricComponent, RouterModule ],
   templateUrl: './executive-claims.component.html',
   styleUrl: './executive-claims.component.scss'
 })

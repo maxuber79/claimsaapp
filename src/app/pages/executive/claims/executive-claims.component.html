@@ -98,8 +98,14 @@
 						<div class="row g-3 align-items-center">
 							<div class="col-md-5">
 								<label for="searchTerm" class="form-label visually-hidden">Buscar por Nombre</label>
-								<input type="text" id="searchTerm" class="form-control" placeholder="Buscar por nombre..."
-									[(ngModel)]="searchTerm" (input)="applyFilters()">
+								<input
+								type="text"
+								id="searchTerm"
+								class="form-control"
+								placeholder="Buscar por nombre..."
+								[(ngModel)]="searchTerm"
+								(input)="applyFilters()">
+								<small class="form-text text-muted">{{searchTerm}}</small> 
 							</div>
 							<div class="col-md-4">
 								<label for="filterStatus" class="form-label visually-hidden">Filtrar por Estado</label>
