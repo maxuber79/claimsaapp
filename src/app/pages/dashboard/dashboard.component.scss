@@ -59,3 +59,43 @@
   font-size: 0.9rem;
   line-height: 1.2;
 }
+
+.header-avatar-menu {
+  margin-top: 1rem;
+}
+
+/* Dropdown notificaciones: ancho y scroll seguro */
+.header-notif-menu {
+  margin-top: 1rem;
+  width: 360px;
+  /* sin ancho fijo */
+  max-width: min(360px, 92vw);
+  /* no más ancho que la pantalla */
+  max-height: 70vh;
+  /* que no sea eterno */
+  overflow: auto;
+  /* scroll interno */
+}
+
+/* En pantallas muy chicas, fíjalo al borde derecho y evita flip extraño */
+@media (max-width: 576px) {
+  .header-notif-menu {
+    right: -30px !important;
+    left: auto !important;
+    transform: none !important;
+    /* evita que se mueva fuera de pantalla */
+  }
+}
+
+/* Asegúrate de no cortar el dropdown por overflow en el header/nav */
+header,
+.navbar,
+.container-fluid {
+  overflow: visible;
+}
+
+span.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+}
