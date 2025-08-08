@@ -1,47 +1,108 @@
 <div class="row">
+	<div class="col-12 text-start grid-margin">
+		<div class="card ">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12">
+						<nav aria-label="breadcrumb" class="">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a [routerLink]="['/dashboard']">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Admin Notificaciones</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
 	<div class="col-12 grid-margin">
 		<div class="card">
 			<div class="card-body">
 					<div class="row">
-						<div class="col-12 py-3 d-flex justify-content-end">
-							<button class="btn btn-full --success" (click)="markAllAsRead()">
-								<i class="bi bi-check-all"></i> Marcar todas como leídas
+						
+						<!-- Title card -->
+						<div class="col-sm-12 col-md-6 ">
+							<h2>
+								<i class="bi bi-bell-fill text-warning"></i> Notificaciones
+								<small class="badge badge-type badge-outline-info">
+									{{ filteredNotifications.length }} notificación{{ filteredNotifications.length === 1 ? '' : 'es' }}
+								</small>
+							</h2>
+						</div>
+
+						<!-- Boton leido allRead -->
+						<div class="col-sm-12 col-md-6 d-flex justify-content-end">
+							<button class="btn btn-full --success m-1 btn-sm " (click)="markAllAsRead()" [disabled]="allRead">
+								<i class="bi bi-check2-all"></i> Marcar todas como leídas
 							</button>
 						</div>
-						<div class="col-12 mb-3">
-							<h2><i class="bi bi-bell-fill text-warning"></i> Notificaciones <small class="badge badge-type badge-outline-info">{{ notifications.length }} notificación{{ notifications.length === 1
-								? '' : 'es' }}</small></h2>
-							
+						
+						 
+						<!-- Filtros -->
+						<div class="col-sm-12 col-md-6 d-flex justify-content-between align-items-center ">
+							<div class="py-3">
+								<span class="me-2 fw-semibold">Ordenar por estado:</span>
+								<div class="btn-group" role="group">
+									<button class="btn btn-outline-primary btn-sm" [class.active]="filterState === 'todas'"
+										(click)="filterState = 'todas'; onFiltersChanged()">Todas</button>
+									<button class="btn btn-outline-success btn-sm" [class.active]="filterState === 'leidas'"
+										(click)="filterState = 'leidas'; onFiltersChanged()">Leídas</button>
+									<button class="btn btn-outline-warning btn-sm" [class.active]="filterState === 'no-leidas'"
+										(click)="filterState = 'no-leidas'; onFiltersChanged()">No leídas</button>
+								</div>
+							</div>
+
+
 						</div>
-						<div class="col-12">
-							<div *ngIf="notifications.length > 0; else noNotificaciones">
-								<div *ngFor="let notif of notifications" class="list-group-item border my-2 p-3 rounded bg-light">
-									<div class="d-flex justify-content-between align-items-center">
-										<div>
-											<strong>{{ notif.message }}</strong><br />
-											<small class="text-muted">Leída: {{ notif.read ? 'Sí' : 'No' }}</small> | <small 
-												class="badge" 
-												[ngClass]="{
-													'badge-full-danger': notif.type === 'urgente',
-													'badge-full-success': notif.type === 'asignado',
-													'badge-full-warning': notif.type === 'editado',
-													'badge-full-primary': notif.type === 'cerrado' 
-												}"
-											>
-												{{ notif.type }} <!-- 'asignado' | 'urgente' | 'editado' | 'cerrado' -->
-											</small>
+
+						<div class="col-sm-12 col-md-6 d-flex justify-content-end align-items-center"> 
+							<span class="me-2 fw-semibold">Ordenar por fecha:</span>
+							<select class="form-select form-select-sm d-inline-block w-auto" [(ngModel)]="fechaOrden"
+								(ngModelChange)="onFiltersChanged()">
+								<option value="desc">Más reciente primero</option>
+								<option value="asc">Más antigua primero</option>
+							</select>							 
+						</div>
+						
+						<div class="col-sm-12 col-md-12 ">
+							<div *ngIf="filteredNotifications.length > 0; else noNotificaciones">
+								<div *ngFor="let notif of pagedNotifications" class="list-group-item border my-2 p-3 rounded bg-light">
+									<!-- <div class="d-flex justify-content-between align-items-center"> -->
+										<div class="row">
+
+										<div class="col-sm-12 col-md-6 py-2  ">
+											<strong [innerHTML]="notif.message"></strong><br />
+											<small class="text-muted">Leída: {{ notif.read ? 'Sí' : 'No' }}</small> |
+											<small class="badge" [ngClass]="{
+												'badge-full-danger': notif.type === 'urgente',
+												'badge-full-success': notif.type === 'asignado',
+												'badge-full-warning': notif.type === 'editado',
+												'badge-full-primary': notif.type === 'cerrado',
+												'badge-full-secondary': notif.type === 'admin-alert'
+											}">
+												{{ notif.type === 'asignado' ? 'Asignado' :
+												notif.type === 'urgente' ? 'Urgente' :
+												notif.type === 'editado' ? 'Editado' :
+												notif.type === 'admin-alert' ? 'Nueva Modificación' :
+												notif.type === 'cerrado' ? 'Cerrado' : notif.type }}
+											</small> 
 										</div>
 							
-										<div class="btn-group">
-											<button class="btn m-1 btn-sm" [ngClass]="notif.read ? 'btn-warning' : 'btn-full --success'"
-												[disabled]="notif.read" (click)="markAsRead(notif)">
-												<i class="bi" [ngClass]="notif.read ? 'bi-check2-circle' : 'bi-check-lg'"></i>
+										<div class="col-sm-12 col-md-6 py-2 d-flex justify-content-md-end align-items-md-center">
+											<button class="btn m-1 btn-sm" [ngClass]="notif.read ? 'btn-full --warning' : 'btn-full --success'" [disabled]="notif.read"
+												(click)="markAsRead(notif)">
+												<i class="bi" [ngClass]="notif.read ? 'bi bi-check-all' : 'bi-check-lg'"></i>
 												{{ notif.read ? 'Notificación leída' : 'Marcar como leída' }}
 											</button>
 											<button class="btn btn-full --danger m-1 btn-sm" (click)="deleteNotification(notif)">
 												<i class="bi bi-trash3-fill"></i> Eliminar
-											</button>
+											</button> 
 										</div>
+
+
 									</div>
 								</div>
 							</div>
@@ -50,15 +111,46 @@
 								<div class="alert alert-info mt-3">No hay notificaciones</div>
 							</ng-template>
 						</div>
+
+						<!-- Paginación -->
+						<div class="col-12 d-flex justify-content-between align-items-center py-3">
+							<div>
+								Elementos por página:
+								<select (change)="onItemsPerPageChange($event)" [ngModel]="itemsPerPage"
+									class="form-select form-select-sm d-inline-block w-auto ms-2">
+									<option [value]="10">10</option>
+									<option [value]="25">25</option>
+									<option [value]="50">50</option>
+									<option [value]="100">100</option>
+								</select>
+							</div>
+						
+							<nav aria-label="Page navigation">
+								<ul class="pagination mb-0">
+									<li class="page-item" [class.disabled]="currentPage === 1">
+										<a class="page-link" href="#" (click)="onPageChange(currentPage - 1); $event.preventDefault()">Anterior</a>
+									</li>
+						
+									<li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+										<a class="page-link" href="#" (click)="onPageChange(page); $event.preventDefault()">{{ page }}</a>
+									</li>
+						
+									<li class="page-item" [class.disabled]="currentPage === totalPages">
+										<a class="page-link" href="#" (click)="onPageChange(currentPage + 1); $event.preventDefault()">Siguiente</a>
+									</li>
+								</ul>
+							</nav>
+						
+							<div>
+								Página {{ currentPage }} de {{ totalPages }}
+							</div>
+						</div>
+
+
+
+
 					</div>
-
-
-
-				
-
-				
-
-			</div>
+				</div>
 		</div>
 	</div>
 </div>
