@@ -1,5 +1,6 @@
 name: Deploy Angular App to GitHub Pages
 
+# 🚀 Este workflow se ejecuta cada vez que se hace push a la rama master
 on:
   push:
     branches:
@@ -10,22 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Descargar el código de la rama master
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2️⃣ Configurar Node.js (la misma versión que usas localmente)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies (usando --legacy-peer-deps)
+      # 3️⃣ Instalar dependencias del proyecto
+      # Usamos --legacy-peer-deps por si hay dependencias con conflictos de versiones
+      - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      # 4️⃣ Construir la aplicación Angular para producción
+      # IMPORTANTE: el --base-href debe apuntar a la subcarpeta de tu repo
+      # Si tu app está en https://usuario.github.io/claimsaapp → base-href /claimsaapp/
       - name: Build Angular App
         run: npm run build -- --configuration=production --base-href /claimsaapp/
 
+      # 5️⃣ Copiar index.html como 404.html
+      # Esto evita el error 404 al refrescar en rutas internas (SPA fix para GitHub Pages)
+      - name: Create 404.html for SPA refresh
+        run: cp dist/claimsaapp/index.html dist/claimsaapp/404.html
+
+      # 6️⃣ Desplegar a la rama gh-pages
+      # Usa la acción oficial de James Ives para GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: dist/claimsaapp
+          branch: gh-pages            # Rama de despliegue
+          folder: dist/claimsaapp     # Carpeta generada por el build de Angular

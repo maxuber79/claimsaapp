@@ -1,15 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserNotification } from '../../models/UserNotification.model';
+import { UserNotification } from '../../../models/UserNotification.model';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 /* Services */
-import { NotificationService } from '../../services/notification.service';
-import { AuthService } from '../../services/auth.service';
-import { AlertService } from '../../services/alert.service'; 
-import { UserService } from '../../services/user.service'; 
-import { TodoService } from '../../services/todo.service';
+import { NotificationService } from '../../../services/notification.service';
+import { AuthService } from '../../../services/auth.service';
+import { AlertService } from '../../../services/alert.service'; 
+import { UserService } from '../../../services/user.service'; 
 
 
 @Component({

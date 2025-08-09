@@ -64,7 +64,7 @@ export const routes: Routes = [
 			{
 				path: 'notifications/:uid',
 				loadComponent: () =>
-					import('../notification/notification.component').then(m => m.NotificationsComponent)
+					import('../executive/notification/notification.component').then(m => m.NotificationsComponent)
 			},
 			{
 				path: 'profile/:uid',
