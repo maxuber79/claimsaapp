@@ -4,12 +4,10 @@ on:
   push:
     branches: [ master ]
 
-# Evita builds solapados si pusheas seguido
 concurrency:
   group: gh-pages-${{ github.ref }}
   cancel-in-progress: true
 
-# La acción de deploy necesita permiso para escribir en gh-pages
 permissions:
   contents: write
 
@@ -18,34 +16,42 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      REPO_NAME: ${{ github.event.repository.name }}        # p.ej. "claimsaapp"
-      DIST_DIR: dist/${{ github.event.repository.name }}     # p.ej. "dist/claimsaapp"
+      REPO_NAME: ${{ github.event.repository.name }}          # p.ej. "claimsaapp"
+      DIST_DIR: dist/${{ github.event.repository.name }}/browser  # Angular 20 -> dist/<app>/browser
 
     steps:
       # 1) Checkout
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2) Node + cache npm
+      # 2) Node 20 + cache npm
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      # 3) Instalar deps (limpio y reproducible)
+      # 3) Instalar deps (reproducible)
       - name: Install dependencies
         run: npm ci
 
-      # 4) Build (base-href apuntando al repo)
+      # 4) Build prod con base-href apuntando al repo
       - name: Build Angular App
         run: npm run build -- --configuration=production --base-href "/${{ env.REPO_NAME }}/"
+
+      # (Opcional) Mostrar árbol por debug rápido
+      - name: Show dist tree (debug)
+        run: |
+          echo "== dist/"
+          ls -la dist || true
+          echo "== $DIST_DIR"
+          ls -la "${{ env.DIST_DIR }}" || true
 
       # 5) Crear 404.html (SPA refresh fix)
       - name: Create 404.html for SPA refresh
         run: cp "${{ env.DIST_DIR }}/index.html" "${{ env.DIST_DIR }}/404.html"
 
-      # 6) Verificación rápida (que existan index y 404)
+      # 6) Verificar artefactos clave
       - name: Verify build artifacts
         run: |
           test -f "${{ env.DIST_DIR }}/index.html"
