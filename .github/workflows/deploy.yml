@@ -1,46 +1,60 @@
 name: Deploy Angular App to GitHub Pages
 
-# 🚀 Este workflow se ejecuta cada vez que se hace push a la rama master
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+
+# Evita builds solapados si pusheas seguido
+concurrency:
+  group: gh-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+# La acción de deploy necesita permiso para escribir en gh-pages
+permissions:
+  contents: write
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}        # p.ej. "claimsaapp"
+      DIST_DIR: dist/${{ github.event.repository.name }}     # p.ej. "dist/claimsaapp"
+
     steps:
-      # 1️⃣ Descargar el código de la rama master
+      # 1) Checkout
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 2️⃣ Configurar Node.js (la misma versión que usas localmente)
+      # 2) Node + cache npm
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
 
-      # 3️⃣ Instalar dependencias del proyecto
-      # Usamos --legacy-peer-deps por si hay dependencias con conflictos de versiones
+      # 3) Instalar deps (limpio y reproducible)
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
-      # 4️⃣ Construir la aplicación Angular para producción
-      # IMPORTANTE: el --base-href debe apuntar a la subcarpeta de tu repo
-      # Si tu app está en https://usuario.github.io/claimsaapp → base-href /claimsaapp/
+      # 4) Build (base-href apuntando al repo)
       - name: Build Angular App
-        run: npm run build -- --configuration=production --base-href /claimsaapp/
+        run: npm run build -- --configuration=production --base-href "/${{ env.REPO_NAME }}/"
 
-      # 5️⃣ Copiar index.html como 404.html
-      # Esto evita el error 404 al refrescar en rutas internas (SPA fix para GitHub Pages)
+      # 5) Crear 404.html (SPA refresh fix)
       - name: Create 404.html for SPA refresh
-        run: cp dist/claimsaapp/index.html dist/claimsaapp/404.html
+        run: cp "${{ env.DIST_DIR }}/index.html" "${{ env.DIST_DIR }}/404.html"
 
-      # 6️⃣ Desplegar a la rama gh-pages
-      # Usa la acción oficial de James Ives para GitHub Pages
+      # 6) Verificación rápida (que existan index y 404)
+      - name: Verify build artifacts
+        run: |
+          test -f "${{ env.DIST_DIR }}/index.html"
+          test -f "${{ env.DIST_DIR }}/404.html"
+          echo "✅ index.html y 404.html presentes en $DIST_DIR"
+
+      # 7) Deploy a gh-pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages            # Rama de despliegue
-          folder: dist/claimsaapp     # Carpeta generada por el build de Angular
+          branch: gh-pages
+          folder: ${{ env.DIST_DIR }}

@@ -1,4 +1,5 @@
 @use '../abstracts'as *;
+@use 'sass:list';
 @use 'sass:color';
 
 .badge {
@@ -22,9 +23,12 @@
 
 @each $type,
 $pair in $badge-color-map {
-  $bg-color: nth($pair, 1);
-  $text-color: nth($pair, 2);
-  $hover-color: mix($bg-color, #fff, 80%);
+  $bg-color: list.nth($pair, 1);
+  $text-color: list.nth($pair, 2);
+
+  // Nota: color.mix($a, $b, $weight) -> $weight favorece al primer color.
+  // Se mantiene el 80% como en tu código original.
+  $hover-color: color.mix($bg-color, #fff, 80%);
   $border-color: $bg-color;
 
   // 🎨 Badge con fondo sólido
@@ -50,17 +54,20 @@ $pair in $badge-color-map {
   // 🌑 Dark mode
   body.dark-mode {
     .badge-gsa-#{$type} {
-      background-color: lighten($bg-color, 20%);
-      color: lighten($text-color, 30%);
+      // Equivalente a "lighten" ~20%
+      background-color: color.adjust($bg-color, $lightness: 20%);
+      // Aclarar texto ~30%
+      color: color.adjust($text-color, $lightness: 30%);
     }
 
     .badge-outline-#{$type} {
-      color: lighten($bg-color, 15%);
-      border-color: lighten($bg-color, 15%);
+      color: color.adjust($bg-color, $lightness: 15%);
+      border-color: color.adjust($bg-color, $lightness: 15%);
       background-color: transparent;
 
       &:hover {
-        background-color: mix($bg-color, #000, 40%);
+        // Mezcla hacia negro para hover en dark-mode
+        background-color: color.mix($bg-color, #000, 40%);
         color: $text-color;
       }
     }
