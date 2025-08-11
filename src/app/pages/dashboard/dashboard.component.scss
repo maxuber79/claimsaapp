@@ -66,6 +66,7 @@
 
 /* Dropdown notificaciones: ancho y scroll seguro */
 .header-notif-menu {
+
   margin-top: 1rem;
   width: 360px;
   /* sin ancho fijo */
@@ -79,12 +80,12 @@
 
 /* En pantallas muy chicas, fíjalo al borde derecho y evita flip extraño */
 @media (max-width: 576px) {
-  .header-notif-menu {
-    right: -30px !important;
+  .header-notif-menu {   
+   right: -70px !important;
     left: auto !important;
-    transform: none !important;
-    /* evita que se mueva fuera de pantalla */
-  }
+    transform: none !important; 
+  /* evita que se mueva fuera de pantalla */
+}
 }
 
 /* Asegúrate de no cortar el dropdown por overflow en el header/nav */
