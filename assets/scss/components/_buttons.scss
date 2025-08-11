@@ -1,15 +1,15 @@
 @use '../abstracts'as *;
 @use 'sass:color';
+@use 'sass:list';
 
 /*
 * @Buttons             
 **/
 
-
 @each $type,
 $pair in $btn-color-map {
-  $bg-color: nth($pair, 1); // Color de fondo del botón
-  $text-color: nth($pair, 2); // Color del texto
+  $bg-color: list.nth($pair, 1); // Color de fondo del botón
+  $text-color: list.nth($pair, 2); // Color del texto
   $darker-color: color.adjust($bg-color, $lightness: -15%);
   $lighter-color: color.adjust($bg-color, $lightness: 20%);
 
@@ -57,7 +57,7 @@ $pair in $btn-color-map {
 
       // 🌗 Dark mode
       body.dark-mode & {
-        background-color: darken($bg-color, 5%);
+        background-color: color.adjust($bg-color, $lightness: -5%);
         color: $text-color;
         border-color: $bg-color;
 
@@ -113,8 +113,8 @@ $pair in $btn-color-map {
       // 🌗 Dark mode
       body.dark-mode & {
         background-color: transparent;
-        border-color: lighten($bg-color, 10%);
-        color: lighten($bg-color, 10%);
+        border-color: color.adjust($bg-color, $lightness: 10%);
+        color: color.adjust($bg-color, $lightness: 10%);
 
         &:hover,
         &:focus {
@@ -125,7 +125,6 @@ $pair in $btn-color-map {
     }
   }
 }
-
 
 /*
 * @Buttons wrapper           
@@ -177,14 +176,16 @@ $btn-sizes: (btn-xl: (0.5rem, 1.875rem, 1.3rem, 1.8, 22px),
   &.btn-full,
   &.btn-getstarted,
   &.btn-type,
-  &.btn-getstarted,
-  &.btn-border,
   &.btn-table {
 
     @each $size,
     $values in $btn-sizes {
       &.#{$size} {
-        @include size-btn(nth($values, 1), nth($values, 2), nth($values, 3), nth($values, 4), nth($values, 5));
+        @include size-btn(list.nth($values, 1),
+          list.nth($values, 2),
+          list.nth($values, 3),
+          list.nth($values, 4),
+          list.nth($values, 5));
       }
     }
 
