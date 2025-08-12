@@ -50,56 +50,58 @@
 			<div class="card">
 				<div class="card-body">
 					<!-- Tabla de usuarios -->
-					<table class="table table-light table-hover align-middle mb-0">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Nombre</th>
-								<th>Email</th>
-								<th>Status</th>
-								<th>Rol</th>
-								<th>Acciones</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let user of filteredUsers; let i = index">
-								<td>{{ user.uid.slice(-6).toUpperCase() }}</td>
-								<td>{{ user.name }} {{ user.last_name }}</td>
-								<td>{{ user.email }}</td>
-					
-								<!-- Status -->
-								<td>
-									<span class="badge" [ngClass]="user.activo ? 'bg-success' : 'bg-danger'">
-										{{ user.activo ? 'Habilitado' : 'Deshabilitado' }}
-									</span>
-								</td>
-					
-								<!-- Rol -->
-								<td>
-									<span class="badge"
-										[ngClass]="{'bg-success': user.rol === 'Administrador','bg-warning text-dark': user.rol === 'Ejecutivo','bg-danger': !user.rol || user.rol === ''}">
-										{{ user.rol || 'Sin rol' }}
-									</span>
-								</td>
-					
-								<!-- Acciones -->
-								<td class="d-flex gap-2">
-									<button class="btn btn-full --{{ user.activo ? 'danger' : 'success' }} btn-sm"
-										(click)="toggleUser(user.uid, !user.activo)">
-										{{ user.activo ? 'Deshabilitar' : 'Habilitar' }}
-									</button> 
-									<a class="btn btn-full --primary btn-sm" [routerLink]="['/dashboard/admin-users/edit-role', user.uid]">
-										Editar Rol
-									</a>
+					<div class="table-responsive">
+						<table class="table table-light table-hover align-middle mb-0">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Nombre</th>
+									<th>Email</th>
+									<th>Status</th>
+									<th>Rol</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let user of filteredUsers; let i = index">
+									<td>{{ user.uid.slice(-6).toUpperCase() }}</td>
+									<td>{{ user.name }} {{ user.last_name }}</td>
+									<td>{{ user.email }}</td>
+						
+									<!-- Status -->
+									<td>
+										<span class="badge" [ngClass]="user.activo ? 'bg-success' : 'bg-danger'">
+											{{ user.activo ? 'Habilitado' : 'Deshabilitado' }}
+										</span>
+									</td>
+						
+									<!-- Rol -->
+									<td>
+										<span class="badge"
+											[ngClass]="{'bg-success': user.rol === 'Administrador','bg-warning text-dark': user.rol === 'Ejecutivo','bg-danger': !user.rol || user.rol === ''}">
+											{{ user.rol || 'Sin rol' }}
+										</span>
+									</td>
+						
+									<!-- Acciones -->
+									<td class="d-flex gap-2">
+										<button class="btn btn-full --{{ user.activo ? 'danger' : 'success' }} btn-sm"
+											(click)="toggleUser(user.uid, !user.activo)">
+											{{ user.activo ? 'Deshabilitar' : 'Habilitar' }}
+										</button> 
+										<a class="btn btn-full --primary btn-sm" [routerLink]="['/dashboard/admin-users/edit-role', user.uid]">
+											Editar Rol
+										</a>
 
-									<button class="btn btn-full --info btn-sm"
-										(click)="editUser(user.uid, !user.activo)">
-										 Editar perfil
-									</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+										<button class="btn btn-full --info btn-sm"
+											(click)="editUser(user.uid, !user.activo)">
+											Editar perfil
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>

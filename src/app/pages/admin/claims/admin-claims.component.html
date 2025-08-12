@@ -76,15 +76,15 @@
 				</div>
 
 				<div *ngIf="!isLoading && !errorMessage" class="row">
-					<div class="col-6 ">
+					<div class="col-sm-12 col-md-6 ">
 						<h2 class="h3 m-0">Administración de Reclamaciones</h2>
 						<p class="mb-0">Aquí puedes gestionar todas las reclamaciones de los usuarios.</p>
 					</div>
-					<div class="col-6 d-flex justify-content-end align-items-center">
-						<button class="btn btn-full --primary m-1 btn-sm" (click)="openNewModal()">
+					<div class="col-md-6 d-block d-md-flex justify-content-md-end align-items-md-center">
+						<button class="btn btn-full --primary my-1 mx-1 btn-sm" (click)="openNewModal()">
 							<i class="bi bi-plus-circle me-1"></i> Nuevo Reclamo
 						</button>
-						<button class="btn btn-full --danger m-1 btn-sm" [disabled]="!showDeleteButton"
+						<button class="btn btn-full --danger my-1 mx-1 btn-sm" [disabled]="!showDeleteButton"
 							(click)="deleteSelectedClaims()">
 							<i class="bi bi-trash me-1"></i> Eliminar Seleccionados
 						</button>
