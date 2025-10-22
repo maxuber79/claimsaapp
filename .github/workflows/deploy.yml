@@ -1,35 +1,66 @@
-name: Deploy CEDYP Theme (FTPS)
+name: Deploy Angular App to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [ master ]
+
+concurrency:
+  group: gh-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}          # p.ej. "claimsaapp"
+      DIST_DIR: dist/${{ github.event.repository.name }}/browser  # Angular 20 -> dist/<app>/browser
+
     steps:
-      - name: Checkout
+      # 1) Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # 2) Node 20 + cache npm
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./
-          server-dir: ${{ secrets.FTP_PATH }}/
-          exclude: |
-            **/.git*
-            **/.github/**
-            **/.vscode/**
-            **/node_modules/**
-            **/backup/**
-            **/*.map
-            **/README.md
-            **/composer.json
-            **/phpcs.xml.dist
-            **/.stylelintrc.json
+          node-version: '20'
+          cache: 'npm'
+
+      # 3) Instalar deps (reproducible)
+      - name: Install dependencies
+        run: npm ci
+
+      # 4) Build prod con base-href apuntando al repo
+      - name: Build Angular App
+        run: npm run build -- --configuration=production --base-href "/${{ env.REPO_NAME }}/"
+
+      # (Opcional) Mostrar árbol por debug rápido
+      - name: Show dist tree (debug)
+        run: |
+          echo "== dist/"
+          ls -la dist || true
+          echo "== $DIST_DIR"
+          ls -la "${{ env.DIST_DIR }}" || true
+
+      # 5) Crear 404.html (SPA refresh fix)
+      - name: Create 404.html for SPA refresh
+        run: cp "${{ env.DIST_DIR }}/index.html" "${{ env.DIST_DIR }}/404.html"
+
+      # 6) Verificar artefactos clave
+      - name: Verify build artifacts
+        run: |
+          test -f "${{ env.DIST_DIR }}/index.html"
+          test -f "${{ env.DIST_DIR }}/404.html"
+          echo "✅ index.html y 404.html presentes en $DIST_DIR"
+
+      # 7) Deploy a gh-pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ${{ env.DIST_DIR }}
